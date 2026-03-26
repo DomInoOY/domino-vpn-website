@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domino VPN — Свобода в сети</title>
+<meta name="description" content="Быстрый и надёжный VPN на базе VLESS+Reality. Работает в России. Серверы в Германии и Швеции. 3 дня бесплатно.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--card:#111111;--accent:#E8302A;--text:#F0EDE8;
+  --text-muted:#888;--border:#222;--card2:#161616;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.4;
+}
+h1,h2,h3,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:0.03em}
+
+/* ═══ NAV ═══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:64px;
+  background:rgba(8,8,8,0.85);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo-text{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);letter-spacing:0.05em}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{
+  background:var(--accent);color:#fff;border:none;padding:10px 20px;
+  border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;
+  text-decoration:none;transition:box-shadow .2s,transform .15s;white-space:nowrap;
+}
+.nav-cta:hover{box-shadow:0 0 20px rgba(232,48,42,0.5);transform:translateY(-1px)}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.nav-burger span{display:block;width:24px;height:2px;background:var(--text);transition:.3s}
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .nav-burger{display:flex}
+  .nav-links.open{
+    display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;
+    background:rgba(8,8,8,0.98);padding:20px;gap:16px;border-bottom:1px solid var(--border);
+  }
+}
+
+/* ═══ SECTIONS ═══ */
+section{position:relative;z-index:1}
+.container{max-width:1100px;margin:0 auto;padding:0 40px}
+@media(max-width:768px){.container{padding:0 20px}}
+
+/* ═══ HERO ═══ */
+#hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:120px 0 80px;
+  background:radial-gradient(ellipse 60% 50% at 30% 40%,rgba(232,48,42,0.08) 0%,transparent 70%);
+}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr;gap:40px}}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#1a1a1a;border:1px solid #2a2a2a;border-radius:100px;
+  padding:6px 14px;font-size:13px;color:var(--text-muted);margin-bottom:20px;
+}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(64px,9vw,120px);line-height:0.9;margin-bottom:24px}
+.hero-h1 .slash{color:var(--text-muted);font-size:0.6em}
+.hero-h1 .red{color:var(--accent)}
+.hero-sub{font-size:16px;color:var(--text-muted);margin-bottom:32px;max-width:440px;line-height:1.7}
+.hero-checks{display:flex;flex-wrap:wrap;gap:12px 24px;margin-bottom:36px}
+.hero-check{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-muted)}
+.hero-check::before{content:'✓';color:var(--accent);font-weight:700}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:48px}
+.btn-primary{
+  background:var(--accent);color:#fff;text-decoration:none;
+  padding:14px 28px;border-radius:10px;font-weight:700;font-size:15px;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:box-shadow .2s,transform .15s;border:none;cursor:pointer;
+}
+.btn-primary:hover{box-shadow:0 0 30px rgba(232,48,42,0.5);transform:translateY(-2px)}
+.btn-secondary{
+  background:transparent;color:var(--text);text-decoration:none;
+  padding:14px 28px;border-radius:10px;font-weight:600;font-size:15px;
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--border);transition:.2s;
+}
+.btn-secondary:hover{border-color:#444;background:#111}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:480px){.hero-stats{grid-template-columns:repeat(2,1fr)}}
+.hero-stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.hero-stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent)}
+.hero-stat-label{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+/* Domino SVG animation */
+.hero-visual{display:flex;justify-content:center;align-items:center}
+@media(max-width:768px){.hero-visual{display:none}}
+.domino-big{animation:float 6s ease-in-out infinite;opacity:0.12;filter:drop-shadow(0 0 40px #E8302A)}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-20px) rotate(-5deg)}}
+
+/* ═══ HOW START ═══ */
+#howstart{padding:100px 0}
+.section-label{font-size:12px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);margin-bottom:48px}
+.steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;align-items:center}
+@media(max-width:768px){.steps3{grid-template-columns:1fr;gap:0}}
+.step3{
+  background:var(--card);border:1px solid var(--border);padding:36px 28px;
+  position:relative;
+}
+.step3:first-child{border-radius:16px 0 0 16px}
+.step3:last-child{border-radius:0 16px 16px 0}
+@media(max-width:768px){
+  .step3:first-child{border-radius:16px 16px 0 0}
+  .step3:last-child{border-radius:0 0 16px 16px}
+}
+.step3-arrow{
+  position:absolute;right:-1px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:#fff;z-index:2;border-radius:50%;
+}
+@media(max-width:768px){
+  .step3-arrow{right:50%;bottom:-1px;top:auto;transform:translateX(50%) rotate(90deg)}
+}
+.step3-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--accent);opacity:0.3;line-height:1}
+.step3-icon{font-size:32px;margin:8px 0}
+.step3 h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.step3 p{font-size:14px;color:var(--text-muted)}
+
+/* ═══ FEATURES ═══ */
+#features{padding:100px 0;background:radial-gradient(ellipse 40% 50% at 80% 50%,rgba(232,48,42,0.05) 0%,transparent 70%)}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:768px){.features-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.features-grid{grid-template-columns:1fr}}
+.feat-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.feat-card:hover{transform:translateY(-4px);border-color:#333;box-shadow:0 8px 30px rgba(0,0,0,0.4)}
+.feat-icon{font-size:28px;margin-bottom:16px}
+.feat-card h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.feat-card p{font-size:14px;color:var(--text-muted);line-height:1.6}
+
+/* ═══ SERVERS ═══ */
+#servers{padding:100px 0}
+.servers-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:768px){.servers-grid{grid-template-columns:1fr}}
+.server-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;
+  transition:transform .2s,border-color .2s;
+}
+.server-card:hover{transform:translateY(-4px);border-color:#333}
+.server-head{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.server-flag{font-size:40px}
+.server-info h3{font-size:22px;font-weight:700}
+.server-info p{font-size:14px;color:var(--text-muted)}
+.server-status{display:flex;align-items:center;gap:8px;font-size:13px;color:#22c55e;font-weight:600}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e;animation:pulse-dot 2s infinite}
+.server-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.server-stat{background:#0d0d0d;border:1px solid #1a1a1a;border-radius:10px;padding:12px;text-align:center}
+.server-stat-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text)}
+.server-stat-label{font-size:11px;color:var(--text-muted)}
+
+/* ═══ PRICING ═══ */
+#pricing{padding:100px 0}
+.pricing-toggle{
+  display:flex;align-items:center;gap:0;background:var(--card);
+  border:1px solid var(--border);border-radius:12px;padding:4px;
+  width:fit-content;margin:0 auto 48px;
+}
+.toggle-btn{
+  padding:10px 24px;border-radius:9px;border:none;cursor:pointer;
+  font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;
+  background:transparent;color:var(--text-muted);transition:.25s;
+}
+.toggle-btn.active{background:var(--accent);color:#fff}
+.plans-wrap{position:relative}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:768px){.plans-grid{grid-template-columns:1fr}}
+.plan-panel{display:none}
+.plan-panel.active{display:block}
+.plan-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:32px 28px;transition:transform .2s;position:relative;
+}
+.plan-card:hover{transform:translateY(-4px)}
+.plan-card.popular{border-color:var(--accent);border-width:2px}
+.plan-badge{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:var(--accent);color:#fff;font-size:11px;font-weight:700;
+  letter-spacing:0.1em;padding:4px 14px;border-radius:100px;white-space:nowrap;
+}
+.plan-name{font-size:14px;font-weight:600;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.1em}
+.plan-price{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;margin-bottom:4px}
+.plan-price span{font-size:24px;vertical-align:top;margin-top:10px;display:inline-block}
+.plan-alts{font-size:13px;color:var(--text-muted);margin-bottom:24px}
+.plan-alts b{color:var(--text)}
+.plan-sep{height:1px;background:var(--border);margin-bottom:24px}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.plan-features li{font-size:14px;display:flex;align-items:center;gap:10px}
+.plan-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
+.plan-cta{
+  display:block;text-align:center;background:var(--accent);color:#fff;
+  text-decoration:none;padding:14px;border-radius:10px;font-weight:700;font-size:15px;
+  transition:box-shadow .2s,transform .15s;
+}
+.plan-cta:hover{box-shadow:0 0 25px rgba(232,48,42,0.5);transform:translateY(-1px)}
+.plan-cta.secondary{background:transparent;border:1px solid var(--border);color:var(--text)}
+.plan-cta.secondary:hover{border-color:#444;box-shadow:none}
+
+/* ═══ INSTRUCTIONS ═══ */
+#instructions{padding:100px 0}
+.tabs-nav{display:flex;gap:8px;margin-bottom:48px;flex-wrap:wrap}
+.tab-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 24px;border-radius:10px;border:1px solid var(--border);
+  background:transparent;color:var(--text-muted);cursor:pointer;
+  font-family:'Manrope',sans-serif;font-size:15px;font-weight:600;
+  transition:.2s;
+}
+.tab-btn:hover{border-color:#444;color:var(--text)}
+.tab-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.steps-scroll{
+  display:flex;gap:24px;overflow-x:auto;padding-bottom:20px;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+}
+.steps-scroll::-webkit-scrollbar{height:4px}
+.steps-scroll::-webkit-scrollbar-track{background:#111}
+.steps-scroll::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+.step-card{
+  flex:0 0 300px;background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:24px;scroll-snap-align:start;
+}
+.step-num{
+  width:32px;height:32px;border-radius:50%;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;margin-bottom:16px;
+}
+.step-card h4{font-size:16px;font-weight:700;margin-bottom:8px}
+.step-card p{font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.6}
+
+/* ═══ PHONE MOCKUP ═══ */
+.phone-mock{
+  width:100%;max-width:260px;margin:0 auto;
+  background:#0a0a0a;border:2px solid #333;border-radius:32px;
+  overflow:hidden;position:relative;
+}
+.phone-mock-notch{
+  width:80px;height:22px;background:#0a0a0a;border-radius:0 0 16px 16px;
+  margin:0 auto;position:relative;z-index:2;border:2px solid #333;border-top:none;
+}
+.phone-mock-screen{background:#111;min-height:200px;padding:0}
+
+/* ═══ WINDOW MOCKUP (desktop) ═══ */
+.win-mock{
+  width:100%;background:#1a1a1a;border:1px solid #333;
+  border-radius:10px;overflow:hidden;
+}
+.win-titlebar{
+  background:#252525;padding:10px 14px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid #333;
+}
+.win-dot{width:12px;height:12px;border-radius:50%}
+.win-dot.red{background:#FF5F56}
+.win-dot.yellow{background:#FFBD2E}
+.win-dot.green{background:#27C93F}
+.win-title-text{margin-left:8px;font-size:13px;color:#888;flex:1;text-align:center}
+.win-body{padding:16px;min-height:160px}
+
+/* ═══ REFERRAL ═══ */
+#referral{padding:100px 0}
+.referral-card{
+  background:linear-gradient(135deg,#111 0%,#161616 100%);
+  border:1px solid var(--border);border-radius:24px;padding:60px 48px;
+  display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;
+}
+@media(max-width:768px){.referral-card{grid-template-columns:1fr;padding:40px 24px}}
+.ref-flow{display:flex;align-items:center;gap:12px;margin:24px 0;flex-wrap:wrap}
+.ref-step{
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:10px 16px;font-size:13px;font-weight:600;
+}
+.ref-arrow{color:var(--accent);font-size:20px}
+.ref-bonus{
+  font-size:13px;color:#22c55e;background:rgba(34,197,94,0.1);
+  border:1px solid rgba(34,197,94,0.2);border-radius:8px;
+  padding:4px 12px;display:inline-block;
+}
+
+/* ═══ PROXY ═══ */
+#proxy{padding:100px 0}
+.proxy-card{
+  background:var(--card);border:1px solid var(--border);border-radius:24px;
+  padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+}
+@media(max-width:768px){.proxy-card{grid-template-columns:1fr;padding:32px 24px}}
+.proxy-link-box{
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:12px 16px;font-size:11px;color:var(--text-muted);font-family:monospace;
+  word-break:break-all;margin:16px 0;
+}
+
+/* ═══ FAQ ═══ */
+#faq{padding:100px 0}
+.faq-list{display:flex;flex-direction:column;gap:8px;max-width:800px}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.faq-q{
+  width:100%;text-align:left;padding:20px 24px;background:none;border:none;
+  color:var(--text);font-family:'Manrope',sans-serif;font-size:16px;font-weight:600;
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  transition:background .2s;
+}
+.faq-q:hover{background:#161616}
+.faq-q-icon{color:var(--accent);font-size:20px;flex-shrink:0;transition:transform .3s;line-height:1}
+.faq-item.open .faq-q-icon{transform:rotate(45deg)}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s;
+  font-size:15px;color:var(--text-muted);line-height:1.7;padding:0 24px;
+}
+.faq-item.open .faq-a{max-height:300px;padding:0 24px 20px}
+
+/* ═══ COMMUNITY ═══ */
+#community{padding:100px 0}
+.community-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:768px){.community-grid{grid-template-columns:1fr}}
+.community-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;
+  text-align:center;text-decoration:none;color:var(--text);
+  transition:transform .2s,border-color .2s;display:block;
+}
+.community-card:hover{transform:translateY(-4px);border-color:#333}
+.community-icon{font-size:36px;margin-bottom:16px}
+.community-card h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.community-card p{font-size:14px;color:var(--text-muted)}
+
+/* ═══ CTA ═══ */
+#cta{
+  padding:120px 0;text-align:center;
+  background:radial-gradient(ellipse 50% 60% at 50% 50%,rgba(232,48,42,0.1) 0%,transparent 70%);
+}
+.cta-h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,8vw,110px);line-height:0.9;margin-bottom:32px}
+.cta-h2 .red{color:var(--accent)}
+
+/* ═══ FOOTER ═══ */
+footer{
+  border-top:1px solid var(--border);padding:32px 40px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+}
+@media(max-width:768px){footer{padding:24px 20px;flex-direction:column;text-align:center}}
+.footer-copy{font-size:14px;color:var(--text-muted)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:14px;color:var(--text-muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ═══ APP STORE MOCKUP ═══ */
+.store-mock{background:#1c1c1e;border-radius:16px;overflow:hidden;border:1px solid #2c2c2e}
+.store-header{background:#2c2c2e;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.store-app-icon{width:48px;height:48px;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.store-app-info{flex:1}
+.store-app-name{font-size:15px;font-weight:700;color:#fff}
+.store-app-dev{font-size:12px;color:#888}
+.store-btn{background:var(--accent);color:#fff;border:none;padding:8px 20px;border-radius:100px;font-size:14px;font-weight:700}
+.store-body{padding:16px}
+.store-rating{display:flex;align-items:center;gap:6px;margin-bottom:12px}
+.store-stars{color:#f59e0b;font-size:14px}
+.store-rating-num{font-size:13px;color:#888}
+.store-screens{display:flex;gap:8px}
+.store-screen{flex:1;background:#2c2c2e;border-radius:8px;height:80px}
+
+/* ═══ TELEGRAM MOCK ═══ */
+.tg-mock{background:#17212b;border-radius:0;padding:8px 0}
+.tg-header{background:#1c2c3a;padding:8px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #1e2d3d}
+.tg-avatar{width:36px;height:36px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.tg-name{font-size:14px;font-weight:600;color:#fff}
+.tg-status{font-size:11px;color:#4dc9ff}
+.tg-msgs{padding:12px;display:flex;flex-direction:column;gap:8px}
+.tg-msg-bot{background:#1f3447;border-radius:4px 12px 12px 12px;padding:10px 12px;font-size:12px;color:#e0e0e0;max-width:80%;line-height:1.5}
+.tg-msg-key{background:#1f3447;border-radius:4px 12px 12px 12px;padding:8px 10px;font-size:10px;color:#4dc9ff;font-family:monospace;word-break:break-all;max-width:90%}
+.tg-btn-row{display:flex;gap:6px;padding:0 12px}
+.tg-btn{background:#1f3447;border:1px solid #2a4a6b;border-radius:8px;padding:6px 10px;font-size:11px;color:#4dc9ff;text-align:center;flex:1}
+.tg-btn.highlight{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ═══ V2RAYN MOCK ═══ */
+.v2ng-mock{background:#1a1a1a;border-radius:0}
+.v2ng-toolbar{background:#252525;padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
+.v2ng-title{font-size:14px;font-weight:600;color:#ddd}
+.v2ng-plus{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;box-shadow:0 0 10px rgba(232,48,42,0.6)}
+.v2ng-list{padding:8px}
+.v2ng-item{display:flex;align-items:center;gap:10px;background:#222;border-radius:8px;padding:10px 12px;margin-bottom:6px}
+.v2ng-dot{width:8px;height:8px;border-radius:50%;background:#22c55e}
+.v2ng-server{font-size:12px;color:#ddd}
+.v2ng-connect{margin:8px;background:var(--accent);border-radius:8px;padding:10px;text-align:center;font-size:14px;font-weight:700;color:#fff;box-shadow:0 0 15px rgba(232,48,42,0.4)}
+.v2ng-empty{padding:24px;text-align:center;font-size:12px;color:#555}
+.v2ng-menu{background:#222;border-radius:8px;margin:8px;overflow:hidden}
+.v2ng-menu-item{padding:10px 16px;font-size:12px;color:#ddd;border-bottom:1px solid #333}
+.v2ng-menu-item:last-child{border-bottom:none}
+.v2ng-menu-item.highlight{background:rgba(232,48,42,0.15);color:var(--accent);font-weight:600}
+
+/* ═══ iOS MOCK ═══ */
+.ios-statusbar{background:#000;padding:4px 16px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#fff}
+.ios-statusbar-right{display:flex;align-items:center;gap:4px;font-size:11px}
+.ios-alert{background:#2c2c2e;border-radius:14px;margin:12px;overflow:hidden}
+.ios-alert-title{padding:16px 16px 4px;font-size:14px;font-weight:700;color:#fff;text-align:center}
+.ios-alert-text{padding:4px 16px 16px;font-size:12px;color:#888;text-align:center}
+.ios-alert-btns{border-top:1px solid #3a3a3c;display:flex}
+.ios-alert-btn{flex:1;padding:12px;font-size:14px;text-align:center;color:#4da3ff}
+.ios-alert-btn.primary{color:var(--accent);font-weight:700;border-left:1px solid #3a3a3c}
+.ios-nav{background:#1c1c1e;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #2c2c2e}
+.ios-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:#888}
+.ios-connected{padding:20px 16px;text-align:center}
+.ios-connected-circle{width:70px;height:70px;border-radius:50%;background:rgba(34,197,94,0.15);border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:28px}
+.ios-connected-status{font-size:16px;font-weight:700;color:#22c55e}
+.ios-connected-info{font-size:12px;color:#888;margin-top:4px}
+.streisand-header{background:#1c1c1e;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.streisand-add{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px}
+
+/* ═══ WINDOWS MOCK ═══ */
+.gh-mock{background:#0d1117;border-radius:0}
+.gh-header{background:#161b22;padding:8px 12px;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:8px}
+.gh-dot{width:8px;height:8px;border-radius:50%}
+.gh-title{font-size:12px;color:#8b949e}
+.gh-release{padding:12px}
+.gh-release-title{font-size:13px;font-weight:600;color:#e6edf3;margin-bottom:8px}
+.gh-asset{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-size:11px;color:#8b949e;background:#161b22;border:1px solid #21262d;margin-bottom:4px}
+.gh-asset.highlight{border-color:var(--accent);background:rgba(232,48,42,0.08);color:#e6edf3}
+.gh-icon{font-size:14px}
+.hiddify-mock{background:#1a1a2e;border-radius:0;min-height:160px}
+.hiddify-header{background:#16213e;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+.hiddify-logo{font-size:13px;font-weight:700;color:#7b9fff}
+.hiddify-plus{width:26px;height:26px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+.hiddify-body{padding:12px}
+.hiddify-item{display:flex;align-items:center;gap:10px;background:#16213e;border-radius:8px;padding:10px 12px;margin-bottom:6px}
+.hiddify-status{width:8px;height:8px;border-radius:50%;background:#22c55e}
+.hiddify-menu{background:#16213e;border-radius:8px;overflow:hidden;margin-bottom:6px}
+.hiddify-mi{padding:8px 14px;font-size:12px;color:#aaa;border-bottom:1px solid #1e2a4a}
+.hiddify-mi:last-child{border-bottom:none}
+.hiddify-mi.hl{color:#7b9fff;font-weight:600}
+.tray-mock{background:#f0f0f0;padding:10px;border-radius:8px;display:flex;align-items:center;gap:8px}
+.tray-icon{width:20px;height:20px;background:var(--accent);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff}
+.tray-text{font-size:12px;color:#333;font-weight:500}
+.tray-status{font-size:11px;color:#22c55e;font-weight:600}
+
+/* ═══ MACOS MOCK ═══ */
+.mac-mock{background:#1e1e1e;border-radius:10px;overflow:hidden;border:1px solid #333}
+.mac-titlebar{background:#2d2d2d;padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #3a3a3a}
+.mac-body{padding:16px}
+.macstore-card{background:#1c1c1e;border-radius:12px;overflow:hidden;border:1px solid #2c2c2e;margin:8px}
+.macstore-header{padding:12px;display:flex;gap:12px;align-items:center}
+.macstore-icon{width:48px;height:48px;background:linear-gradient(135deg,#1a3a5c,#0f2035);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.macstore-title{font-size:15px;font-weight:700;color:#fff}
+.macstore-sub{font-size:12px;color:#888}
+.macstore-getbtn{background:#0a84ff;color:#fff;border:none;padding:6px 18px;border-radius:100px;font-size:14px;font-weight:700}
+.mac-dialog{background:#323232;border-radius:12px;margin:12px;padding:20px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.8)}
+.mac-dialog-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px}
+.mac-dialog-text{font-size:12px;color:#aaa;margin-bottom:16px}
+.mac-dialog-btns{display:flex;gap:8px;justify-content:center}
+.mac-dialog-btn{padding:8px 20px;border-radius:6px;font-size:13px;font-weight:600;border:none}
+.mac-dialog-btn.cancel{background:#4a4a4a;color:#fff}
+.mac-dialog-btn.ok{background:#0a84ff;color:#fff}
+.mac-menubar{background:#1e1e1e;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a2a2a}
+.mac-mb-right{display:flex;align-items:center;gap:12px;font-size:12px;color:#fff}
+.mac-vpn-badge{background:rgba(34,197,94,0.2);color:#22c55e;border:1px solid rgba(34,197,94,0.3);border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700}
+.foxray-body{padding:16px}
+.foxray-connected{text-align:center;padding:16px}
+.foxray-circle{width:60px;height:60px;border-radius:50%;background:rgba(34,197,94,0.15);border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:24px}
+
+/* install-btn row */
+.install-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--card);border:1px solid var(--border);
+  padding:10px 18px;border-radius:10px;text-decoration:none;color:var(--text);
+  font-size:14px;font-weight:600;transition:.2s;
+}
+.install-btn:hover{border-color:#444;transform:translateY(-2px)}
+
+/* ─── android statusbar done ─── */
+.android-sb{background:#121212;padding:4px 12px;display:flex;justify-content:space-between;font-size:10px;color:#aaa}
+.android-sb-right{display:flex;align-items:center;gap:4px}
+.android-key-icon{font-size:10px}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg width="36" height="22" viewBox="0 0 36 22" fill="none">
+      <rect width="36" height="22" rx="4" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+      <line x1="18" y1="2" x2="18" y2="20" stroke="#333" stroke-width="1.5"/>
+      <circle cx="9" cy="7" r="2.5" fill="#E8302A"/>
+      <circle cx="9" cy="15" r="2.5" fill="#E8302A"/>
+      <circle cx="27" cy="11" r="2.5" fill="#555"/>
+    </svg>
+    <span class="nav-logo-text">DOMINO VPN</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#features">Возможности</a></li>
+    <li><a href="#servers">Серверы</a></li>
+    <li><a href="#pricing">Тарифы</a></li>
+    <li><a href="#instructions">Инструкция</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="https://t.me/DominoVPN_bot" target="_blank" class="nav-cta">Попробовать бесплатно →</a>
+  <button class="nav-burger" id="navBurger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-tag">
+          <span class="hero-tag-dot"></span>
+          Серверы онлайн · VLESS + XTLS-Reality
+        </div>
+        <h1 class="hero-h1">
+          СВОБОДА<br>
+          <span class="slash">/</span> В СЕТИ
+        </h1>
+        <p class="hero-sub">Работает там, где другие VPN заблокированы. Технология Reality маскируется под обычный HTTPS-трафик.</p>
+        <div class="hero-checks">
+          <span class="hero-check">Без карты</span>
+          <span class="hero-check">Без регистрации</span>
+          <span class="hero-check">30 секунд</span>
+          <span class="hero-check">Telegram Stars</span>
+        </div>
+        <div class="hero-btns">
+          <a href="https://t.me/DominoVPN_bot" target="_blank" class="btn-primary">→ 3 дня бесплатно</a>
+          <a href="#pricing" class="btn-secondary">Тарифы ↓</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="hero-stat-val">2+</div><div class="hero-stat-label">Сервера EU</div></div>
+          <div class="hero-stat"><div class="hero-stat-val">1 Гб</div><div class="hero-stat-label">Скорость/с</div></div>
+          <div class="hero-stat"><div class="hero-stat-val">99%</div><div class="hero-stat-label">Uptime</div></div>
+          <div class="hero-stat"><div class="hero-stat-val">0₽</div><div class="hero-stat-label">Пробный</div></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <svg class="domino-big" width="220" height="380" viewBox="0 0 220 380" fill="none">
+          <rect x="10" y="10" width="200" height="360" rx="24" fill="#E8302A" stroke="#ff4a44" stroke-width="2"/>
+          <line x1="10" y1="190" x2="210" y2="190" stroke="#c0281e" stroke-width="3"/>
+          <!-- Top dots -->
+          <circle cx="75" cy="90" r="18" fill="#c0281e"/>
+          <circle cx="145" cy="90" r="18" fill="#c0281e"/>
+          <circle cx="75" cy="145" r="18" fill="#c0281e"/>
+          <circle cx="145" cy="145" r="18" fill="#c0281e"/>
+          <!-- Bottom dots -->
+          <circle cx="110" cy="280" r="18" fill="#c0281e"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ HOW START ══════════════════ -->
+<section id="howstart">
+  <div class="container">
+    <div class="section-label reveal">Быстрый старт</div>
+    <div class="section-title reveal">КАК НАЧАТЬ</div>
+    <div class="steps3">
+      <div class="step3 reveal">
+        <div class="step3-num">01</div>
+        <div class="step3-icon">🤖</div>
+        <h3>Открой бота</h3>
+        <p>Нажми «Старт» в <a href="https://t.me/DominoVPN_bot" style="color:var(--accent)">@DominoVPN_bot</a> и выбери тариф или активируй бесплатный пробный период.</p>
+        <div class="step3-arrow">→</div>
+      </div>
+      <div class="step3 reveal">
+        <div class="step3-num">02</div>
+        <div class="step3-icon">💎</div>
+        <h3>Выбери тариф</h3>
+        <p>Оплати через Telegram Stars (удобно через СБП) или CryptoBot USDT. Ключ придёт автоматически.</p>
+        <div class="step3-arrow">→</div>
+      </div>
+      <div class="step3 reveal">
+        <div class="step3-num">03</div>
+        <div class="step3-icon">🔑</div>
+        <h3>Подключись за 30 сек</h3>
+        <p>Скопируй subscription-ссылку и вставь в VPN-приложение. Готово — интернет без границ.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FEATURES ══════════════════ -->
+<section id="features">
+  <div class="container">
+    <div class="section-label reveal">Технологии</div>
+    <div class="section-title reveal">ВОЗМОЖНОСТИ</div>
+    <div class="features-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon">🛡</div>
+        <h3>VLESS + Reality</h3>
+        <p>Маскируется под HTTPS-трафик к реальным сайтам. DPI провайдера не может отличить от обычного браузинга.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">⚡</div>
+        <h3>1 Гбит/с</h3>
+        <p>Выделенные серверы с гигабитным каналом. Стриминг 4K, видеозвонки и игры без лагов.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">🔒</div>
+        <h3>Нет логов</h3>
+        <p>Серверы расположены вне России. Никаких журналов активности — твой трафик только твой.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">📱</div>
+        <h3>Все платформы</h3>
+        <p>Android, iOS, Windows, macOS. Subscription-ссылка работает на всех устройствах и обновляется автоматически.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">⭐</div>
+        <h3>Telegram Stars</h3>
+        <p>Оплата прямо в Telegram через Звёзды — купи через СБП или картой. Без привязки счёта, мгновенно.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">🤖</div>
+        <h3>Авто-выдача</h3>
+        <p>После оплаты VPN-ключ приходит в бот мгновенно, без ожидания и общения с поддержкой.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SERVERS ══════════════════ -->
+<section id="servers">
+  <div class="container">
+    <div class="section-label reveal">Инфраструктура</div>
+    <div class="section-title reveal">СЕРВЕРЫ</div>
+    <div class="servers-grid">
+      <div class="server-card reveal">
+        <div class="server-head">
+          <div class="server-flag">🇩🇪</div>
+          <div class="server-info">
+            <h3>Германия</h3>
+            <p>Frankfurt am Main</p>
+          </div>
+          <div style="margin-left:auto">
+            <div class="server-status"><span class="status-dot"></span> Онлайн</div>
+          </div>
+        </div>
+        <div class="server-stats">
+          <div class="server-stat"><div class="server-stat-val">~45ms</div><div class="server-stat-label">Пинг из РФ</div></div>
+          <div class="server-stat"><div class="server-stat-val">1 Гб/с</div><div class="server-stat-label">Канал</div></div>
+          <div class="server-stat"><div class="server-stat-val">99%</div><div class="server-stat-label">Uptime</div></div>
+        </div>
+      </div>
+      <div class="server-card reveal">
+        <div class="server-head">
+          <div class="server-flag">🇸🇪</div>
+          <div class="server-info">
+            <h3>Швеция</h3>
+            <p>Stockholm</p>
+          </div>
+          <div style="margin-left:auto">
+            <div class="server-status"><span class="status-dot"></span> Онлайн</div>
+          </div>
+        </div>
+        <div class="server-stats">
+          <div class="server-stat"><div class="server-stat-val">~55ms</div><div class="server-stat-label">Пинг из РФ</div></div>
+          <div class="server-stat"><div class="server-stat-val">1 Гб/с</div><div class="server-stat-label">Канал</div></div>
+          <div class="server-stat"><div class="server-stat-val">99%</div><div class="server-stat-label">Uptime</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ PRICING ══════════════════ -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-label reveal" style="text-align:center">Тарифы</div>
+    <div class="section-title reveal" style="text-align:center;margin-bottom:24px">ВЫБЕРИ ПЛАН</div>
+    <div class="pricing-toggle reveal">
+      <button class="toggle-btn active" data-target="vpn">🔐 VPN</button>
+      <button class="toggle-btn" data-target="proxy">📡 Прокси</button>
+    </div>
+    <div class="plans-wrap">
+      <div class="plan-panel active" id="panel-vpn">
+        <div class="plans-grid">
+          <div class="plan-card reveal">
+            <div class="plan-name">1 месяц</div>
+            <div class="plan-price"><span>₽</span>149</div>
+            <div class="plan-alts"><b>75 ⭐</b> Stars &nbsp;·&nbsp; <b>1.20</b> USDT</div>
+            <div class="plan-sep"></div>
+            <ul class="plan-features">
+              <li>30 дней доступа</li>
+              <li>1 устройство</li>
+              <li>Оба сервера</li>
+              <li>Авто-выдача ключа</li>
+            </ul>
+            <a href="https://t.me/DominoVPN_bot" target="_blank" class="plan-cta secondary">Выбрать</a>
+          </div>
+          <div class="plan-card popular reveal">
+            <div class="plan-badge">ПОПУЛЯРНОЕ</div>
+            <div class="plan-name">3 месяца</div>
+            <div class="plan-price"><span>₽</span>249</div>
+            <div class="plan-alts"><b>166 ⭐</b> Stars &nbsp;·&nbsp; <b>2.75</b> USDT</div>
+            <div class="plan-sep"></div>
+            <ul class="plan-features">
+              <li>90 дней доступа</li>
+              <li>1 устройство</li>
+              <li>Оба сервера</li>
+              <li>Авто-выдача ключа</li>
+              <li>Экономия 30%</li>
+            </ul>
+            <a href="https://t.me/DominoVPN_bot" target="_blank" class="plan-cta">Выбрать</a>
+          </div>
+          <div class="plan-card reveal">
+            <div class="plan-name">6 месяцев</div>
+            <div class="plan-price"><span>₽</span>449</div>
+            <div class="plan-alts"><b>299 ⭐</b> Stars &nbsp;·&nbsp; <b>4.99</b> USDT</div>
+            <div class="plan-sep"></div>
+            <ul class="plan-features">
+              <li>180 дней доступа</li>
+              <li>1 устройство</li>
+              <li>Оба сервера</li>
+              <li>Авто-выдача ключа</li>
+              <li>Максимальная выгода</li>
+            </ul>
+            <a href="https://t.me/DominoVPN_bot" target="_blank" class="plan-cta secondary">Выбрать</a>
+          </div>
+        </div>
+        <p style="text-align:center;margin-top:24px;font-size:14px;color:var(--text-muted)">
+          🎁 <a href="https://t.me/DominoVPN_bot" style="color:var(--accent)">3 дня бесплатно</a> — без карты, без регистрации
+        </p>
+      </div>
+      <div class="plan-panel" id="panel-proxy">
+        <div class="plans-grid">
+          <div class="plan-card reveal">
+            <div class="plan-name">1 месяц</div>
+            <div class="plan-price" style="font-size:38px"><b>134</b> <span style="font-size:18px;vertical-align:middle">⭐</span></div>
+            <div class="plan-alts"><b>2.25</b> USDT</div>
+            <div class="plan-sep"></div>
+            <ul class="plan-features">
+              <li>30 дней доступа</li>
+              <li>MTProto для Telegram</li>
+              <li>Без установки приложений</li>
+            </ul>
+            <a href="https://t.me/DominoVPN_bot" target="_blank" class="plan-cta secondary">Выбрать</a>
+          </div>
+          <div class="plan-card popular reveal">
+            <div class="plan-badge">ВЫГОДНО</div>
+            <div class="plan-name">4 месяца</div>
+            <div class="plan-price" style="font-size:38px"><b>480</b> <span style="font-size:18px;vertical-align:middle">⭐</span></div>
+            <div class="plan-alts"><b>8.00</b> USDT</div>
+            <div class="plan-sep"></div>
+            <ul class="plan-features">
+              <li>120 дней доступа</li>
+              <li>MTProto для Telegram</li>
+              <li>Без установки приложений</li>
+              <li>Экономия 10%</li>
+            </ul>
+            <a href="https://t.me/DominoVPN_bot" target="_blank" class="plan-cta">Выбрать</a>
+          </div>
+          <div class="plan-card reveal">
+            <div class="plan-name">12 месяцев</div>
+            <div class="plan-price" style="font-size:38px"><b>1200</b> <span style="font-size:18px;vertical-align:middle">⭐</span></div>
+            <div class="plan-alts"><b>20.00</b> USDT</div>
+            <div class="plan-sep"></div>
+            <ul class="plan-features">
+              <li>365 дней доступа</li>
+              <li>MTProto для Telegram</li>
+              <li>Без установки приложений</li>
+              <li>Максимальная выгода</li>
+            </ul>
+            <a href="https://t.me/DominoVPN_bot" target="_blank" class="plan-cta secondary">Выбрать</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ INSTRUCTIONS ══════════════════ -->
+<section id="instructions">
+  <div class="container">
+    <div class="section-label reveal">Подключение</div>
+    <div class="section-title reveal">ИНСТРУКЦИЯ</div>
+    <div class="tabs-nav reveal">
+      <button class="tab-btn active" data-tab="android">🤖 Android</button>
+      <button class="tab-btn" data-tab="ios">🍎 iOS</button>
+      <button class="tab-btn" data-tab="windows">🖥 Windows</button>
+      <button class="tab-btn" data-tab="macos">🍏 macOS</button>
+    </div>
+
+    <!-- ANDROID -->
+    <div class="tab-panel active" id="tab-android">
+      <div class="steps-scroll">
+
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h4>Скачай v2rayNG</h4>
+          <p>Открой Google Play и найди v2rayNG. Нажми Установить.</p>
+          <div class="store-mock">
+            <div class="store-header">
+              <div class="store-app-icon">🛡</div>
+              <div class="store-app-info">
+                <div class="store-app-name">v2rayNG</div>
+                <div class="store-app-dev">2dust · 10M+ загрузок</div>
+              </div>
+              <button class="store-btn">Установить</button>
+            </div>
+            <div class="store-body">
+              <div class="store-rating">
+                <span class="store-stars">★★★★★</span>
+                <span class="store-rating-num">4.8 · 48K отзывов</span>
+              </div>
+              <div class="store-screens">
+                <div class="store-screen"></div>
+                <div class="store-screen"></div>
+                <div class="store-screen"></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <a href="https://play.google.com/store/apps/details?id=com.v2ray.ang" target="_blank" class="install-btn">📲 Google Play</a>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h4>Получи ключ в боте</h4>
+          <p>Открой @DominoVPN_bot → Мой профиль → скопируй ключ.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="tg-header">
+                <div class="tg-avatar">D</div>
+                <div>
+                  <div class="tg-name">Domino VPN Bot</div>
+                  <div class="tg-status">бот</div>
+                </div>
+              </div>
+              <div class="tg-msgs">
+                <div class="tg-msg-bot">👋 Привет! Твоя подписка активна.<br>Нажми <b>🔑 Получить ключ</b></div>
+                <div class="tg-msg-key">vless://abc123...@194.154.24.147:443?security=reality...</div>
+              </div>
+              <div class="tg-btn-row">
+                <div class="tg-btn">📊 Подписка</div>
+                <div class="tg-btn highlight">🔑 Получить ключ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h4>Открой v2rayNG</h4>
+          <p>Запусти приложение. Нажми <b>+</b> в правом верхнем углу.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="v2ng-mock">
+                <div class="v2ng-toolbar">
+                  <span class="v2ng-title">v2rayNG</span>
+                  <div class="v2ng-plus">+</div>
+                </div>
+                <div class="v2ng-empty">Список серверов пуст.<br>Нажми + чтобы добавить</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h4>Импортируй из буфера</h4>
+          <p>В меню выбери «Import config from Clipboard».</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="v2ng-mock">
+                <div class="v2ng-toolbar">
+                  <span class="v2ng-title">v2rayNG</span>
+                  <div class="v2ng-plus">+</div>
+                </div>
+                <div class="v2ng-menu">
+                  <div class="v2ng-menu-item">Type manually</div>
+                  <div class="v2ng-menu-item">Scan QR code</div>
+                  <div class="v2ng-menu-item highlight">📋 Import config from Clipboard</div>
+                  <div class="v2ng-menu-item">Import from URL</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <h4>Подключись</h4>
+          <p>Появится сервер DominoVPN. Нажми большую красную кнопку.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="v2ng-mock">
+                <div class="v2ng-toolbar">
+                  <span class="v2ng-title">v2rayNG</span>
+                  <div class="v2ng-plus">+</div>
+                </div>
+                <div class="v2ng-list">
+                  <div class="v2ng-item">
+                    <div class="v2ng-dot"></div>
+                    <span class="v2ng-server">DominoVPN-DE · vless</span>
+                  </div>
+                </div>
+                <div class="v2ng-connect">▶ ПОДКЛЮЧИТЬ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="step-card">
+          <div class="step-num">6</div>
+          <h4>Готово! 🎉</h4>
+          <p>В статус-баре появится иконка 🔑 — VPN активен!</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="android-sb">
+                <span>9:41</span>
+                <div class="android-sb-right">
+                  <span class="android-key-icon">🔑</span>
+                  <span>VPN</span>
+                  <span>📶</span>
+                  <span>🔋</span>
+                </div>
+              </div>
+              <div style="padding:20px;text-align:center">
+                <div style="width:60px;height:60px;border-radius:50%;background:rgba(34,197,94,0.15);border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px">🔑</div>
+                <div style="color:#22c55e;font-weight:700;font-size:15px">ПОДКЛЮЧЕНО</div>
+                <div style="color:#555;font-size:12px;margin-top:4px">DominoVPN-DE</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- iOS -->
+    <div class="tab-panel" id="tab-ios">
+      <div class="steps-scroll">
+
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h4>Скачай Streisand</h4>
+          <p>Открой App Store, найди Streisand и нажми Загрузить.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div class="macstore-card" style="margin:8px">
+                <div class="macstore-header">
+                  <div class="macstore-icon" style="background:linear-gradient(135deg,#1a1a3c,#2a0a2e)">🌐</div>
+                  <div style="flex:1">
+                    <div class="macstore-title">Streisand</div>
+                    <div class="macstore-sub">VPN Client · 4.9 ★</div>
+                  </div>
+                  <button class="macstore-getbtn">Загрузить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <a href="https://apps.apple.com/app/id6450534064" target="_blank" class="install-btn">🍎 App Store</a>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h4>Получи ключ в боте</h4>
+          <p>Открой @DominoVPN_bot → 🔑 Получить ключ → скопируй.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="tg-header">
+                <div class="tg-avatar">D</div>
+                <div><div class="tg-name">Domino VPN Bot</div><div class="tg-status">бот</div></div>
+              </div>
+              <div class="tg-msgs">
+                <div class="tg-msg-bot">🔑 <b>Твой VPN (Германия)</b></div>
+                <div class="tg-msg-key">vless://abc123...@194.154.24.147:443?security=reality&...</div>
+              </div>
+              <div class="tg-btn-row">
+                <div class="tg-btn highlight">📋 Скопировать ключ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h4>Добавь конфигурацию</h4>
+          <p>Открой Streisand → нажми + → Import from Clipboard.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div class="streisand-header">
+                <span style="font-size:14px;font-weight:700;color:#fff">Streisand</span>
+                <div class="streisand-add">+</div>
+              </div>
+              <div style="padding:8px">
+                <div class="v2ng-menu">
+                  <div class="v2ng-menu-item">Add manually</div>
+                  <div class="v2ng-menu-item">Scan QR code</div>
+                  <div class="v2ng-menu-item highlight">📋 Import from Clipboard</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h4>Разреши VPN</h4>
+          <p>iOS спросит разрешение на добавление VPN. Нажми «Разрешить».</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div style="padding:20px 8px">
+                <div class="ios-alert">
+                  <div class="ios-alert-title">«Streisand» хочет добавить конфигурацию VPN</div>
+                  <div class="ios-alert-text">Все сетевые активности могут фильтроваться или отслеживаться при использовании VPN.</div>
+                  <div class="ios-alert-btns">
+                    <div class="ios-alert-btn">Отменить</div>
+                    <div class="ios-alert-btn primary">Разрешить</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <h4>Подключено! 🎉</h4>
+          <p>В статус-баре появится «VPN». Соединение установлено!</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span style="background:#22c55e;color:#fff;padding:1px 4px;border-radius:3px;font-size:10px;font-weight:700">VPN</span><span>📶</span><span>🔋</span></div></div>
+              <div class="ios-connected">
+                <div class="ios-connected-circle">🔐</div>
+                <div class="ios-connected-status">Connected</div>
+                <div class="ios-connected-info">DominoVPN-DE · Германия</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- WINDOWS -->
+    <div class="tab-panel" id="tab-windows">
+      <div class="steps-scroll">
+
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h4>Скачай Hiddify</h4>
+          <p>Переходи на GitHub Releases и скачай Setup-x64.exe.</p>
+          <div class="win-mock">
+            <div class="win-titlebar">
+              <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
+              <span class="win-title-text">github.com/hiddify/hiddify-app</span>
+            </div>
+            <div class="win-body">
+              <div class="gh-release-title" style="color:#e6edf3;margin-bottom:8px">📦 Releases — Latest</div>
+              <div class="gh-asset">
+                <span class="gh-icon">📄</span>
+                <span>Hiddify-Linux-x64.AppImage</span>
+              </div>
+              <div class="gh-asset highlight">
+                <span class="gh-icon">💻</span>
+                <span><b>Hiddify-Windows-Setup-x64.exe</b></span>
+              </div>
+              <div class="gh-asset">
+                <span class="gh-icon">🍎</span>
+                <span>Hiddify-MacOS.dmg</span>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <a href="https://github.com/hiddify/hiddify-app/releases/latest" target="_blank" class="install-btn">💻 GitHub Releases</a>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h4>Установи</h4>
+          <p>Запусти .exe установщик, нажми Install и дождись окончания.</p>
+          <div class="win-mock">
+            <div class="win-titlebar">
+              <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
+              <span class="win-title-text">Hiddify Setup</span>
+            </div>
+            <div class="win-body" style="padding:20px">
+              <div style="text-align:center;margin-bottom:16px">
+                <div style="font-size:32px;margin-bottom:8px">💿</div>
+                <div style="font-size:14px;font-weight:600;color:#ddd">Установка Hiddify</div>
+                <div style="font-size:12px;color:#666;margin-bottom:16px">Версия 2.x</div>
+              </div>
+              <div style="background:#333;border-radius:4px;height:8px;margin-bottom:12px;overflow:hidden">
+                <div style="background:var(--accent);height:100%;width:70%;border-radius:4px"></div>
+              </div>
+              <div style="text-align:center">
+                <button style="background:var(--accent);color:#fff;border:none;padding:8px 24px;border-radius:6px;font-size:14px;font-weight:600">Install</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h4>Получи ключ в боте</h4>
+          <p>Открой Telegram → @DominoVPN_bot → 🔑 Получить ключ.</p>
+          <div class="win-mock">
+            <div class="win-titlebar">
+              <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
+              <span class="win-title-text">Telegram Desktop</span>
+            </div>
+            <div class="win-body" style="background:#17212b;padding:12px">
+              <div class="tg-msg-bot" style="margin-bottom:8px">🔑 <b>Твой VPN ключ:</b></div>
+              <div class="tg-msg-key">vless://abc123...@194.154.24.147:443?security=reality&...</div>
+              <div style="margin-top:8px">
+                <div class="tg-btn highlight" style="display:inline-block;padding:6px 12px;border-radius:8px">📋 Скопировать</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h4>Импортируй ключ</h4>
+          <p>В Hiddify нажми + → Add from Clipboard.</p>
+          <div class="win-mock">
+            <div class="win-titlebar">
+              <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
+              <span class="win-title-text">Hiddify</span>
+            </div>
+            <div class="win-body" style="background:#1a1a2e;padding:0">
+              <div class="hiddify-header">
+                <span class="hiddify-logo">Hiddify</span>
+                <div class="hiddify-plus">+</div>
+              </div>
+              <div class="hiddify-body">
+                <div class="hiddify-menu">
+                  <div class="hiddify-mi">Add manually</div>
+                  <div class="hiddify-mi hl">📋 Add from Clipboard</div>
+                  <div class="hiddify-mi">Scan QR code</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <h4>Подключено! 🎉</h4>
+          <p>Иконка Hiddify в трее станет зелёной. VPN работает!</p>
+          <div class="win-mock">
+            <div class="win-titlebar">
+              <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
+              <span class="win-title-text">Hiddify</span>
+            </div>
+            <div class="win-body" style="background:#1a1a2e;padding:0">
+              <div class="hiddify-header">
+                <span class="hiddify-logo">Hiddify</span>
+              </div>
+              <div class="hiddify-body">
+                <div class="hiddify-item">
+                  <div class="hiddify-status"></div>
+                  <span style="font-size:12px;color:#ddd">DominoVPN-DE · vless</span>
+                  <span style="margin-left:auto;font-size:11px;color:#22c55e">Connected</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <div class="tray-mock">
+              <div class="tray-icon">H</div>
+              <div>
+                <div class="tray-text">Hiddify</div>
+                <div class="tray-status">● Connected</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- macOS -->
+    <div class="tab-panel" id="tab-macos">
+      <div class="steps-scroll">
+
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h4>Скачай FoXray</h4>
+          <p>Открой Mac App Store, найди FoXray и нажми Загрузить.</p>
+          <div class="mac-mock">
+            <div class="mac-titlebar">
+              <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
+              <span style="margin-left:8px;font-size:12px;color:#888">Mac App Store</span>
+            </div>
+            <div class="mac-body" style="padding:8px">
+              <div class="macstore-card">
+                <div class="macstore-header">
+                  <div class="macstore-icon">🦊</div>
+                  <div style="flex:1">
+                    <div class="macstore-title">FoXray</div>
+                    <div class="macstore-sub">VPN Client · 4.8 ★</div>
+                  </div>
+                  <button class="macstore-getbtn">Загрузить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <a href="https://apps.apple.com/app/foxray/id6448898396" target="_blank" class="install-btn">🍏 Mac App Store</a>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h4>Получи ключ в боте</h4>
+          <p>Открой @DominoVPN_bot → 🔑 Получить ключ → скопируй.</p>
+          <div class="mac-mock">
+            <div class="mac-titlebar">
+              <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
+            </div>
+            <div class="mac-body" style="background:#17212b;padding:12px">
+              <div class="tg-msg-bot" style="margin-bottom:8px">🔑 <b>Твой VPN ключ:</b></div>
+              <div class="tg-msg-key">vless://abc123...@194.154.24.147:443?security=reality&...</div>
+              <div style="margin-top:8px">
+                <div class="tg-btn highlight" style="display:inline-block;padding:6px 12px;border-radius:8px">📋 Скопировать</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h4>Добавь конфигурацию</h4>
+          <p>Открой FoXray → File → Import from Clipboard.</p>
+          <div class="mac-mock">
+            <div class="mac-titlebar">
+              <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
+              <span style="margin-left:8px;font-size:12px;color:#888">FoXray</span>
+            </div>
+            <div class="mac-body">
+              <div style="font-size:12px;color:#888;margin-bottom:8px">Серверы</div>
+              <div class="hiddify-menu" style="background:#252525">
+                <div class="hiddify-mi" style="background:#1e1e1e">Добавить вручную</div>
+                <div class="hiddify-mi hl">📋 Import from Clipboard</div>
+                <div class="hiddify-mi" style="background:#1e1e1e">Сканировать QR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h4>Разреши VPN</h4>
+          <p>macOS попросит подтверждение. Введи пароль и нажми OK.</p>
+          <div class="mac-mock">
+            <div class="mac-titlebar">
+              <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
+            </div>
+            <div class="mac-body">
+              <div class="mac-dialog">
+                <div class="mac-dialog-title">FoXray хочет добавить VPN конфигурацию</div>
+                <div class="mac-dialog-text">Для добавления VPN-конфигурации введите системный пароль или используйте Touch ID</div>
+                <div style="background:#3a3a3a;border-radius:6px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#888;text-align:center">
+                  Touch ID или пароль:&nbsp;&nbsp;●●●●●●
+                </div>
+                <div class="mac-dialog-btns">
+                  <button class="mac-dialog-btn cancel">Отменить</button>
+                  <button class="mac-dialog-btn ok">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <h4>Подключено! 🎉</h4>
+          <p>В menu bar появится иконка VPN. Соединение активно!</p>
+          <div class="mac-mock">
+            <div class="mac-menubar">
+              <span style="font-size:12px;color:#fff">🍎 Finder File Edit</span>
+              <div class="mac-mb-right">
+                <span class="mac-vpn-badge">VPN</span>
+                <span>🦊</span>
+                <span>9:41</span>
+                <span>🔋</span>
+              </div>
+            </div>
+            <div class="foxray-body">
+              <div class="foxray-connected">
+                <div class="foxray-circle">🔐</div>
+                <div style="color:#22c55e;font-weight:700;font-size:14px">Подключено</div>
+                <div style="color:#555;font-size:12px;margin-top:4px">DominoVPN-DE · Германия</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ REFERRAL ══════════════════ -->
+<section id="referral">
+  <div class="container">
+    <div class="referral-card reveal">
+      <div>
+        <div class="section-label">Партнёрская программа</div>
+        <h2 class="bebas" style="font-size:clamp(32px,4vw,52px);margin-bottom:16px">ПРИГЛАСИ ДРУГА — ПОЛУЧИ +3 ДНЯ</h2>
+        <p style="color:var(--text-muted);margin-bottom:24px;max-width:500px">За каждого друга, который зарегистрируется по твоей ссылке, ты автоматически получаешь 3 дополнительных дня к подписке.</p>
+        <div class="ref-flow">
+          <div class="ref-step">👤 Ты делишься ссылкой</div>
+          <span class="ref-arrow">→</span>
+          <div class="ref-step">🤖 Друг открывает бота</div>
+          <span class="ref-arrow">→</span>
+          <div class="ref-step">🎁 Тебе <span class="ref-bonus">+3 дня</span> автоматически</div>
+        </div>
+      </div>
+      <div>
+        <a href="https://t.me/DominoVPN_bot" target="_blank" class="btn-primary">🤖 Открыть бота</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ PROXY ══════════════════ -->
+<section id="proxy">
+  <div class="container">
+    <div class="proxy-card reveal">
+      <div>
+        <div class="section-label">MTProto</div>
+        <h2 class="bebas" style="font-size:clamp(30px,4vw,48px);margin-bottom:16px">ПРОКСИ ДЛЯ TELEGRAM</h2>
+        <p style="color:var(--text-muted);margin-bottom:16px">Если Telegram заблокирован у твоего провайдера — прокси восстановит доступ <b style="color:var(--text)">без установки приложений</b>. Работает прямо в настройках Telegram.</p>
+        <div class="proxy-link-box">t.me/proxy?server=162.248.163.147&port=8443&secret=7g1vRpLS...</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="https://t.me/proxy?server=162.248.163.147&port=8443&secret=7g1vRpLSFfoU8bB1piFChWpnb29nbGUuY29t" target="_blank" class="btn-primary">📡 Подключить прокси</a>
+          <a href="https://t.me/DominoVPN_bot" target="_blank" class="btn-secondary">Купить подписку</a>
+        </div>
+      </div>
+      <div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:24px">
+          <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px">Тарифы прокси</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--card);border-radius:10px;border:1px solid var(--border)">
+              <span style="font-size:14px">1 месяц</span>
+              <span style="font-weight:700">134 ⭐ · 2.25 $</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--card);border-radius:10px;border:2px solid var(--accent)">
+              <span style="font-size:14px">4 месяца</span>
+              <span style="font-weight:700;color:var(--accent)">480 ⭐ · 8.00 $</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--card);border-radius:10px;border:1px solid var(--border)">
+              <span style="font-size:14px">12 месяцев</span>
+              <span style="font-weight:700">1200 ⭐ · 20.00 $</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FAQ ══════════════════ -->
+<section id="faq">
+  <div class="container">
+    <div class="section-label reveal">Вопросы</div>
+    <div class="section-title reveal">FAQ</div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-q">Почему Domino VPN не блокируется в России?<span class="faq-q-icon">+</span></button>
+        <div class="faq-a">Мы используем протокол VLESS + XTLS-Reality, который маскирует трафик под обычный HTTPS к легальным сайтам. Системы DPI провайдеров не могут отличить его от браузинга — поэтому блокировка невозможна.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">Как оплатить?<span class="faq-q-icon">+</span></button>
+        <div class="faq-a">Принимаем Telegram Stars (можно купить через СБП прямо в Telegram без карты) и USDT через CryptoBot. Оплата мгновенная, ключ приходит автоматически.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">На сколько устройств можно подключиться?<span class="faq-q-icon">+</span></button>
+        <div class="faq-a">Один ключ — одно активное устройство одновременно. Ключ можно переустановить на другое устройство в любое время.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">Что делать, если VPN перестал работать?<span class="faq-q-icon">+</span></button>
+        <div class="faq-a">Попробуй переключиться на другой сервер через бота (Германия ↔ Швеция). Если не помогло — напиши в поддержку @domino_vpn_support, ответим быстро.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">Есть ли реферальная программа?<span class="faq-q-icon">+</span></button>
+        <div class="faq-a">Да! За каждого друга, зарегистрировавшегося по твоей ссылке, ты получаешь +3 дня к подписке автоматически. Реферальную ссылку можно найти в боте в разделе «Реферальная программа».</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">Вы храните логи активности?<span class="faq-q-icon">+</span></button>
+        <div class="faq-a">Нет. Серверы расположены в Германии и Швеции — юрисдикции, не обязывающие хранить пользовательские данные. Мы не ведём журналы соединений.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">Что такое MTProto прокси?<span class="faq-q-icon">+</span></button>
+        <div class="faq-a">Это специальный прокси только для Telegram. Не требует установки приложений — настраивается в настройках самого Telegram. Подходит тем, кому нужен доступ только к Telegram, а не полный VPN.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">Как получить промокод?<span class="faq-q-icon">+</span></button>
+        <div class="faq-a">Промокоды на бесплатные дни периодически публикуются в нашем Telegram-канале <a href="https://t.me/Domino_VPN_news" style="color:var(--accent)">@Domino_VPN_news</a>. Подпишись, чтобы не пропустить!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ COMMUNITY ══════════════════ -->
+<section id="community">
+  <div class="container">
+    <div class="section-label reveal">Telegram</div>
+    <div class="section-title reveal">СООБЩЕСТВО</div>
+    <div class="community-grid">
+      <a href="https://t.me/DominoVPN_bot" target="_blank" class="community-card reveal">
+        <div class="community-icon">🤖</div>
+        <h3>Бот</h3>
+        <p>Купи подписку, получи ключ и управляй аккаунтом</p>
+        <div style="margin-top:16px;color:var(--accent);font-weight:600;font-size:14px">@DominoVPN_bot →</div>
+      </a>
+      <a href="https://t.me/domino_vpn_support" target="_blank" class="community-card reveal">
+        <div class="community-icon">💬</div>
+        <h3>Поддержка</h3>
+        <p>Помогаем с подключением и решаем любые вопросы</p>
+        <div style="margin-top:16px;color:var(--accent);font-weight:600;font-size:14px">@domino_vpn_support →</div>
+      </a>
+      <a href="https://t.me/Domino_VPN_news" target="_blank" class="community-card reveal">
+        <div class="community-icon">📢</div>
+        <h3>Канал</h3>
+        <p>Новости, промокоды и обновления сервиса</p>
+        <div style="margin-top:16px;color:var(--accent);font-weight:600;font-size:14px">@Domino_VPN_news →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CTA ══════════════════ -->
+<section id="cta">
+  <div class="container" style="text-align:center">
+    <div class="cta-h2 reveal">
+      НАЧНИ<br><span class="red">СЕЙЧАС</span>
+    </div>
+    <p class="reveal" style="color:var(--text-muted);font-size:18px;margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto">
+      3 дня бесплатно. Без карты. Без регистрации. Отменить можно в любой момент.
+    </p>
+    <a href="https://t.me/DominoVPN_bot" target="_blank" class="btn-primary reveal" style="font-size:18px;padding:18px 40px">
+      → Попробовать 3 дня бесплатно
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div class="footer-copy">© 2026 Domino VPN. Серверы EU · Нет логов</div>
+  <div class="footer-links">
+    <a href="https://t.me/Domino_VPN_news" target="_blank">Канал</a>
+    <a href="https://t.me/domino_vpn_support" target="_blank">Поддержка</a>
+    <a href="https://t.me/DominoVPN_bot" target="_blank">Бот</a>
+    <a href="#faq">Политика</a>
+  </div>
+</footer>
+
+<script>
+// Nav burger
+const burger=document.getElementById('navBurger');
+const links=document.getElementById('navLinks');
+burger.addEventListener('click',()=>links.classList.toggle('open'));
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+
+// Pricing toggle
+document.querySelectorAll('.toggle-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    const target=this.dataset.target;
+    document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+target).classList.add('active');
+  });
+});
+
+// Instruction tabs
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    const tab=this.dataset.tab;
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('tab-'+tab).classList.add('active');
+  });
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const item=this.closest('.faq-item');
+    const wasOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen)item.classList.add('open');
+  });
+});
+
+// Scroll reveal
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}
+  });
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
