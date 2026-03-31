@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Domino VPN — Свобода в сети</title>
 <meta name="description" content="Быстрый и надёжный VPN на базе VLESS+Reality. Работает в России. Серверы в Германии и Швеции. 3 дня бесплатно.">
+<meta property="og:title" content="Domino VPN — Свобода в сети">
+<meta property="og:description" content="VPN на базе VLESS+Reality. Не блокируется в России. Серверы в Германии и Швеции. 3 дня бесплатно — без карты.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://domino-vpn.vercel.app">
+<meta property="og:image" content="https://domino-vpn.vercel.app/og.png">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Domino VPN — Свобода в сети">
+<meta name="twitter:description" content="VPN который работает в России. VLESS+Reality. 3 дня бесплатно.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Domino VPN">
+<meta name="theme-color" content="#080808">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -12,12 +25,12 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#080808;--card:#111111;--accent:#E8302A;--text:#F0EDE8;
-  --text-muted:#888;--border:#222;--card2:#161616;
+  --text-muted:#999;--border:rgba(255,255,255,0.08);--card2:#161616;
 }
 html{scroll-behavior:smooth}
 body{
   background:var(--bg);color:var(--text);
-  font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;
+  font-family:'Manrope',sans-serif;font-size:16px;line-height:1.75;
   overflow-x:hidden;
 }
 body::before{
@@ -82,7 +95,7 @@ section{position:relative;z-index:1}
 .hero-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(64px,9vw,120px);line-height:0.9;margin-bottom:24px}
 .hero-h1 .slash{color:var(--text-muted);font-size:0.6em}
 .hero-h1 .red{color:var(--accent)}
-.hero-sub{font-size:16px;color:var(--text-muted);margin-bottom:32px;max-width:440px;line-height:1.7}
+.hero-sub{font-size:17px;color:var(--text-muted);margin-bottom:36px;max-width:460px;line-height:1.8}
 .hero-checks{display:flex;flex-wrap:wrap;gap:12px 24px;margin-bottom:36px}
 .hero-check{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-muted)}
 .hero-check::before{content:'✓';color:var(--accent);font-weight:700}
@@ -114,9 +127,10 @@ section{position:relative;z-index:1}
 @keyframes float{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-20px) rotate(-5deg)}}
 
 /* ═══ HOW START ═══ */
-#howstart{padding:100px 0}
-.section-label{font-size:12px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
-.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);margin-bottom:48px}
+#howstart{padding:120px 0}
+.section-label{font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.section-label::before{content:'';display:block;width:24px;height:2px;background:var(--accent);flex-shrink:0}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);margin-bottom:56px;line-height:1}
 .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;align-items:center}
 @media(max-width:768px){.steps3{grid-template-columns:1fr;gap:0}}
 .step3{
@@ -144,28 +158,28 @@ section{position:relative;z-index:1}
 .step3 p{font-size:14px;color:var(--text-muted)}
 
 /* ═══ FEATURES ═══ */
-#features{padding:100px 0;background:radial-gradient(ellipse 40% 50% at 80% 50%,rgba(232,48,42,0.05) 0%,transparent 70%)}
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+#features{padding:120px 0;background:radial-gradient(ellipse 40% 50% at 80% 50%,rgba(232,48,42,0.05) 0%,transparent 70%)}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 @media(max-width:768px){.features-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.features-grid{grid-template-columns:1fr}}
 .feat-card{
-  background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;
-  transition:transform .2s,border-color .2s,box-shadow .2s;
+  background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;
+  transition:transform .25s,border-color .25s,box-shadow .25s;
 }
-.feat-card:hover{transform:translateY(-4px);border-color:#333;box-shadow:0 8px 30px rgba(0,0,0,0.4)}
-.feat-icon{font-size:28px;margin-bottom:16px}
-.feat-card h3{font-size:17px;font-weight:700;margin-bottom:8px}
-.feat-card p{font-size:14px;color:var(--text-muted);line-height:1.6}
+.feat-card:hover{transform:translateY(-6px);border-color:rgba(232,48,42,0.3);box-shadow:0 16px 40px rgba(0,0,0,0.5)}
+.feat-icon{font-size:32px;margin-bottom:20px;display:block}
+.feat-card h3{font-size:18px;font-weight:700;margin-bottom:10px}
+.feat-card p{font-size:14px;color:var(--text-muted);line-height:1.75}
 
 /* ═══ SERVERS ═══ */
-#servers{padding:100px 0}
+#servers{padding:120px 0}
 .servers-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 @media(max-width:768px){.servers-grid{grid-template-columns:1fr}}
 .server-card{
-  background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;
-  transition:transform .2s,border-color .2s;
+  background:var(--card);border:1px solid var(--border);border-radius:24px;padding:36px;
+  transition:transform .25s,border-color .25s,box-shadow .25s;
 }
-.server-card:hover{transform:translateY(-4px);border-color:#333}
+.server-card:hover{transform:translateY(-6px);border-color:rgba(232,48,42,0.2);box-shadow:0 16px 40px rgba(0,0,0,0.4)}
 .server-head{display:flex;align-items:center;gap:16px;margin-bottom:24px}
 .server-flag{font-size:40px}
 .server-info h3{font-size:22px;font-weight:700}
@@ -178,7 +192,7 @@ section{position:relative;z-index:1}
 .server-stat-label{font-size:11px;color:var(--text-muted)}
 
 /* ═══ PRICING ═══ */
-#pricing{padding:100px 0}
+#pricing{padding:120px 0}
 .pricing-toggle{
   display:flex;align-items:center;gap:0;background:var(--card);
   border:1px solid var(--border);border-radius:12px;padding:4px;
@@ -196,10 +210,10 @@ section{position:relative;z-index:1}
 .plan-panel{display:none}
 .plan-panel.active{display:block}
 .plan-card{
-  background:var(--card);border:1px solid var(--border);border-radius:20px;
-  padding:32px 28px;transition:transform .2s;position:relative;
+  background:var(--card);border:1px solid var(--border);border-radius:24px;
+  padding:36px 32px;transition:transform .25s,box-shadow .25s;position:relative;
 }
-.plan-card:hover{transform:translateY(-4px)}
+.plan-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.4)}
 .plan-card.popular{border-color:var(--accent);border-width:2px}
 .plan-badge{
   position:absolute;top:-12px;left:50%;transform:translateX(-50%);
@@ -225,7 +239,7 @@ section{position:relative;z-index:1}
 .plan-cta.secondary:hover{border-color:#444;box-shadow:none}
 
 /* ═══ INSTRUCTIONS ═══ */
-#instructions{padding:100px 0}
+#instructions{padding:120px 0}
 .tabs-nav{display:flex;gap:8px;margin-bottom:48px;flex-wrap:wrap}
 .tab-btn{
   display:flex;align-items:center;gap:8px;
@@ -286,7 +300,7 @@ section{position:relative;z-index:1}
 .win-body{padding:16px;min-height:160px}
 
 /* ═══ REFERRAL ═══ */
-#referral{padding:100px 0}
+#referral{padding:120px 0}
 .referral-card{
   background:linear-gradient(135deg,#111 0%,#161616 100%);
   border:1px solid var(--border);border-radius:24px;padding:60px 48px;
@@ -306,7 +320,7 @@ section{position:relative;z-index:1}
 }
 
 /* ═══ PROXY ═══ */
-#proxy{padding:100px 0}
+#proxy{padding:120px 0}
 .proxy-card{
   background:var(--card);border:1px solid var(--border);border-radius:24px;
   padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
@@ -319,34 +333,35 @@ section{position:relative;z-index:1}
 }
 
 /* ═══ FAQ ═══ */
-#faq{padding:100px 0}
+#faq{padding:120px 0}
 .faq-list{display:flex;flex-direction:column;gap:8px;max-width:800px}
-.faq-item{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .2s}
+.faq-item.open{border-color:rgba(232,48,42,0.3)}
 .faq-q{
-  width:100%;text-align:left;padding:20px 24px;background:none;border:none;
+  width:100%;text-align:left;padding:22px 28px;background:none;border:none;
   color:var(--text);font-family:'Manrope',sans-serif;font-size:16px;font-weight:600;
   cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;
-  transition:background .2s;
+  transition:background .2s;line-height:1.5;
 }
-.faq-q:hover{background:#161616}
+.faq-q:hover{background:rgba(255,255,255,0.03)}
 .faq-q-icon{color:var(--accent);font-size:20px;flex-shrink:0;transition:transform .3s;line-height:1}
 .faq-item.open .faq-q-icon{transform:rotate(45deg)}
 .faq-a{
   max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s;
-  font-size:15px;color:var(--text-muted);line-height:1.7;padding:0 24px;
+  font-size:15px;color:var(--text-muted);line-height:1.8;padding:0 28px;
 }
-.faq-item.open .faq-a{max-height:300px;padding:0 24px 20px}
+.faq-item.open .faq-a{max-height:400px;padding:0 28px 24px}
 
 /* ═══ COMMUNITY ═══ */
-#community{padding:100px 0}
+#community{padding:120px 0}
 .community-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 @media(max-width:768px){.community-grid{grid-template-columns:1fr}}
 .community-card{
-  background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;
+  background:var(--card);border:1px solid var(--border);border-radius:24px;padding:40px 32px;
   text-align:center;text-decoration:none;color:var(--text);
-  transition:transform .2s,border-color .2s;display:block;
+  transition:transform .25s,border-color .25s,box-shadow .25s;display:block;
 }
-.community-card:hover{transform:translateY(-4px);border-color:#333}
+.community-card:hover{transform:translateY(-6px);border-color:rgba(232,48,42,0.25);box-shadow:0 16px 40px rgba(0,0,0,0.4)}
 .community-icon{font-size:36px;margin-bottom:16px}
 .community-card h3{font-size:18px;font-weight:700;margin-bottom:8px}
 .community-card p{font-size:14px;color:var(--text-muted)}
@@ -499,6 +514,78 @@ footer{
 .android-sb{background:#121212;padding:4px 12px;display:flex;justify-content:space-between;font-size:10px;color:#aaa}
 .android-sb-right{display:flex;align-items:center;gap:4px}
 .android-key-icon{font-size:10px}
+
+/* ═══ REGION ALERT ═══ */
+.region-alert{
+  background:rgba(232,48,42,0.1);border:1px solid rgba(232,48,42,0.35);
+  border-radius:12px;padding:16px 20px;margin-bottom:24px;
+  display:flex;align-items:flex-start;gap:14px;
+}
+.region-alert-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.region-alert-text{font-size:13px;color:var(--text);line-height:1.6}
+.region-alert-text strong{color:var(--accent);display:block;margin-bottom:4px;font-size:14px}
+.region-alert-link{
+  background:none;border:none;color:var(--accent);cursor:pointer;
+  font-size:13px;font-weight:700;padding:0;
+  text-decoration:underline;text-decoration-color:rgba(232,48,42,0.4);
+}
+.region-alert-link:hover{text-decoration-color:var(--accent)}
+
+/* ═══ iOS SETTINGS MOCK ═══ */
+.ios-set-nav{background:#1c1c1e;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #2c2c2e}
+.ios-set-nav-back{color:#4da3ff;font-size:13px;white-space:nowrap}
+.ios-set-nav-title{font-size:14px;font-weight:600;color:#fff;flex:1;text-align:center}
+.ios-set-group{background:#2c2c2e;border-radius:10px;margin:6px 8px;overflow:hidden}
+.ios-set-row{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-bottom:1px solid #3a3a3c;
+  font-size:12px;color:#fff;
+}
+.ios-set-row:last-child{border-bottom:none}
+.ios-set-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.ios-set-label{flex:1}
+.ios-set-val{font-size:11px;color:#888;margin-right:4px}
+.ios-set-chev{color:#555;font-size:13px;flex-shrink:0}
+.ios-set-row.hl{background:rgba(77,163,255,0.1)}
+.ios-set-row.hl .ios-set-label,.ios-set-row.hl .ios-set-chev{color:#4da3ff}
+.ios-prof-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px;border-bottom:1px solid #3a3a3c;cursor:pointer;
+}
+.ios-prof-av{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,#4da3ff,#0055d4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.ios-prof-name{font-size:14px;font-weight:600;color:#fff}
+.ios-prof-sub{font-size:11px;color:#888;margin-top:1px}
+.ios-faceid-wrap{padding:20px 16px;text-align:center}
+.ios-faceid-ring{width:56px;height:56px;border-radius:50%;border:3px solid #4da3ff;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.ios-faceid-lbl{font-size:12px;color:#888}
+.ios-accept-btn{background:#4da3ff;border-radius:9px;padding:9px 14px;text-align:center;font-size:13px;font-weight:600;color:#fff}
+.ios-terms-wrap{padding:8px 10px}
+.ios-terms-txt{font-size:10px;color:#555;line-height:1.5;margin-bottom:8px}
+.country-list-mock{background:#2c2c2e;border-radius:10px;margin:6px 8px;overflow:hidden}
+.ctr-item{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:12px;color:#fff;border-bottom:1px solid #3a3a3c}
+.ctr-item:last-child{border-bottom:none}
+.ctr-item.picked{background:rgba(34,197,94,0.08)}
+.ctr-flag{font-size:16px;width:22px;text-align:center}
+.ctr-check{color:#22c55e;font-size:14px;margin-left:auto}
+.payment-mock{background:#2c2c2e;border-radius:10px;margin:6px 8px;overflow:hidden}
+.pay-row{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:12px;color:#fff;border-bottom:1px solid #3a3a3c}
+.pay-row:last-child{border-bottom:none}
+.pay-row.picked{background:rgba(34,197,94,0.08)}
+.pay-radio{width:17px;height:17px;border-radius:50%;border:2px solid #555;margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px}
+.pay-radio.on{background:#22c55e;border-color:#22c55e;color:#fff;font-weight:700}
+.country-tip-box{background:#161616;border:1px solid #2a2a2a;border-radius:12px;padding:14px;margin:16px 0}
+.country-tip-box h5{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+.ctr-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #222;font-size:12px;color:var(--text-muted)}
+.ctr-row:last-child{border-bottom:none}
+.ctr-eflag{font-size:16px;width:22px}
+.ctr-badge{margin-left:auto;border-radius:5px;padding:2px 8px;font-size:10px;font-weight:700;white-space:nowrap}
+.ctr-badge.ok{background:rgba(34,197,94,0.15);color:#22c55e}
+.ctr-badge.warn{background:rgba(245,158,11,0.15);color:#f59e0b}
 </style>
 </head>
 <body>
@@ -705,7 +792,7 @@ footer{
           <div class="plan-card reveal">
             <div class="plan-name">1 месяц</div>
             <div class="plan-price"><span>₽</span>149</div>
-            <div class="plan-alts"><b>75 ⭐</b> Stars &nbsp;·&nbsp; <b>1.65</b> USDT</div>
+            <div class="plan-alts"><b>130 ⭐</b> Stars &nbsp;·&nbsp; <b>1.69</b> USDT</div>
             <div class="plan-sep"></div>
             <ul class="plan-features">
               <li>30 дней доступа</li>
@@ -719,7 +806,7 @@ footer{
             <div class="plan-badge">ПОПУЛЯРНОЕ</div>
             <div class="plan-name">3 месяца</div>
             <div class="plan-price"><span>₽</span>349</div>
-            <div class="plan-alts"><b>175 ⭐</b> Stars &nbsp;·&nbsp; <b>3.88</b> USDT</div>
+            <div class="plan-alts"><b>270 ⭐</b> Stars &nbsp;·&nbsp; <b>3.99</b> USDT</div>
             <div class="plan-sep"></div>
             <ul class="plan-features">
               <li>90 дней доступа</li>
@@ -732,16 +819,16 @@ footer{
           </div>
           <div class="plan-card reveal">
             <div class="plan-badge" style="background:rgba(232,48,42,.15);color:#E8302A">МАКСИМУМ</div>
-            <div class="plan-name">12 месяцев</div>
-            <div class="plan-price"><span>₽</span>990</div>
-            <div class="plan-alts"><b>495 ⭐</b> Stars &nbsp;·&nbsp; <b>11.00</b> USDT</div>
+            <div class="plan-name">6 месяцев</div>
+            <div class="plan-price"><span>₽</span>599</div>
+            <div class="plan-alts"><b>420 ⭐</b> Stars &nbsp;·&nbsp; <b>6.80</b> USDT</div>
             <div class="plan-sep"></div>
             <ul class="plan-features">
-              <li>365 дней доступа</li>
+              <li>180 дней доступа</li>
               <li>Все устройства</li>
               <li>Оба сервера</li>
               <li>Авто-выдача ключа</li>
-              <li>Экономия 45%</li>
+              <li>Экономия 33%</li>
             </ul>
             <a href="https://t.me/DominoVPN_bot" target="_blank" class="plan-cta secondary">Выбрать</a>
           </div>
@@ -749,51 +836,52 @@ footer{
         <p style="text-align:center;margin-top:24px;font-size:14px;color:var(--text-muted)">
           🎁 <a href="https://t.me/DominoVPN_bot" style="color:var(--accent)">3 дня бесплатно</a> — без карты, без регистрации
         </p>
-        <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px">
-          <div style="display:flex;align-items:center;gap:8px;background:#111;border:1px solid #222;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:600;color:#ccc">
-            💳 Банковская карта
+        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:32px">
+          <div style="display:flex;align-items:center;gap:8px;background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:600;color:#ddd">
+            🏦 СБП / Карта
           </div>
-          <div style="display:flex;align-items:center;gap:8px;background:#111;border:1px solid #222;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:600;color:#ccc">
+          <div style="display:flex;align-items:center;gap:8px;background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:600;color:#ddd">
             ⭐ Telegram Stars
           </div>
-          <div style="display:flex;align-items:center;gap:8px;background:#111;border:1px solid #222;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:600;color:#ccc">
+          <div style="display:flex;align-items:center;gap:8px;background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:600;color:#ddd">
             💵 USDT (CryptoBot)
           </div>
         </div>
-        <p style="text-align:center;margin-top:10px;font-size:12px;color:#444">Оплата через безопасные платёжные системы · Данные карты не хранятся в боте</p>
+        <p style="text-align:center;margin-top:12px;font-size:12px;color:#555">Оплата через безопасные платёжные системы · Данные карты не хранятся в боте</p>
       </div>
       <div class="plan-panel" id="panel-proxy">
         <div class="plans-grid">
           <div class="plan-card reveal">
             <div class="plan-name">1 месяц</div>
-            <div class="plan-price" style="font-size:38px"><b>134</b> <span style="font-size:18px;vertical-align:middle">⭐</span></div>
-            <div class="plan-alts"><b>2.25</b> USDT</div>
+            <div class="plan-price"><span>₽</span>199</div>
+            <div class="plan-alts"><b>134 ⭐</b> Stars &nbsp;·&nbsp; <b>2.25</b> USDT</div>
             <div class="plan-sep"></div>
             <ul class="plan-features">
               <li>30 дней доступа</li>
               <li>MTProto для Telegram</li>
               <li>Без установки приложений</li>
+              <li>СБП / Stars / USDT</li>
             </ul>
             <a href="https://t.me/DominoVPN_bot" target="_blank" class="plan-cta secondary">Выбрать</a>
           </div>
           <div class="plan-card popular reveal">
             <div class="plan-badge">ВЫГОДНО</div>
             <div class="plan-name">4 месяца</div>
-            <div class="plan-price" style="font-size:38px"><b>480</b> <span style="font-size:18px;vertical-align:middle">⭐</span></div>
-            <div class="plan-alts"><b>8.00</b> USDT</div>
+            <div class="plan-price"><span>₽</span>699</div>
+            <div class="plan-alts"><b>480 ⭐</b> Stars &nbsp;·&nbsp; <b>8.00</b> USDT</div>
             <div class="plan-sep"></div>
             <ul class="plan-features">
               <li>120 дней доступа</li>
               <li>MTProto для Telegram</li>
               <li>Без установки приложений</li>
-              <li>Экономия 10%</li>
+              <li>Экономия 12%</li>
             </ul>
             <a href="https://t.me/DominoVPN_bot" target="_blank" class="plan-cta">Выбрать</a>
           </div>
           <div class="plan-card reveal">
             <div class="plan-name">12 месяцев</div>
-            <div class="plan-price" style="font-size:38px"><b>1200</b> <span style="font-size:18px;vertical-align:middle">⭐</span></div>
-            <div class="plan-alts"><b>20.00</b> USDT</div>
+            <div class="plan-price"><span>₽</span>1699</div>
+            <div class="plan-alts"><b>1200 ⭐</b> Stars &nbsp;·&nbsp; <b>20.00</b> USDT</div>
             <div class="plan-sep"></div>
             <ul class="plan-features">
               <li>365 дней доступа</li>
@@ -819,6 +907,7 @@ footer{
       <button class="tab-btn" data-tab="ios">🍎 iOS</button>
       <button class="tab-btn" data-tab="windows">🖥 Windows</button>
       <button class="tab-btn" data-tab="macos">🍏 macOS</button>
+      <button class="tab-btn" data-tab="region">🌍 Смена региона</button>
     </div>
 
     <!-- ANDROID -->
@@ -983,6 +1072,15 @@ footer{
     <!-- iOS -->
     <div class="tab-panel" id="tab-ios">
       <div class="steps-scroll">
+
+        <div class="region-alert">
+          <div class="region-alert-icon">⚠️</div>
+          <div class="region-alert-text">
+            <strong>VPN-приложения удалены из российского App Store!</strong>
+            Streisand, Happ и V2Box недоступны для скачивания в РФ. Сначала смени регион — займёт 2 минуты.
+            <br><button class="region-alert-link" onclick="switchTab('region')">Как сменить регион →</button>
+          </div>
+        </div>
 
         <!-- Step 1 -->
         <div class="step-card">
@@ -1369,6 +1467,299 @@ footer{
 
       </div>
     </div>
+
+    <!-- REGION CHANGE -->
+    <div class="tab-panel" id="tab-region">
+      <div class="steps-scroll">
+
+        <!-- Step 1 -->
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h4>Настройки → твоё имя</h4>
+          <p>Открой <b>Настройки</b> и нажми на <b>своё имя</b> в самом верху — это твой Apple ID профиль.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div class="ios-set-nav" style="justify-content:center">
+                <span style="font-size:17px;font-weight:600;color:#fff">Настройки</span>
+              </div>
+              <div class="ios-set-group">
+                <div class="ios-prof-row">
+                  <div class="ios-prof-av">👤</div>
+                  <div>
+                    <div class="ios-prof-name">Ваше Имя</div>
+                    <div class="ios-prof-sub">Apple ID, iCloud, Медиаматериалы</div>
+                  </div>
+                  <span style="color:#4da3ff;font-size:16px;margin-left:auto">›</span>
+                </div>
+              </div>
+              <div class="ios-set-group">
+                <div class="ios-set-row">
+                  <div class="ios-set-icon" style="background:#007aff">📶</div>
+                  <span class="ios-set-label">Wi-Fi</span>
+                  <span class="ios-set-val">Домашняя</span>
+                  <span class="ios-set-chev">›</span>
+                </div>
+                <div class="ios-set-row">
+                  <div class="ios-set-icon" style="background:#30d158">🔒</div>
+                  <span class="ios-set-label">VPN</span>
+                  <span class="ios-set-chev">›</span>
+                </div>
+                <div class="ios-set-row">
+                  <div class="ios-set-icon" style="background:#ff9f0a">🔔</div>
+                  <span class="ios-set-label">Уведомления</span>
+                  <span class="ios-set-chev">›</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h4>Медиаматериалы и покупки</h4>
+          <p>Нажми <b>«Медиаматериалы и покупки»</b>, затем во всплывающем меню — <b>«Просмотр учётной записи»</b>.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div class="ios-set-nav">
+                <span class="ios-set-nav-back">‹ Настройки</span>
+                <span class="ios-set-nav-title">Apple ID</span>
+              </div>
+              <div class="ios-set-group">
+                <div class="ios-set-row">
+                  <div class="ios-set-icon" style="background:#1c1c1e;border:1px solid #3a3a3c">☁️</div>
+                  <span class="ios-set-label">iCloud</span>
+                  <span class="ios-set-chev">›</span>
+                </div>
+                <div class="ios-set-row hl">
+                  <div class="ios-set-icon" style="background:#ff375f">🎵</div>
+                  <span class="ios-set-label">Медиаматериалы и покупки</span>
+                  <span class="ios-set-chev">›</span>
+                </div>
+                <div class="ios-set-row">
+                  <div class="ios-set-icon" style="background:#30d158">📍</div>
+                  <span class="ios-set-label">Локатор</span>
+                  <span class="ios-set-chev">›</span>
+                </div>
+              </div>
+              <div style="padding:0 8px 8px">
+                <div class="ios-set-group" style="margin:0">
+                  <div class="ios-set-row hl">
+                    <span class="ios-set-label">Просмотр учётной записи</span>
+                    <span class="ios-set-chev">›</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h4>Подтверди Face ID</h4>
+          <p>iOS попросит подтвердить личность через <b>Face ID</b> или <b>Touch ID</b>. Смотри на экран или приложи палец.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div class="ios-set-nav" style="justify-content:center">
+                <span style="font-size:14px;font-weight:600;color:#fff">Учётная запись</span>
+              </div>
+              <div class="ios-faceid-wrap">
+                <div style="font-size:12px;color:#888;margin-bottom:18px">Для просмотра учётной записи</div>
+                <div class="ios-faceid-ring">🔐</div>
+                <div class="ios-faceid-lbl">Смотрите на iPhone</div>
+                <div style="margin-top:16px;color:#4da3ff;font-size:12px;text-align:center">Использовать пароль</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h4>Страна/Регион → Сменить</h4>
+          <p>Найди строку <b>«Страна/Регион»</b> и нажми на неё. Затем нажми <b>«Сменить страну или регион»</b>.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div class="ios-set-nav">
+                <span class="ios-set-nav-back">‹ Apple ID</span>
+                <span class="ios-set-nav-title">Учётная запись</span>
+              </div>
+              <div class="ios-set-group">
+                <div class="ios-set-row">
+                  <span class="ios-set-label">Имя</span>
+                  <span class="ios-set-val">Ваше Имя</span>
+                  <span class="ios-set-chev">›</span>
+                </div>
+                <div class="ios-set-row hl">
+                  <span class="ios-set-label">Страна/Регион</span>
+                  <span class="ios-set-val">🇷🇺 Россия</span>
+                  <span class="ios-set-chev">›</span>
+                </div>
+                <div class="ios-set-row">
+                  <span class="ios-set-label">Способы оплаты</span>
+                  <span class="ios-set-chev">›</span>
+                </div>
+              </div>
+              <div class="ios-set-group">
+                <div class="ios-set-row hl">
+                  <span class="ios-set-label">Сменить страну или регион</span>
+                  <span class="ios-set-chev">›</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <h4>Выбери страну</h4>
+          <p>Выбери страну из списка. Рекомендуем <b>Казахстан</b> — не нужна иностранная карта, подходит карта Kaspi.</p>
+          <div class="country-tip-box">
+            <h5>🌍 Какую страну выбрать?</h5>
+            <div class="ctr-row"><span class="ctr-eflag">🇰🇿</span> Казахстан — карта Kaspi или без карты <span class="ctr-badge ok">Лучший</span></div>
+            <div class="ctr-row"><span class="ctr-eflag">🇬🇪</span> Грузия — без иностранной карты <span class="ctr-badge ok">Легко</span></div>
+            <div class="ctr-row"><span class="ctr-eflag">🇦🇲</span> Армения — без иностранной карты <span class="ctr-badge ok">Легко</span></div>
+            <div class="ctr-row"><span class="ctr-eflag">🇹🇷</span> Турция — нужна турецкая карта <span class="ctr-badge warn">Сложнее</span></div>
+            <div class="ctr-row"><span class="ctr-eflag">🇺🇸</span> США — нужна американская карта <span class="ctr-badge warn">Сложно</span></div>
+          </div>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div class="ios-set-nav">
+                <span class="ios-set-nav-back">‹ Назад</span>
+                <span class="ios-set-nav-title">Страна или регион</span>
+              </div>
+              <div class="country-list-mock">
+                <div class="ctr-item"><span class="ctr-flag">🇦🇲</span><span>Армения</span></div>
+                <div class="ctr-item"><span class="ctr-flag">🇬🇪</span><span>Грузия</span></div>
+                <div class="ctr-item picked">
+                  <span class="ctr-flag">🇰🇿</span>
+                  <span>Казахстан</span>
+                  <span class="ctr-check">✓</span>
+                </div>
+                <div class="ctr-item"><span class="ctr-flag">🇷🇺</span><span>Россия</span></div>
+                <div class="ctr-item"><span class="ctr-flag">🇹🇷</span><span>Турция</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="step-card">
+          <div class="step-num">6</div>
+          <h4>Прими условия</h4>
+          <p>Появятся условия использования App Store. Нажми <b>«Принять»</b> — сначала вверху справа, потом внизу.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div class="ios-set-nav">
+                <span class="ios-set-nav-back">‹ Назад</span>
+                <span class="ios-set-nav-title">Условия</span>
+                <span style="color:#4da3ff;font-size:13px;font-weight:600;white-space:nowrap">Принять</span>
+              </div>
+              <div class="ios-terms-wrap">
+                <div class="ios-terms-txt">Настоящие Условия использования представляют собой юридический договор между вами и Apple Inc. относительно использования сервисов App Store. Продолжая, вы соглашаетесь...</div>
+                <div class="ios-terms-txt">By accepting, you agree that Apple may collect usage data to improve the App Store experience...</div>
+              </div>
+              <div style="padding:0 10px 10px">
+                <div class="ios-accept-btn">Принять</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="step-card">
+          <div class="step-num">7</div>
+          <h4>Способ оплаты: «Нет»</h4>
+          <p>Выбери <b>«Нет»</b> в способе оплаты. Заполни адрес — можно любой, например город <b>Алматы</b>, индекс <b>050000</b>.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div class="ios-set-nav">
+                <span class="ios-set-nav-back">‹ Назад</span>
+                <span class="ios-set-nav-title">Способ оплаты</span>
+              </div>
+              <div class="payment-mock">
+                <div class="pay-row">
+                  <span>💳 Visa / Mastercard</span>
+                  <div class="pay-radio"></div>
+                </div>
+                <div class="pay-row picked">
+                  <span style="color:#22c55e;font-weight:600">Нет (None)</span>
+                  <div class="pay-radio on">✓</div>
+                </div>
+              </div>
+              <div class="ios-set-group">
+                <div class="ios-set-row">
+                  <span class="ios-set-label">Город</span>
+                  <span class="ios-set-val" style="color:#fff">Алматы</span>
+                </div>
+                <div class="ios-set-row">
+                  <span class="ios-set-label">Индекс</span>
+                  <span class="ios-set-val" style="color:#fff">050000</span>
+                </div>
+                <div class="ios-set-row">
+                  <span class="ios-set-label">Страна</span>
+                  <span class="ios-set-val">🇰🇿 Казахстан</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 8 -->
+        <div class="step-card">
+          <div class="step-num">8</div>
+          <h4>Готово! Качай Streisand 🎉</h4>
+          <p>Регион сменён на Казахстан. Открой <b>App Store</b>, найди <b>Streisand</b> и нажми «Загрузить». После установки вернись на вкладку 🍎 iOS за дальнейшей инструкцией.</p>
+          <div class="phone-mock">
+            <div class="phone-mock-notch"></div>
+            <div class="phone-mock-screen">
+              <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+              <div style="background:#1c1c1e;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2c2c2e">
+                <span style="font-size:13px;font-weight:700;color:#fff">App Store</span>
+                <span style="font-size:11px;background:rgba(34,197,94,0.2);color:#22c55e;border-radius:5px;padding:2px 8px;font-weight:700">🇰🇿 KZ</span>
+              </div>
+              <div style="padding:8px">
+                <div class="macstore-card" style="margin:0 0 8px 0">
+                  <div class="macstore-header" style="padding:10px">
+                    <div class="macstore-icon" style="background:linear-gradient(135deg,#1a1a3c,#2a0a2e);width:38px;height:38px;font-size:18px">🌐</div>
+                    <div style="flex:1">
+                      <div class="macstore-title" style="font-size:13px">Streisand</div>
+                      <div class="macstore-sub" style="font-size:11px">VPN Client · 4.9 ★</div>
+                    </div>
+                    <button class="macstore-getbtn" style="padding:5px 14px;font-size:12px">Загрузить</button>
+                  </div>
+                </div>
+                <div style="text-align:center;padding:4px">
+                  <div style="color:#22c55e;font-weight:700;font-size:12px">✓ Доступно в KZ App Store!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="https://apps.apple.com/app/id6450534064" target="_blank" class="install-btn">🍎 Скачать Streisand</a>
+            <button class="install-btn" style="cursor:pointer;border:none;background:var(--card)" onclick="switchTab('ios')">← Инструкция iOS</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1413,17 +1804,17 @@ footer{
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:24px">
           <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px">Тарифы прокси</div>
           <div style="display:flex;flex-direction:column;gap:12px">
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--card);border-radius:10px;border:1px solid var(--border)">
-              <span style="font-size:14px">1 месяц</span>
-              <span style="font-weight:700">134 ⭐ · 2.25 $</span>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--card);border-radius:12px;border:1px solid var(--border)">
+              <span style="font-size:14px;font-weight:600">1 месяц</span>
+              <span style="font-weight:700;color:var(--text)">199 ₽ &nbsp;<span style="color:#555;font-weight:400;font-size:12px">· 134 ⭐ · 2.25 USDT</span></span>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--card);border-radius:10px;border:2px solid var(--accent)">
-              <span style="font-size:14px">4 месяца</span>
-              <span style="font-weight:700;color:var(--accent)">480 ⭐ · 8.00 $</span>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--card);border-radius:12px;border:2px solid var(--accent)">
+              <span style="font-size:14px;font-weight:600">4 месяца</span>
+              <span style="font-weight:700;color:var(--accent)">699 ₽ &nbsp;<span style="color:rgba(232,48,42,0.6);font-weight:400;font-size:12px">· 480 ⭐ · 8.00 USDT</span></span>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--card);border-radius:10px;border:1px solid var(--border)">
-              <span style="font-size:14px">12 месяцев</span>
-              <span style="font-weight:700">1200 ⭐ · 20.00 $</span>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--card);border-radius:12px;border:1px solid var(--border)">
+              <span style="font-size:14px;font-weight:600">12 месяцев</span>
+              <span style="font-weight:700;color:var(--text)">1699 ₽ &nbsp;<span style="color:#555;font-weight:400;font-size:12px">· 1200 ⭐ · 20.00 USDT</span></span>
             </div>
           </div>
         </div>
@@ -1444,7 +1835,7 @@ footer{
       </div>
       <div class="faq-item reveal">
         <button class="faq-q">Как оплатить?<span class="faq-q-icon">+</span></button>
-        <div class="faq-a">Принимаем Telegram Stars (можно купить через СБП прямо в Telegram без карты) и USDT через CryptoBot. Оплата мгновенная, ключ приходит автоматически.</div>
+        <div class="faq-a">Принимаем СБП / банковскую карту (через YooKassa), Telegram Stars и USDT через CryptoBot. Stars можно купить прямо в Telegram через СБП. Оплата мгновенная — ключ приходит автоматически, без ожидания.</div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q">На сколько устройств можно подключиться?<span class="faq-q-icon">+</span></button>
@@ -1546,6 +1937,17 @@ document.querySelectorAll('.toggle-btn').forEach(btn=>{
   });
 });
 
+// Switch tab from external button
+function switchTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.querySelector('[data-tab="'+name+'"]');
+  if(btn)btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  const panel=document.getElementById('tab-'+name);
+  if(panel)panel.classList.add('active');
+  document.getElementById('instructions').scrollIntoView({behavior:'smooth'});
+}
+
 // Instruction tabs
 document.querySelectorAll('.tab-btn').forEach(btn=>{
   btn.addEventListener('click',function(){
@@ -1574,6 +1976,19 @@ const observer=new IntersectionObserver((entries)=>{
   });
 },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// Hash-based tab routing (for bot deep links like #android, #ios, #region)
+(function(){
+  var validTabs=['android','ios','windows','macos','region'];
+  var hash=window.location.hash.replace('#','');
+  if(validTabs.indexOf(hash)!==-1){
+    setTimeout(function(){
+      switchTab(hash);
+      var sec=document.getElementById('instructions');
+      if(sec)sec.scrollIntoView({behavior:'smooth'});
+    },200);
+  }
+})();
 </script>
 </body>
 </html>
