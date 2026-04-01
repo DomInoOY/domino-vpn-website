@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>Domino VPN — Реферальная программа</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1080px;overflow:hidden}
+body{
+  background:#080808;
+  font-family:'Manrope',sans-serif;
+  position:relative;
+}
+
+/* Noise */
+body::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.6;
+}
+
+/* Glows */
+.glow-tl{
+  position:absolute;top:-180px;left:-180px;
+  width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,48,42,0.20) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+.glow-br{
+  position:absolute;bottom:-200px;right:-100px;
+  width:650px;height:650px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,48,42,0.12) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+.glow-center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,48,42,0.05) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+
+/* Grid */
+.grid{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size:72px 72px;
+}
+
+/* Wrap */
+.wrap{
+  position:relative;z-index:1;
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  padding:72px 80px;
+}
+
+/* Top row */
+.top{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:60px;
+}
+.logo{
+  display:flex;align-items:center;gap:16px;
+}
+.logo-icon{
+  width:52px;height:52px;
+  background:#E8302A;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 24px rgba(232,48,42,0.5);
+}
+.logo-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:40px;color:#F0EDE8;letter-spacing:0.05em;line-height:1;
+}
+.logo-name span{color:#E8302A}
+.badge{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(34,197,94,0.1);
+  border:1.5px solid rgba(34,197,94,0.3);
+  border-radius:100px;padding:10px 20px;
+}
+.badge-dot{
+  width:9px;height:9px;border-radius:50%;
+  background:#22c55e;
+  box-shadow:0 0 8px #22c55e;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(1.3)}}
+.badge-text{font-size:16px;font-weight:700;color:#22c55e;letter-spacing:0.04em;text-transform:uppercase}
+
+/* Main content */
+.content{flex:1;display:flex;flex-direction:column;justify-content:center}
+
+/* Tag */
+.tag{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-bottom:28px;width:fit-content;
+}
+.tag-line{width:28px;height:2px;background:#E8302A}
+.tag-text{font-size:13px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#E8302A}
+
+/* Headline */
+.headline{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:116px;line-height:0.9;
+  color:#F0EDE8;
+  margin-bottom:36px;
+  letter-spacing:0.01em;
+}
+.headline .red{color:#E8302A}
+.headline .dim{color:rgba(240,237,232,0.3)}
+
+/* Sub */
+.sub{
+  font-size:22px;color:rgba(240,237,232,0.55);
+  line-height:1.65;margin-bottom:52px;
+  max-width:600px;font-weight:500;
+}
+.sub b{color:#F0EDE8;font-weight:700}
+
+/* Steps */
+.steps{
+  display:flex;gap:16px;margin-bottom:52px;
+}
+.step{
+  flex:1;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:18px;
+  padding:24px 22px;
+}
+.step-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:42px;color:#E8302A;line-height:1;
+  margin-bottom:10px;
+}
+.step-text{
+  font-size:15px;font-weight:600;color:#F0EDE8;line-height:1.5;
+}
+.step-sub{
+  font-size:13px;color:rgba(240,237,232,0.4);
+  margin-top:4px;line-height:1.4;
+}
+
+/* Reward */
+.reward{
+  display:flex;align-items:center;gap:24px;
+  background:linear-gradient(135deg,rgba(232,48,42,0.12),rgba(232,48,42,0.05));
+  border:1.5px solid rgba(232,48,42,0.3);
+  border-radius:20px;
+  padding:26px 32px;
+  margin-bottom:0;
+}
+.reward-icon{font-size:48px;flex-shrink:0}
+.reward-body{}
+.reward-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:52px;color:#F0EDE8;line-height:1;
+  margin-bottom:4px;
+}
+.reward-title span{color:#E8302A}
+.reward-desc{font-size:15px;color:rgba(240,237,232,0.5);font-weight:500}
+
+/* Bottom */
+.bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:40px;
+}
+.cta{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:28px;color:#F0EDE8;letter-spacing:0.04em;
+}
+.cta span{
+  color:#fff;
+  background:#E8302A;
+  border-radius:10px;
+  padding:6px 20px;
+  box-shadow:0 0 30px rgba(232,48,42,0.4);
+}
+.wm{
+  font-size:15px;color:rgba(240,237,232,0.25);
+  display:flex;align-items:center;gap:8px;font-weight:500;
+}
+.wm-dot{width:6px;height:6px;border-radius:50%;background:rgba(34,197,94,0.5)}
+</style>
+</head>
+<body>
+
+<div class="glow-tl"></div>
+<div class="glow-center"></div>
+<div class="glow-br"></div>
+<div class="grid"></div>
+
+<div class="wrap">
+
+  <!-- Top -->
+  <div class="top">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="30" height="19" viewBox="0 0 36 22" fill="none">
+          <rect width="36" height="22" rx="4" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+          <line x1="18" y1="2" x2="18" y2="20" stroke="#333" stroke-width="1.5"/>
+          <circle cx="9" cy="7" r="2.5" fill="#E8302A"/>
+          <circle cx="9" cy="15" r="2.5" fill="#E8302A"/>
+          <circle cx="27" cy="11" r="2.5" fill="#555"/>
+        </svg>
+      </div>
+      <div class="logo-name">DOMINO <span>VPN</span></div>
+    </div>
+    <div class="badge">
+      <div class="badge-dot"></div>
+      <span class="badge-text">Реферальная программа</span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <div class="tag">
+      <div class="tag-line"></div>
+      <span class="tag-text">Приглашай &mdash; зарабатывай</span>
+    </div>
+
+    <div class="headline">
+      ПРИВЕДИ<br>
+      ДРУГА<br>
+      <span class="dim">—</span> <span class="red">ДНИ</span><br>
+      В ПОДАРОК
+    </div>
+
+    <div class="sub">
+      Делись ссылкой из бота и получай<br>
+      <b>+3 дня</b> к подписке за каждого друга
+    </div>
+
+    <!-- Steps -->
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-text">Возьми ссылку</div>
+        <div class="step-sub">В боте → Реферальная программа</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-text">Поделись</div>
+        <div class="step-sub">Отправь другу в личку или сторис</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-text">Получи дни</div>
+        <div class="step-sub">Автоматически, без заявок</div>
+      </div>
+    </div>
+
+    <!-- Reward -->
+    <div class="reward">
+      <div class="reward-icon">🎁</div>
+      <div class="reward-body">
+        <div class="reward-title">+<span>3 дня</span> за каждого</div>
+        <div class="reward-desc">10 друзей = месяц бесплатно · Неограниченно</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="bottom">
+    <div class="cta">Начать: <span>@DominoVPN_bot</span></div>
+    <div class="wm"><div class="wm-dot"></div>domino-vpn.vercel.app</div>
+  </div>
+
+</div>
+</body>
+</html>

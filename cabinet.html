@@ -14,7 +14,7 @@
   --bg:#080808;--card:#111111;--card2:#161616;--accent:#E8302A;--text:#F0EDE8;
   --text-muted:#999;--border:rgba(255,255,255,0.08);--green:#22c55e;--amber:#f59e0b;
 }
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;overflow-y:hidden}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4}
 h1,h2,h3,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:0.03em}
 a{color:inherit;text-decoration:none}
@@ -22,8 +22,8 @@ button{cursor:pointer;font-family:'Manrope',sans-serif}
 input{font-family:'Manrope',sans-serif}
 
 /* ── Layout ── */
-#app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
-.screen{display:none;flex:1}
+#app{position:relative;z-index:1;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+.screen{display:none;flex-direction:column;height:100%}
 .screen.active{display:flex}
 
 /* ── Buttons ── */
@@ -102,12 +102,12 @@ input{font-family:'Manrope',sans-serif}
 /* ═══════════════════════════════════════════════
    MAIN APP (topbar + content + bottom nav)
 ═══════════════════════════════════════════════ */
-#screen-dashboard,#screen-pay,#screen-key,#screen-referral,#screen-promo,#screen-trial{flex-direction:column}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);z-index:50}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);z-index:50;flex-shrink:0}
 .topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.06em}
 .topbar-logo span{color:var(--accent)}
 .topbar-right{display:flex;align-items:center;gap:8px}
-.content{flex:1;padding:20px;overflow-y:auto;padding-bottom:80px}
+.content{flex:1;padding:20px;overflow-y:auto;padding-bottom:80px;-webkit-overflow-scrolling:touch}
+.content.no-nav{padding-bottom:24px}
 .page-title{font-family:'Bebas Neue',sans-serif;font-size:30px;margin-bottom:20px}
 
 /* Bottom nav */
@@ -243,6 +243,27 @@ input{font-family:'Manrope',sans-serif}
 /* ── Code input (6-char) ── */
 .code-inp{width:100%;background:var(--card2);border:2px solid var(--border);color:var(--text);border-radius:12px;padding:16px;font-size:28px;font-family:'Bebas Neue',sans-serif;letter-spacing:0.2em;text-align:center;outline:none;transition:.2s;text-transform:uppercase}
 .code-inp:focus{border-color:rgba(232,48,42,0.5);box-shadow:0 0 0 3px rgba(232,48,42,0.1)}
+
+/* ── Instructions screen ── */
+.instr-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:20px;scrollbar-width:none}
+.instr-tabs::-webkit-scrollbar{display:none}
+.instr-tab{flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--text-muted);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap}
+.instr-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.instr-panel{display:none}
+.instr-panel.active{display:block}
+.instr-steps{display:flex;flex-direction:column;gap:12px}
+.instr-step{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+.instr-step.done{border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.05)}
+.instr-num{width:28px;height:28px;border-radius:50%;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;color:var(--text-muted)}
+.instr-step.done .instr-num{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.4);color:#22c55e}
+.instr-body{flex:1}
+.instr-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.instr-text{font-size:13px;color:var(--text-muted);line-height:1.6}
+.instr-link{display:inline-block;margin-top:8px;font-size:13px;color:var(--accent);font-weight:600;text-decoration:none}
+.instr-link:hover{text-decoration:underline}
+.instr-link-btn{background:none;border:none;color:var(--accent);font-size:inherit;font-weight:600;cursor:pointer;padding:0;text-decoration:underline}
+.instr-alert{background:rgba(255,165,0,0.08);border:1px solid rgba(255,165,0,0.25);border-radius:10px;padding:12px 14px;font-size:13px;color:#fbbf24;line-height:1.6;margin-bottom:16px}
+.instr-section-title{font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin:20px 0 12px}
 </style>
 </head>
 <body>
@@ -342,7 +363,7 @@ input{font-family:'Manrope',sans-serif}
       <button class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Главная</button>
       <button class="nav-item" onclick="navigate('pay')"><span class="nav-icon">💳</span>Оплата</button>
       <button class="nav-item" onclick="navigate('key')"><span class="nav-icon">🔑</span>Ключ</button>
-      <button class="nav-item" onclick="navigate('referral')"><span class="nav-icon">👥</span>Рефералы</button>
+      <button class="nav-item" onclick="navigate('instructions')"><span class="nav-icon">📖</span>Инструкции</button>
     </nav>
   </div>
 
@@ -362,7 +383,7 @@ input{font-family:'Manrope',sans-serif}
             <div class="plan-name">1 месяц</div>
             <div class="plan-prices">
               <span class="plan-rub">149 ₽</span>
-              <span class="plan-other">130 ⭐ · 1.69 USDT</span>
+
             </div>
           </div>
           <div class="plan-card selected" data-plan="3months" onclick="selectPlan('3months')">
@@ -370,14 +391,14 @@ input{font-family:'Manrope',sans-serif}
             <div class="plan-name">3 месяца</div>
             <div class="plan-prices">
               <span class="plan-rub">349 ₽</span>
-              <span class="plan-other">270 ⭐ · 3.99 USDT</span>
+
             </div>
           </div>
           <div class="plan-card" data-plan="6months" onclick="selectPlan('6months')">
             <div class="plan-name">6 месяцев</div>
             <div class="plan-prices">
               <span class="plan-rub">599 ₽</span>
-              <span class="plan-other">420 ⭐ · 6.80 USDT</span>
+
             </div>
           </div>
         </div>
@@ -415,7 +436,7 @@ input{font-family:'Manrope',sans-serif}
       <button class="nav-item" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Главная</button>
       <button class="nav-item active" onclick="navigate('pay')"><span class="nav-icon">💳</span>Оплата</button>
       <button class="nav-item" onclick="navigate('key')"><span class="nav-icon">🔑</span>Ключ</button>
-      <button class="nav-item" onclick="navigate('referral')"><span class="nav-icon">👥</span>Рефералы</button>
+      <button class="nav-item" onclick="navigate('instructions')"><span class="nav-icon">📖</span>Инструкции</button>
     </nav>
   </div>
 
@@ -434,26 +455,291 @@ input{font-family:'Manrope',sans-serif}
       <button class="nav-item" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Главная</button>
       <button class="nav-item" onclick="navigate('pay')"><span class="nav-icon">💳</span>Оплата</button>
       <button class="nav-item active" onclick="navigate('key')"><span class="nav-icon">🔑</span>Ключ</button>
-      <button class="nav-item" onclick="navigate('referral')"><span class="nav-icon">👥</span>Рефералы</button>
+      <button class="nav-item" onclick="navigate('instructions')"><span class="nav-icon">📖</span>Инструкции</button>
     </nav>
   </div>
 
-  <!-- ─────────── SCREEN: REFERRAL ─────────── -->
-  <div id="screen-referral" class="screen">
+  <!-- ─────────── SCREEN: INSTRUCTIONS ─────────── -->
+  <div id="screen-instructions" class="screen">
     <div class="topbar">
       <div class="topbar-logo">DOMINO <span>VPN</span></div>
       <div class="topbar-right">
         <button class="btn-ghost" onclick="doLogout()">Выйти</button>
       </div>
     </div>
-    <div class="content" id="referral-content">
-      <div class="spinner-page"><div class="spinner"></div></div>
+    <div class="content" id="instructions-content">
+      <div class="page-title">📖 Инструкция</div>
+
+      <!-- Tab nav -->
+      <div class="instr-tabs">
+        <button class="instr-tab active" onclick="switchInstrTab('android')">🤖 Android</button>
+        <button class="instr-tab" onclick="switchInstrTab('ios')">🍎 iOS</button>
+        <button class="instr-tab" onclick="switchInstrTab('windows')">🖥 Windows</button>
+        <button class="instr-tab" onclick="switchInstrTab('macos')">🍏 macOS</button>
+        <button class="instr-tab" onclick="switchInstrTab('homescreen')">📱 На экран</button>
+      </div>
+
+      <!-- ANDROID -->
+      <div class="instr-panel active" id="instr-android">
+        <div class="instr-steps">
+          <div class="instr-step">
+            <div class="instr-num">1</div>
+            <div class="instr-body">
+              <div class="instr-title">Скачай v2rayNG</div>
+              <div class="instr-text">Открой Google Play и найди <b>v2rayNG</b>. Нажми «Установить».</div>
+              <a href="https://play.google.com/store/apps/details?id=com.v2ray.ang" target="_blank" class="instr-link">📲 Google Play →</a>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">2</div>
+            <div class="instr-body">
+              <div class="instr-title">Получи ключ</div>
+              <div class="instr-text">Перейди на экран <b>🔑 Ключ</b> в этом кабинете, скопируй subscription-ссылку.</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">3</div>
+            <div class="instr-body">
+              <div class="instr-title">Открой v2rayNG</div>
+              <div class="instr-text">Запусти приложение. Нажми <b>+</b> в правом верхнем углу.</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">4</div>
+            <div class="instr-body">
+              <div class="instr-title">Импортируй из буфера</div>
+              <div class="instr-text">В меню выбери <b>«Import config from Clipboard»</b>.</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">5</div>
+            <div class="instr-body">
+              <div class="instr-title">Подключись</div>
+              <div class="instr-text">Появится сервер DominoVPN. Нажми большую кнопку подключения.</div>
+            </div>
+          </div>
+          <div class="instr-step done">
+            <div class="instr-num">✓</div>
+            <div class="instr-body">
+              <div class="instr-title">Готово! 🎉</div>
+              <div class="instr-text">В статус-баре появится иконка 🔑 — VPN активен!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- iOS -->
+      <div class="instr-panel" id="instr-ios">
+        <div class="instr-alert">
+          ⚠️ <strong>VPN-приложения удалены из российского App Store!</strong><br>
+          Сначала смени регион — займёт 2 минуты. <button class="instr-link-btn" onclick="switchInstrTab('region')">Как сменить →</button>
+        </div>
+        <div class="instr-steps">
+          <div class="instr-step">
+            <div class="instr-num">1</div>
+            <div class="instr-body">
+              <div class="instr-title">Скачай Streisand</div>
+              <div class="instr-text">Открой App Store, найди <b>Streisand</b> и нажми «Загрузить».</div>
+              <a href="https://apps.apple.com/app/id6450534064" target="_blank" class="instr-link">🍎 App Store →</a>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">2</div>
+            <div class="instr-body">
+              <div class="instr-title">Получи ключ</div>
+              <div class="instr-text">Перейди на экран <b>🔑 Ключ</b> в этом кабинете, скопируй subscription-ссылку.</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">3</div>
+            <div class="instr-body">
+              <div class="instr-title">Добавь конфигурацию</div>
+              <div class="instr-text">Открой Streisand → нажми <b>+</b> → <b>Import from Clipboard</b>.</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">4</div>
+            <div class="instr-body">
+              <div class="instr-title">Разреши VPN</div>
+              <div class="instr-text">iOS спросит разрешение. Нажми <b>«Разрешить»</b> и введи пароль/Face ID.</div>
+            </div>
+          </div>
+          <div class="instr-step done">
+            <div class="instr-num">✓</div>
+            <div class="instr-body">
+              <div class="instr-title">Подключено! 🎉</div>
+              <div class="instr-text">В статус-баре появится «VPN». Соединение установлено!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Region change sub-section -->
+        <div id="instr-region-section" style="display:none">
+          <div class="instr-section-title">🌍 Смена региона App Store</div>
+          <div class="instr-steps">
+            <div class="instr-step">
+              <div class="instr-num">1</div>
+              <div class="instr-body"><div class="instr-title">Настройки → своё имя</div><div class="instr-text">Открой <b>Настройки</b> → нажми на своё имя вверху (Apple ID).</div></div>
+            </div>
+            <div class="instr-step">
+              <div class="instr-num">2</div>
+              <div class="instr-body"><div class="instr-title">Медиаматериалы и покупки</div><div class="instr-text">Нажми <b>«Медиаматериалы и покупки»</b> → <b>«Просмотр учётной записи»</b>.</div></div>
+            </div>
+            <div class="instr-step">
+              <div class="instr-num">3</div>
+              <div class="instr-body"><div class="instr-title">Страна/Регион → Сменить</div><div class="instr-text">Найди <b>«Страна/Регион»</b> → <b>«Сменить страну или регион»</b>.</div></div>
+            </div>
+            <div class="instr-step">
+              <div class="instr-num">4</div>
+              <div class="instr-body">
+                <div class="instr-title">Выбери страну</div>
+                <div class="instr-text">Рекомендуем <b>Казахстан 🇰🇿</b> — не нужна иностранная карта. Также подходят Грузия 🇬🇪 и Армения 🇦🇲.</div>
+              </div>
+            </div>
+            <div class="instr-step">
+              <div class="instr-num">5</div>
+              <div class="instr-body"><div class="instr-title">Способ оплаты: «Нет»</div><div class="instr-text">Выбери <b>«Нет»</b>. Введи любой адрес, например Алматы, индекс 050000.</div></div>
+            </div>
+            <div class="instr-step done">
+              <div class="instr-num">✓</div>
+              <div class="instr-body"><div class="instr-title">Готово!</div><div class="instr-text">Теперь скачай Streisand в App Store и следуй инструкции выше.</div></div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-full" style="margin-top:8px" onclick="toggleRegionSection()">🌍 Инструкция по смене региона</button>
+      </div>
+
+      <!-- WINDOWS -->
+      <div class="instr-panel" id="instr-windows">
+        <div class="instr-steps">
+          <div class="instr-step">
+            <div class="instr-num">1</div>
+            <div class="instr-body">
+              <div class="instr-title">Скачай Hiddify</div>
+              <div class="instr-text">Перейди на GitHub Releases и скачай <b>Hiddify-Windows-Setup-x64.exe</b>.</div>
+              <a href="https://github.com/hiddify/hiddify-app/releases/latest" target="_blank" class="instr-link">💻 GitHub Releases →</a>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">2</div>
+            <div class="instr-body">
+              <div class="instr-title">Установи</div>
+              <div class="instr-text">Запусти .exe установщик, нажми <b>Install</b> и дождись окончания.</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">3</div>
+            <div class="instr-body">
+              <div class="instr-title">Получи ключ</div>
+              <div class="instr-text">Перейди на экран <b>🔑 Ключ</b> в этом кабинете, скопируй subscription-ссылку.</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">4</div>
+            <div class="instr-body">
+              <div class="instr-title">Импортируй ключ</div>
+              <div class="instr-text">В Hiddify нажми <b>+</b> → <b>Add from Clipboard</b>.</div>
+            </div>
+          </div>
+          <div class="instr-step done">
+            <div class="instr-num">✓</div>
+            <div class="instr-body">
+              <div class="instr-title">Подключено! 🎉</div>
+              <div class="instr-text">Иконка Hiddify в трее станет зелёной. VPN работает!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- macOS -->
+      <div class="instr-panel" id="instr-macos">
+        <div class="instr-steps">
+          <div class="instr-step">
+            <div class="instr-num">1</div>
+            <div class="instr-body">
+              <div class="instr-title">Скачай FoXray</div>
+              <div class="instr-text">Открой <b>Mac App Store</b>, найди <b>FoXray</b> и нажми «Загрузить».</div>
+              <a href="https://apps.apple.com/app/foxray/id6448898396" target="_blank" class="instr-link">🍏 Mac App Store →</a>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">2</div>
+            <div class="instr-body">
+              <div class="instr-title">Получи ключ</div>
+              <div class="instr-text">Перейди на экран <b>🔑 Ключ</b> в этом кабинете, скопируй subscription-ссылку.</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">3</div>
+            <div class="instr-body">
+              <div class="instr-title">Добавь конфигурацию</div>
+              <div class="instr-text">Открой FoXray → <b>File</b> → <b>Import from Clipboard</b>.</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">4</div>
+            <div class="instr-body">
+              <div class="instr-title">Разреши VPN</div>
+              <div class="instr-text">macOS попросит подтверждение. Введи пароль или используй Touch ID, нажми <b>OK</b>.</div>
+            </div>
+          </div>
+          <div class="instr-step done">
+            <div class="instr-num">✓</div>
+            <div class="instr-body">
+              <div class="instr-title">Подключено! 🎉</div>
+              <div class="instr-text">В menu bar появится иконка VPN. Соединение активно!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOME SCREEN (iOS PWA) -->
+      <div class="instr-panel" id="instr-homescreen">
+        <div class="instr-steps">
+          <div class="instr-step">
+            <div class="instr-num">1</div>
+            <div class="instr-body">
+              <div class="instr-title">Открой сайт в Safari</div>
+              <div class="instr-text">На iPhone или iPad открой <b>domino-vpn.vercel.app/cabinet.html</b> в браузере <b>Safari</b> (другие браузеры не поддерживают эту функцию).</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">2</div>
+            <div class="instr-body">
+              <div class="instr-title">Нажми кнопку «Поделиться»</div>
+              <div class="instr-text">Внизу экрана нажми кнопку <b>⬆️</b> (квадрат со стрелкой вверх) — это кнопка «Поделиться».</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">3</div>
+            <div class="instr-body">
+              <div class="instr-title">На экран «Домой»</div>
+              <div class="instr-text">Прокрути список действий вниз и нажми <b>«На экран Домой»</b> (Add to Home Screen).</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">4</div>
+            <div class="instr-body">
+              <div class="instr-title">Подтверди</div>
+              <div class="instr-text">Введи имя — например <b>Domino VPN</b> — и нажми <b>«Добавить»</b> в правом верхнем углу.</div>
+            </div>
+          </div>
+          <div class="instr-step done">
+            <div class="instr-num">✓</div>
+            <div class="instr-body">
+              <div class="instr-title">Готово! 🎉</div>
+              <div class="instr-text">Иконка Domino VPN появится на главном экране. Открывается как приложение — без адресной строки!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
     <nav class="bottom-nav">
       <button class="nav-item" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Главная</button>
       <button class="nav-item" onclick="navigate('pay')"><span class="nav-icon">💳</span>Оплата</button>
       <button class="nav-item" onclick="navigate('key')"><span class="nav-icon">🔑</span>Ключ</button>
-      <button class="nav-item active" onclick="navigate('referral')"><span class="nav-icon">👥</span>Рефералы</button>
+      <button class="nav-item active" onclick="navigate('instructions')"><span class="nav-icon">📖</span>Инструкции</button>
     </nav>
   </div>
 
@@ -464,7 +750,7 @@ input{font-family:'Manrope',sans-serif}
       <div class="topbar-logo">DOMINO <span>VPN</span></div>
       <div style="width:60px"></div>
     </div>
-    <div class="content">
+    <div class="content no-nav">
       <div class="page-title">🎟 Промокод</div>
       <div class="promo-wrap">
         <div class="form-group">
@@ -484,7 +770,7 @@ input{font-family:'Manrope',sans-serif}
       <div class="topbar-logo">DOMINO <span>VPN</span></div>
       <div style="width:60px"></div>
     </div>
-    <div class="content">
+    <div class="content no-nav">
       <div class="page-title">⚙️ Настройки</div>
 
       <div class="settings-section">
@@ -533,7 +819,7 @@ input{font-family:'Manrope',sans-serif}
       <div class="topbar-logo">DOMINO <span>VPN</span></div>
       <div style="width:60px"></div>
     </div>
-    <div class="content">
+    <div class="content no-nav">
       <div class="page-title">🔒 Смена пароля</div>
       <div style="max-width:440px">
         <div class="form-group">
@@ -563,7 +849,7 @@ input{font-family:'Manrope',sans-serif}
       <div class="topbar-logo">DOMINO <span>VPN</span></div>
       <div style="width:60px"></div>
     </div>
-    <div class="content">
+    <div class="content no-nav">
       <div class="page-title">✈️ Привязать Telegram</div>
       <div style="max-width:440px">
         <div class="trial-highlight" style="margin-bottom:20px">
@@ -599,7 +885,7 @@ input{font-family:'Manrope',sans-serif}
       <div class="topbar-logo">DOMINO <span>VPN</span></div>
       <div style="width:60px"></div>
     </div>
-    <div class="content">
+    <div class="content no-nav">
       <div class="page-title">🎁 Пробный период</div>
       <div class="trial-card">
         <div class="trial-highlight">
@@ -721,7 +1007,6 @@ async function navigate(screen) {
 
   if (screen === 'dashboard') await loadDashboard()
   else if (screen === 'key') await loadKey()
-  else if (screen === 'referral') await loadReferral()
   else if (screen === 'pay') resetPayScreen()
   else if (screen === 'settings') loadSettings()
   else if (screen === 'change-password') resetChangePassword()
@@ -745,13 +1030,13 @@ async function init() {
   }
   currentUser = data
   const hash = (window.location.hash || '').replace('#', '') || 'dashboard'
-  const validScreens = ['dashboard','pay','key','referral','promo','trial','settings','change-password','link-telegram']
+  const validScreens = ['dashboard','pay','key','instructions','promo','trial','settings','change-password','link-telegram']
   navigate(validScreens.includes(hash) ? hash : 'dashboard')
 }
 
 window.addEventListener('hashchange', () => {
   const hash = window.location.hash.replace('#', '')
-  const validScreens = ['dashboard','pay','key','referral','promo','trial','settings','change-password','link-telegram']
+  const validScreens = ['dashboard','pay','key','instructions','promo','trial','settings','change-password','link-telegram']
   if (validScreens.includes(hash) && token()) navigate(hash)
 })
 
@@ -931,7 +1216,7 @@ async function loadDashboard() {
 
   html += `<div class="quick-actions">
     <button class="quick-btn" onclick="navigate('key')"><span class="qicon">🔑</span>Мой ключ</button>
-    <button class="quick-btn" onclick="navigate('referral')"><span class="qicon">👥</span>Рефералы</button>
+    <button class="quick-btn" onclick="navigate('instructions')"><span class="qicon">📖</span>Инструкция</button>
     <button class="quick-btn" onclick="navigate('promo')"><span class="qicon">🎟</span>Промокод</button>
     <button class="quick-btn" onclick="navigate('pay')"><span class="qicon">💳</span>Купить / Продлить</button>
   </div>`
@@ -1289,6 +1574,31 @@ async function linkTelegram() {
     result.className = 'promo-result err'
     result.textContent = '❌ ' + (data?.error || 'Неверный или истёкший код')
   }
+}
+
+// ═══════════════════════════════════════════════
+// INSTRUCTIONS SCREEN
+// ═══════════════════════════════════════════════
+function switchInstrTab(tab) {
+  document.querySelectorAll('.instr-tab').forEach(b => b.classList.remove('active'))
+  document.querySelectorAll('.instr-panel').forEach(p => p.classList.remove('active'))
+  const tabEl = document.querySelector(`.instr-tab[onclick="switchInstrTab('${tab}')"]`)
+  const panelEl = document.getElementById('instr-' + tab)
+  if (tabEl) tabEl.classList.add('active')
+  if (panelEl) panelEl.classList.add('active')
+  else {
+    // 'region' is inside ios panel
+    document.getElementById('instr-ios').classList.add('active')
+    document.querySelector(`.instr-tab[onclick="switchInstrTab('ios')"]`).classList.add('active')
+    const sec = document.getElementById('instr-region-section')
+    if (sec) sec.style.display = 'block'
+  }
+}
+
+function toggleRegionSection() {
+  const sec = document.getElementById('instr-region-section')
+  if (!sec) return
+  sec.style.display = sec.style.display === 'none' ? 'block' : 'none'
 }
 
 // ═══════════════════════════════════════════════
