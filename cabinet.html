@@ -264,6 +264,219 @@ input{font-family:'Manrope',sans-serif}
 .instr-link-btn{background:none;border:none;color:var(--accent);font-size:inherit;font-weight:600;cursor:pointer;padding:0;text-decoration:underline}
 .instr-alert{background:rgba(255,165,0,0.08);border:1px solid rgba(255,165,0,0.25);border-radius:10px;padding:12px 14px;font-size:13px;color:#fbbf24;line-height:1.6;margin-bottom:16px}
 .instr-section-title{font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin:20px 0 12px}
+
+/* ── New auth styles ── */
+.auth-tg-title{font-size:17px;font-weight:700;margin-bottom:16px;text-align:center}
+.auth-steps-mini{display:flex;flex-direction:column;gap:10px;margin-bottom:8px;background:var(--card2);border-radius:10px;padding:14px}
+.auth-step-mini{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-muted)}
+.auth-step-num-mini{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.auth-step-mini code{background:var(--card);border:1px solid var(--border);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--text)}
+
+/* ── Steps scroll (from index.html) ── */
+.steps-scroll{display:flex;gap:24px;overflow-x:auto;padding-bottom:20px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.steps-scroll::-webkit-scrollbar{height:4px}
+.steps-scroll::-webkit-scrollbar-track{background:#111}
+.steps-scroll::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+.step-card{flex:0 0 300px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;scroll-snap-align:start}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;margin-bottom:16px}
+.step-card h4{font-size:16px;font-weight:700;margin-bottom:8px}
+.step-card p{font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.6}
+
+/* ── Phone mockup ── */
+.phone-mock{width:100%;max-width:260px;margin:0 auto;background:#0a0a0a;border:2px solid #333;border-radius:32px;overflow:hidden;position:relative}
+.phone-mock-notch{width:80px;height:22px;background:#0a0a0a;border-radius:0 0 16px 16px;margin:0 auto;position:relative;z-index:2;border:2px solid #333;border-top:none}
+.phone-mock-screen{background:#111;min-height:200px;padding:0}
+
+/* ── Window mockup ── */
+.win-mock{width:100%;background:#1a1a1a;border:1px solid #333;border-radius:10px;overflow:hidden}
+.win-titlebar{background:#252525;padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #333}
+.win-dot{width:12px;height:12px;border-radius:50%}
+.win-dot.red{background:#FF5F56}
+.win-dot.yellow{background:#FFBD2E}
+.win-dot.green{background:#27C93F}
+.win-title-text{margin-left:8px;font-size:13px;color:#888;flex:1;text-align:center}
+.win-body{padding:16px;min-height:160px}
+
+/* ── App Store mockup ── */
+.store-mock{background:#1c1c1e;border-radius:16px;overflow:hidden;border:1px solid #2c2c2e}
+.store-header{background:#2c2c2e;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.store-app-icon{width:48px;height:48px;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.store-app-info{flex:1}
+.store-app-name{font-size:15px;font-weight:700;color:#fff}
+.store-app-dev{font-size:12px;color:#888}
+.store-btn{background:var(--accent);color:#fff;border:none;padding:8px 20px;border-radius:100px;font-size:14px;font-weight:700}
+.store-body{padding:16px}
+.store-rating{display:flex;align-items:center;gap:6px;margin-bottom:12px}
+.store-stars{color:#f59e0b;font-size:14px}
+.store-rating-num{font-size:13px;color:#888}
+.store-screens{display:flex;gap:8px}
+.store-screen{flex:1;background:#2c2c2e;border-radius:8px;height:80px}
+
+/* ── Telegram mockup ── */
+.tg-mock{background:#17212b;border-radius:0;padding:8px 0}
+.tg-header{background:#1c2c3a;padding:8px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #1e2d3d}
+.tg-avatar{width:36px;height:36px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.tg-name{font-size:14px;font-weight:600;color:#fff}
+.tg-status{font-size:11px;color:#4dc9ff}
+.tg-msgs{padding:12px;display:flex;flex-direction:column;gap:8px}
+.tg-msg-bot{background:#1f3447;border-radius:4px 12px 12px 12px;padding:10px 12px;font-size:12px;color:#e0e0e0;max-width:80%;line-height:1.5}
+.tg-msg-key{background:#1f3447;border-radius:4px 12px 12px 12px;padding:8px 10px;font-size:10px;color:#4dc9ff;font-family:monospace;word-break:break-all;max-width:90%}
+.tg-btn-row{display:flex;gap:6px;padding:0 12px}
+.tg-btn{background:#1f3447;border:1px solid #2a4a6b;border-radius:8px;padding:6px 10px;font-size:11px;color:#4dc9ff;text-align:center;flex:1}
+.tg-btn.highlight{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ── v2rayNG mockup ── */
+.v2ng-mock{background:#1a1a1a;border-radius:0}
+.v2ng-toolbar{background:#252525;padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
+.v2ng-title{font-size:14px;font-weight:600;color:#ddd}
+.v2ng-plus{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;box-shadow:0 0 10px rgba(232,48,42,0.6)}
+.v2ng-list{padding:8px}
+.v2ng-item{display:flex;align-items:center;gap:10px;background:#222;border-radius:8px;padding:10px 12px;margin-bottom:6px}
+.v2ng-dot{width:8px;height:8px;border-radius:50%;background:#22c55e}
+.v2ng-server{font-size:12px;color:#ddd}
+.v2ng-connect{margin:8px;background:var(--accent);border-radius:8px;padding:10px;text-align:center;font-size:14px;font-weight:700;color:#fff;box-shadow:0 0 15px rgba(232,48,42,0.4)}
+.v2ng-empty{padding:24px;text-align:center;font-size:12px;color:#555}
+.v2ng-menu{background:#222;border-radius:8px;margin:8px;overflow:hidden}
+.v2ng-menu-item{padding:10px 16px;font-size:12px;color:#ddd;border-bottom:1px solid #333}
+.v2ng-menu-item:last-child{border-bottom:none}
+.v2ng-menu-item.highlight{background:rgba(232,48,42,0.15);color:var(--accent);font-weight:600}
+
+/* ── iOS mockup ── */
+.ios-statusbar{background:#000;padding:4px 16px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#fff}
+.ios-statusbar-right{display:flex;align-items:center;gap:4px;font-size:11px}
+.ios-alert{background:#2c2c2e;border-radius:14px;margin:12px;overflow:hidden}
+.ios-alert-title{padding:16px 16px 4px;font-size:14px;font-weight:700;color:#fff;text-align:center}
+.ios-alert-text{padding:4px 16px 16px;font-size:12px;color:#888;text-align:center}
+.ios-alert-btns{border-top:1px solid #3a3a3c;display:flex}
+.ios-alert-btn{flex:1;padding:12px;font-size:14px;text-align:center;color:#4da3ff}
+.ios-alert-btn.primary{color:var(--accent);font-weight:700;border-left:1px solid #3a3a3c}
+.ios-connected{padding:20px 16px;text-align:center}
+.ios-connected-circle{width:70px;height:70px;border-radius:50%;background:rgba(34,197,94,0.15);border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:28px}
+.ios-connected-status{font-size:16px;font-weight:700;color:#22c55e}
+.ios-connected-info{font-size:12px;color:#888;margin-top:4px}
+.streisand-header{background:#1c1c1e;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.streisand-add{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px}
+
+/* ── GitHub / Hiddify mockup ── */
+.gh-mock{background:#0d1117;border-radius:0}
+.gh-header{background:#161b22;padding:8px 12px;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:8px}
+.gh-dot{width:8px;height:8px;border-radius:50%}
+.gh-title{font-size:12px;color:#8b949e}
+.gh-release{padding:12px}
+.gh-release-title{font-size:13px;font-weight:600;color:#e6edf3;margin-bottom:8px}
+.gh-asset{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-size:11px;color:#8b949e;background:#161b22;border:1px solid #21262d;margin-bottom:4px}
+.gh-asset.highlight{border-color:var(--accent);background:rgba(232,48,42,0.08);color:#e6edf3}
+.gh-icon{font-size:14px}
+.hiddify-mock{background:#1a1a2e;border-radius:0;min-height:160px}
+.hiddify-header{background:#16213e;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+.hiddify-logo{font-size:13px;font-weight:700;color:#7b9fff}
+.hiddify-plus{width:26px;height:26px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+.hiddify-body{padding:12px}
+.hiddify-item{display:flex;align-items:center;gap:10px;background:#16213e;border-radius:8px;padding:10px 12px;margin-bottom:6px}
+.hiddify-status{width:8px;height:8px;border-radius:50%;background:#22c55e}
+.hiddify-menu{background:#16213e;border-radius:8px;overflow:hidden;margin-bottom:6px}
+.hiddify-mi{padding:8px 14px;font-size:12px;color:#aaa;border-bottom:1px solid #1e2a4a}
+.hiddify-mi:last-child{border-bottom:none}
+.hiddify-mi.hl{color:#7b9fff;font-weight:600}
+
+/* ── Tray mockup ── */
+.tray-mock{background:#f0f0f0;padding:10px;border-radius:8px;display:flex;align-items:center;gap:8px}
+.tray-icon{width:20px;height:20px;background:var(--accent);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff}
+.tray-text{font-size:12px;color:#333;font-weight:500}
+.tray-status{font-size:11px;color:#22c55e;font-weight:600}
+
+/* ── macOS mockup ── */
+.mac-mock{background:#1e1e1e;border-radius:10px;overflow:hidden;border:1px solid #333}
+.mac-titlebar{background:#2d2d2d;padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #3a3a3a}
+.mac-body{padding:16px}
+.macstore-card{background:#1c1c1e;border-radius:12px;overflow:hidden;border:1px solid #2c2c2e;margin:8px}
+.macstore-header{padding:12px;display:flex;gap:12px;align-items:center}
+.macstore-icon{width:48px;height:48px;background:linear-gradient(135deg,#1a3a5c,#0f2035);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.macstore-title{font-size:15px;font-weight:700;color:#fff}
+.macstore-sub{font-size:12px;color:#888}
+.macstore-getbtn{background:#0a84ff;color:#fff;border:none;padding:6px 18px;border-radius:100px;font-size:14px;font-weight:700}
+.mac-dialog{background:#323232;border-radius:12px;margin:12px;padding:20px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.8)}
+.mac-dialog-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:8px}
+.mac-dialog-text{font-size:12px;color:#aaa;margin-bottom:16px}
+.mac-dialog-btns{display:flex;gap:8px;justify-content:center}
+.mac-dialog-btn{padding:8px 20px;border-radius:6px;font-size:13px;font-weight:600;border:none}
+.mac-dialog-btn.cancel{background:#4a4a4a;color:#fff}
+.mac-dialog-btn.ok{background:#0a84ff;color:#fff}
+.mac-menubar{background:#1e1e1e;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a2a2a}
+.mac-mb-right{display:flex;align-items:center;gap:12px;font-size:12px;color:#fff}
+.mac-vpn-badge{background:rgba(34,197,94,0.2);color:#22c55e;border:1px solid rgba(34,197,94,0.3);border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700}
+.foxray-body{padding:16px}
+.foxray-connected{text-align:center;padding:16px}
+.foxray-circle{width:60px;height:60px;border-radius:50%;background:rgba(34,197,94,0.15);border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:24px}
+
+/* ── Install button ── */
+.install-btn{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);padding:10px 18px;border-radius:10px;text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:.2s}
+.install-btn:hover{border-color:#444;transform:translateY(-2px)}
+
+/* ── Android statusbar ── */
+.android-sb{background:#121212;padding:4px 12px;display:flex;justify-content:space-between;font-size:10px;color:#aaa}
+.android-sb-right{display:flex;align-items:center;gap:4px}
+.android-key-icon{font-size:10px}
+
+/* ── Region alert ── */
+.region-alert{background:rgba(232,48,42,0.1);border:1px solid rgba(232,48,42,0.35);border-radius:12px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:flex-start;gap:14px}
+.region-alert-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.region-alert-text{font-size:13px;color:var(--text);line-height:1.6}
+.region-alert-text strong{color:var(--accent);display:block;margin-bottom:4px;font-size:14px}
+.region-alert-link{background:none;border:none;color:var(--accent);cursor:pointer;font-size:13px;font-weight:700;padding:0;text-decoration:underline;text-decoration-color:rgba(232,48,42,0.4)}
+.region-alert-link:hover{text-decoration-color:var(--accent)}
+
+/* ── iOS Settings mockup ── */
+.ios-set-nav{background:#1c1c1e;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #2c2c2e}
+.ios-set-nav-back{color:#4da3ff;font-size:13px;white-space:nowrap}
+.ios-set-nav-title{font-size:14px;font-weight:600;color:#fff;flex:1;text-align:center}
+.ios-set-group{background:#2c2c2e;border-radius:10px;margin:6px 8px;overflow:hidden}
+.ios-set-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid #3a3a3c;font-size:12px;color:#fff}
+.ios-set-row:last-child{border-bottom:none}
+.ios-set-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.ios-set-label{flex:1}
+.ios-set-val{font-size:11px;color:#888;margin-right:4px}
+.ios-set-chev{color:#555;font-size:13px;flex-shrink:0}
+.ios-set-row.hl{background:rgba(77,163,255,0.1)}
+.ios-set-row.hl .ios-set-label,.ios-set-row.hl .ios-set-chev{color:#4da3ff}
+.ios-prof-row{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid #3a3a3c;cursor:pointer}
+.ios-prof-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#4da3ff,#0055d4);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ios-prof-name{font-size:14px;font-weight:600;color:#fff}
+.ios-prof-sub{font-size:11px;color:#888;margin-top:1px}
+.ios-faceid-wrap{padding:20px 16px;text-align:center}
+.ios-faceid-ring{width:56px;height:56px;border-radius:50%;border:3px solid #4da3ff;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.ios-faceid-lbl{font-size:12px;color:#888}
+.ios-accept-btn{background:#4da3ff;border-radius:9px;padding:9px 14px;text-align:center;font-size:13px;font-weight:600;color:#fff}
+.ios-terms-wrap{padding:8px 10px}
+.ios-terms-txt{font-size:10px;color:#555;line-height:1.5;margin-bottom:8px}
+
+/* ── Country list mockup ── */
+.country-list-mock{background:#2c2c2e;border-radius:10px;margin:6px 8px;overflow:hidden}
+.ctr-item{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:12px;color:#fff;border-bottom:1px solid #3a3a3c}
+.ctr-item:last-child{border-bottom:none}
+.ctr-item.picked{background:rgba(34,197,94,0.08)}
+.ctr-flag{font-size:16px;width:22px;text-align:center}
+.ctr-check{color:#22c55e;font-size:14px;margin-left:auto}
+.payment-mock{background:#2c2c2e;border-radius:10px;margin:6px 8px;overflow:hidden}
+.pay-row{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:12px;color:#fff;border-bottom:1px solid #3a3a3c}
+.pay-row:last-child{border-bottom:none}
+.pay-row.picked{background:rgba(34,197,94,0.08)}
+.pay-radio{width:17px;height:17px;border-radius:50%;border:2px solid #555;margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px}
+.pay-radio.on{background:#22c55e;border-color:#22c55e;color:#fff;font-weight:700}
+.country-tip-box{background:#161616;border:1px solid #2a2a2a;border-radius:12px;padding:14px;margin:16px 0}
+.country-tip-box h5{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+.ctr-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #222;font-size:12px;color:var(--text-muted)}
+.ctr-row:last-child{border-bottom:none}
+.ctr-eflag{font-size:16px;width:22px}
+.ctr-badge{margin-left:auto;border-radius:5px;padding:2px 8px;font-size:10px;font-weight:700;white-space:nowrap}
+.ctr-badge.ok{background:rgba(34,197,94,0.15);color:#22c55e}
+.ctr-badge.warn{background:rgba(245,158,11,0.15);color:#f59e0b}
+/* ── Telegram auth ── */
+.auth-tg-title{font-size:17px;font-weight:700;margin-bottom:16px;text-align:center}
+.auth-steps-mini{display:flex;flex-direction:column;gap:10px;margin-bottom:8px;background:var(--card2);border-radius:10px;padding:14px}
+.auth-step-mini{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-muted)}
+.auth-step-num-mini{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.auth-step-mini code{background:var(--card);border:1px solid var(--border);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--text)}
 </style>
 </head>
 <body>
@@ -277,73 +490,22 @@ input{font-family:'Manrope',sans-serif}
         <div class="auth-logo-sub">Личный кабинет</div>
       </div>
       <div class="auth-card">
-        <div class="tabs">
-          <button class="tab active" onclick="switchTab('login')">Войти</button>
-          <button class="tab" onclick="switchTab('register')">Создать аккаунт</button>
+        <div class="auth-tg-title">Войти через Telegram</div>
+        <div class="auth-steps-mini">
+          <div class="auth-step-mini"><span class="auth-step-num-mini">1</span>Открой <a href="https://t.me/DominoVPN_bot" target="_blank" style="color:var(--accent)">@DominoVPN_bot</a></div>
+          <div class="auth-step-mini"><span class="auth-step-num-mini">2</span>Отправь команду <code>/weblogin</code></div>
+          <div class="auth-step-mini"><span class="auth-step-num-mini">3</span>Введи полученный код ниже</div>
         </div>
-        <div id="auth-error"></div>
-
-        <!-- Login -->
-        <div id="tab-login" class="tab-pane active">
-          <div class="form-group">
-            <label>Код аккаунта</label>
-            <input id="login-code" class="inp" type="text" placeholder="DMNO-XXXXXXXX" autocomplete="username" spellcheck="false">
-          </div>
-          <div class="form-group">
-            <label>Пароль</label>
-            <input id="login-pass" class="inp" type="password" placeholder="Ваш пароль" autocomplete="current-password">
-          </div>
-          <button class="btn btn-primary btn-full" id="btn-login" onclick="doLogin()">Войти</button>
+        <div id="auth-error" style="display:none;color:#ff6b6b;font-size:13px;margin-bottom:8px;padding:8px 12px;background:rgba(232,48,42,0.1);border-radius:8px;text-align:center"></div>
+        <div class="form-group" style="margin-top:16px">
+          <label>Код из бота</label>
+          <input id="weblogin-code" class="code-inp" type="text" placeholder="A1B2C3" maxlength="6" spellcheck="false" oninput="this.value=this.value.toUpperCase()">
         </div>
-
-        <!-- Register -->
-        <div id="tab-register" class="tab-pane">
-          <div class="form-group">
-            <label>Пароль</label>
-            <input id="reg-pass" class="inp" type="password" placeholder="Придумайте пароль" autocomplete="new-password">
-          </div>
-          <div class="form-group">
-            <label>Повторите пароль</label>
-            <input id="reg-pass2" class="inp" type="password" placeholder="Повторите пароль" autocomplete="new-password">
-          </div>
-          <button class="btn btn-primary btn-full" id="btn-register" onclick="doRegister()">Создать аккаунт</button>
-        </div>
+        <button class="btn btn-primary btn-full" id="btn-weblogin" onclick="doWebLogin()" style="margin-top:12px">Войти</button>
       </div>
       <div class="auth-footer">
         <a href="/">← На главную</a>
       </div>
-    </div>
-  </div>
-
-  <!-- ─────────── SCREEN: REGISTER SUCCESS ─────────── -->
-  <div id="screen-register-success" class="screen">
-    <div class="success-wrap">
-      <div class="success-header">
-        <div class="success-icon">✅</div>
-        <div class="success-title">Аккаунт создан!</div>
-      </div>
-      <div class="warning-box">
-        <div class="warning-head">
-          <span class="icon">⚠️</span>
-          СОХРАНИ КОД АККАУНТА ПРЯМО СЕЙЧАС
-        </div>
-        <div class="code-block">
-          <div class="code-value" id="reg-code-display">DMNO-XXXXXXXX</div>
-          <button class="code-copy" onclick="copyCode()">📋 Копировать</button>
-        </div>
-        <div class="warning-text">
-          Этот код генерируется <strong>ОДИН РАЗ</strong> и не хранится на сервере в открытом виде.<br><br>
-          Без него восстановить доступ к аккаунту <strong>НЕВОЗМОЖНО</strong>.<br><br>
-          Сохрани его в заметках, менеджере паролей или запиши на бумаге.
-        </div>
-      </div>
-      <label class="checkbox-row">
-        <input type="checkbox" id="save-confirm-cb" onchange="updateContinueBtn()">
-        <span>Я сохранил(а) код аккаунта в надёжном месте</span>
-      </label>
-      <button class="btn btn-primary btn-full" id="btn-continue-reg" onclick="continueToDashboard()" disabled>
-        Войти в кабинет →
-      </button>
     </div>
   </div>
 
@@ -476,6 +638,7 @@ input{font-family:'Manrope',sans-serif}
         <button class="instr-tab" onclick="switchInstrTab('ios')">🍎 iOS</button>
         <button class="instr-tab" onclick="switchInstrTab('windows')">🖥 Windows</button>
         <button class="instr-tab" onclick="switchInstrTab('macos')">🍏 macOS</button>
+        <button class="instr-tab" onclick="switchInstrTab('region')">🌍 Регион</button>
         <button class="instr-tab" onclick="switchInstrTab('homescreen')">📱 На экран</button>
       </div>
 
@@ -573,40 +736,6 @@ input{font-family:'Manrope',sans-serif}
           </div>
         </div>
 
-        <!-- Region change sub-section -->
-        <div id="instr-region-section" style="display:none">
-          <div class="instr-section-title">🌍 Смена региона App Store</div>
-          <div class="instr-steps">
-            <div class="instr-step">
-              <div class="instr-num">1</div>
-              <div class="instr-body"><div class="instr-title">Настройки → своё имя</div><div class="instr-text">Открой <b>Настройки</b> → нажми на своё имя вверху (Apple ID).</div></div>
-            </div>
-            <div class="instr-step">
-              <div class="instr-num">2</div>
-              <div class="instr-body"><div class="instr-title">Медиаматериалы и покупки</div><div class="instr-text">Нажми <b>«Медиаматериалы и покупки»</b> → <b>«Просмотр учётной записи»</b>.</div></div>
-            </div>
-            <div class="instr-step">
-              <div class="instr-num">3</div>
-              <div class="instr-body"><div class="instr-title">Страна/Регион → Сменить</div><div class="instr-text">Найди <b>«Страна/Регион»</b> → <b>«Сменить страну или регион»</b>.</div></div>
-            </div>
-            <div class="instr-step">
-              <div class="instr-num">4</div>
-              <div class="instr-body">
-                <div class="instr-title">Выбери страну</div>
-                <div class="instr-text">Рекомендуем <b>Казахстан 🇰🇿</b> — не нужна иностранная карта. Также подходят Грузия 🇬🇪 и Армения 🇦🇲.</div>
-              </div>
-            </div>
-            <div class="instr-step">
-              <div class="instr-num">5</div>
-              <div class="instr-body"><div class="instr-title">Способ оплаты: «Нет»</div><div class="instr-text">Выбери <b>«Нет»</b>. Введи любой адрес, например Алматы, индекс 050000.</div></div>
-            </div>
-            <div class="instr-step done">
-              <div class="instr-num">✓</div>
-              <div class="instr-body"><div class="instr-title">Готово!</div><div class="instr-text">Теперь скачай Streisand в App Store и следуй инструкции выше.</div></div>
-            </div>
-          </div>
-        </div>
-        <button class="btn btn-secondary btn-full" style="margin-top:8px" onclick="toggleRegionSection()">🌍 Инструкция по смене региона</button>
       </div>
 
       <!-- WINDOWS -->
@@ -688,6 +817,106 @@ input{font-family:'Manrope',sans-serif}
             <div class="instr-body">
               <div class="instr-title">Подключено! 🎉</div>
               <div class="instr-text">В menu bar появится иконка VPN. Соединение активно!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REGION CHANGE -->
+      <div class="instr-panel" id="instr-region">
+        <div class="instr-steps">
+          <div class="instr-step">
+            <div class="instr-num">1</div>
+            <div class="instr-body">
+              <div class="instr-title">Настройки → своё имя</div>
+              <div class="instr-text">Открой <b>Настройки</b> и нажми на <b>своё имя</b> вверху — это твой Apple ID профиль.</div>
+              <div class="phone-mock" style="margin-top:12px">
+                <div class="phone-mock-notch"></div>
+                <div class="phone-mock-screen">
+                  <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+                  <div class="ios-set-nav" style="justify-content:center"><span style="font-size:17px;font-weight:600;color:#fff">Настройки</span></div>
+                  <div class="ios-set-group">
+                    <div class="ios-prof-row">
+                      <div class="ios-prof-av">👤</div>
+                      <div><div class="ios-prof-name">Ваше Имя</div><div class="ios-prof-sub">Apple ID, iCloud, Медиаматериалы</div></div>
+                      <span style="color:#4da3ff;font-size:16px;margin-left:auto">›</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">2</div>
+            <div class="instr-body">
+              <div class="instr-title">Медиаматериалы и покупки</div>
+              <div class="instr-text">Нажми <b>«Медиаматериалы и покупки»</b>, затем <b>«Просмотр учётной записи»</b>.</div>
+              <div class="phone-mock" style="margin-top:12px">
+                <div class="phone-mock-notch"></div>
+                <div class="phone-mock-screen">
+                  <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+                  <div class="ios-set-group">
+                    <div class="ios-set-row"><div class="ios-set-icon" style="background:#1c1c1e;border:1px solid #3a3a3c">☁️</div><span class="ios-set-label">iCloud</span><span class="ios-set-chev">›</span></div>
+                    <div class="ios-set-row hl"><div class="ios-set-icon" style="background:#ff375f">🎵</div><span class="ios-set-label">Медиаматериалы и покупки</span><span class="ios-set-chev">›</span></div>
+                  </div>
+                  <div style="padding:0 8px 8px"><div class="ios-set-group" style="margin:0"><div class="ios-set-row hl"><span class="ios-set-label">Просмотр учётной записи</span><span class="ios-set-chev">›</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">3</div>
+            <div class="instr-body">
+              <div class="instr-title">Страна/Регион → Сменить</div>
+              <div class="instr-text">Найди <b>«Страна/Регион»</b> → нажми <b>«Сменить страну или регион»</b>.</div>
+              <div class="phone-mock" style="margin-top:12px">
+                <div class="phone-mock-notch"></div>
+                <div class="phone-mock-screen">
+                  <div class="ios-statusbar"><span>9:41</span><div class="ios-statusbar-right"><span>📶</span><span>🔋</span></div></div>
+                  <div class="ios-set-nav"><span class="ios-set-nav-back">‹ Apple ID</span><span class="ios-set-nav-title">Учётная запись</span></div>
+                  <div class="ios-set-group">
+                    <div class="ios-set-row"><span class="ios-set-label">Имя</span><span class="ios-set-val">Ваше Имя</span><span class="ios-set-chev">›</span></div>
+                    <div class="ios-set-row hl"><span class="ios-set-label">Страна/Регион</span><span class="ios-set-val">🇷🇺 Россия</span><span class="ios-set-chev">›</span></div>
+                  </div>
+                  <div class="ios-set-group"><div class="ios-set-row hl"><span class="ios-set-label">Сменить страну или регион</span><span class="ios-set-chev">›</span></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">4</div>
+            <div class="instr-body">
+              <div class="instr-title">Выбери страну</div>
+              <div class="instr-text">Рекомендуем <b>Казахстан 🇰🇿</b> — не нужна иностранная карта. Также: Грузия 🇬🇪, Армения 🇦🇲.</div>
+              <div class="country-tip-box" style="margin-top:10px">
+                <h5>🌍 Что выбрать?</h5>
+                <div class="ctr-row"><span class="ctr-eflag">🇰🇿</span>Казахстан — карта Kaspi или без карты<span class="ctr-badge ok">Лучший</span></div>
+                <div class="ctr-row"><span class="ctr-eflag">🇬🇪</span>Грузия — без иностранной карты<span class="ctr-badge ok">Легко</span></div>
+                <div class="ctr-row"><span class="ctr-eflag">🇦🇲</span>Армения — без иностранной карты<span class="ctr-badge ok">Легко</span></div>
+                <div class="ctr-row"><span class="ctr-eflag">🇺🇸</span>США — нужна американская карта<span class="ctr-badge warn">Сложно</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">5</div>
+            <div class="instr-body">
+              <div class="instr-title">Способ оплаты: «Нет»</div>
+              <div class="instr-text">Выбери <b>«Нет»</b>. Заполни адрес — можно любой, например город <b>Алматы</b>, индекс <b>050000</b>.</div>
+            </div>
+          </div>
+          <div class="instr-step">
+            <div class="instr-num">6</div>
+            <div class="instr-body">
+              <div class="instr-title">Прими условия</div>
+              <div class="instr-text">Появятся условия App Store. Нажми <b>«Принять»</b> вверху справа, затем внизу.</div>
+            </div>
+          </div>
+          <div class="instr-step done">
+            <div class="instr-num">✓</div>
+            <div class="instr-body">
+              <div class="instr-title">Готово! Теперь скачай Streisand</div>
+              <div class="instr-text">Открой App Store → найди <b>Streisand</b> → нажми «Загрузить». Вернись на вкладку 🍎 iOS за инструкцией.</div>
+              <a href="https://apps.apple.com/app/id6450534064" target="_blank" class="instr-link" style="margin-top:8px">🍎 Streisand в App Store →</a>
             </div>
           </div>
         </div>
@@ -775,16 +1004,6 @@ input{font-family:'Manrope',sans-serif}
 
       <div class="settings-section">
         <div class="settings-section-title">Аккаунт</div>
-        <div class="settings-item" onclick="navigate('change-password')">
-          <div class="settings-item-left">
-            <span class="settings-item-icon">🔒</span>
-            <div>
-              <div class="settings-item-text">Сменить пароль</div>
-              <div class="settings-item-sub">Изменить пароль кабинета</div>
-            </div>
-          </div>
-          <span class="settings-item-arrow">›</span>
-        </div>
         <div class="settings-item" onclick="navigate('link-telegram')">
           <div class="settings-item-left">
             <span class="settings-item-icon">✈️</span>
@@ -800,7 +1019,6 @@ input{font-family:'Manrope',sans-serif}
       <div class="settings-section">
         <div class="settings-section-title">Информация</div>
         <div class="card" style="font-size:13px">
-          <div class="info-row"><span class="info-row-label">Код аккаунта</span><span class="info-row-val" id="settings-code" style="font-size:12px;letter-spacing:0.05em">—</span></div>
           <div class="info-row"><span class="info-row-label">Аккаунт создан</span><span class="info-row-val" id="settings-date">—</span></div>
           <div class="info-row"><span class="info-row-label">Telegram</span><span id="settings-tg-badge">—</span></div>
         </div>
@@ -924,8 +1142,6 @@ let selectedServer = 'de'
 let selectedTrialServer = 'de'
 let paymentId = null
 let pollTimer = null
-let newAccountCode = null
-let newToken = null
 
 // ═══════════════════════════════════════════════
 // UTILS
@@ -1062,88 +1278,46 @@ function clearAuthError() {
   el.textContent = ''
 }
 
-async function doLogin() {
+async function doWebLogin() {
   clearAuthError()
-  const code = document.getElementById('login-code').value.trim().toUpperCase()
-  const pass = document.getElementById('login-pass').value
-  if (!code || !pass) { showAuthError('Введите код и пароль'); return }
-
-  const btn = document.getElementById('btn-login')
+  const code = document.getElementById('weblogin-code').value.trim().toUpperCase()
+  if (code.length !== 6) { showToast('Введите 6-значный код', 'error'); return }
+  const btn = document.getElementById('btn-weblogin')
   btn.disabled = true
   btn.innerHTML = '<div class="spinner"></div>'
 
-  const data = await fetch('/api/login', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({account_code: code, password: pass})
-  }).then(r => r.json()).catch(() => null)
+  let data
+  try {
+    const r = await fetch('/api/weblogin', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({code})
+    })
+    data = await r.json()
+  } catch {
+    btn.disabled = false; btn.textContent = 'Войти'
+    showToast('Ошибка сети', 'error'); return
+  }
 
   btn.disabled = false
   btn.textContent = 'Войти'
 
-  if (!data || data.error) {
-    showAuthError(data?.error || 'Ошибка входа')
-    return
-  }
-
-  setToken(data.token)
-  const me = await api('GET', '/me')
-  if (me && !me.error) {
-    currentUser = me
-    navigate('dashboard')
-  }
-}
-
-async function doRegister() {
-  clearAuthError()
-  const pass = document.getElementById('reg-pass').value
-  const pass2 = document.getElementById('reg-pass2').value
-  if (!pass) { showAuthError('Введите пароль'); return }
-  if (pass.length < 6) { showAuthError('Пароль минимум 6 символов'); return }
-  if (pass !== pass2) { showAuthError('Пароли не совпадают'); return }
-
-  const btn = document.getElementById('btn-register')
-  btn.disabled = true
-  btn.innerHTML = '<div class="spinner"></div>'
-
-  const data = await fetch('/api/register', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({password: pass})
-  }).then(r => r.json()).catch(() => null)
-
-  btn.disabled = false
-  btn.textContent = 'Создать аккаунт'
-
-  if (!data || data.error) {
-    showAuthError(data?.error || 'Ошибка регистрации')
-    return
-  }
-
-  newAccountCode = data.account_code
-  newToken = data.token
-  document.getElementById('reg-code-display').textContent = data.account_code
-  document.getElementById('save-confirm-cb').checked = false
-  document.getElementById('btn-continue-reg').disabled = true
-  showScreen('register-success')
-}
-
-function updateContinueBtn() {
-  const checked = document.getElementById('save-confirm-cb').checked
-  document.getElementById('btn-continue-reg').disabled = !checked
-}
-
-async function copyCode() {
-  await copyText(newAccountCode || document.getElementById('reg-code-display').textContent)
-}
-
-async function continueToDashboard() {
-  if (!newToken) { showScreen('auth'); return }
-  setToken(newToken)
-  const me = await api('GET', '/me')
-  if (me && !me.error) {
-    currentUser = me
-    navigate('dashboard')
+  if (data && data.token) {
+    setToken(data.token)
+    const me = await api('GET', '/me')
+    if (me && !me.error) {
+      currentUser = me
+      navigate('dashboard')
+    } else {
+      clearToken()
+      const el = document.getElementById('auth-error')
+      if (el) { el.textContent = 'Ошибка загрузки профиля'; el.style.display = 'block' }
+    }
+  } else {
+    const msg = (data && data.error) ? data.error : 'Неверный или истёкший код'
+    const el = document.getElementById('auth-error')
+    if (el) { el.textContent = msg; el.style.display = 'block' }
+    showToast(msg, 'error')
   }
 }
 
@@ -1480,7 +1654,6 @@ async function activateTrial() {
 // ═══════════════════════════════════════════════
 function loadSettings() {
   if (!currentUser) return
-  document.getElementById('settings-code').textContent = currentUser.account_code || '—'
   document.getElementById('settings-date').textContent = currentUser.created_at
     ? currentUser.created_at.slice(0, 10) : '—'
 
@@ -1586,19 +1759,6 @@ function switchInstrTab(tab) {
   const panelEl = document.getElementById('instr-' + tab)
   if (tabEl) tabEl.classList.add('active')
   if (panelEl) panelEl.classList.add('active')
-  else {
-    // 'region' is inside ios panel
-    document.getElementById('instr-ios').classList.add('active')
-    document.querySelector(`.instr-tab[onclick="switchInstrTab('ios')"]`).classList.add('active')
-    const sec = document.getElementById('instr-region-section')
-    if (sec) sec.style.display = 'block'
-  }
-}
-
-function toggleRegionSection() {
-  const sec = document.getElementById('instr-region-section')
-  if (!sec) return
-  sec.style.display = sec.style.display === 'none' ? 'block' : 'none'
 }
 
 // ═══════════════════════════════════════════════
@@ -1606,11 +1766,7 @@ function toggleRegionSection() {
 // ═══════════════════════════════════════════════
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
-    if (currentScreen === 'auth') {
-      const loginActive = document.getElementById('tab-login').classList.contains('active')
-      if (loginActive) doLogin()
-      else doRegister()
-    }
+    if (currentScreen === 'auth') doWebLogin()
   }
 })
 
