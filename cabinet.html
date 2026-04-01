@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domino VPN — Личный кабинет</title>
+<meta name="theme-color" content="#080808">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--card:#111111;--card2:#161616;--accent:#E8302A;--text:#F0EDE8;
+  --text-muted:#999;--border:rgba(255,255,255,0.08);--green:#22c55e;--amber:#f59e0b;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4}
+h1,h2,h3,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:0.03em}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:'Manrope',sans-serif}
+input{font-family:'Manrope',sans-serif}
+
+/* ── Layout ── */
+#app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+.screen{display:none;flex:1}
+.screen.active{display:flex}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:10px;font-weight:700;font-size:15px;border:none;transition:.2s;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{box-shadow:0 0 24px rgba(232,48,42,0.5);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:0.45;pointer-events:none}
+.btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:#444;background:rgba(255,255,255,0.04)}
+.btn-ghost{background:transparent;color:var(--text-muted);border:none;font-size:14px;font-weight:500;padding:6px 12px}
+.btn-ghost:hover{color:var(--text)}
+.btn-full{width:100%}
+
+/* ── Inputs ── */
+.inp{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:13px 16px;font-size:15px;outline:none;transition:.2s}
+.inp:focus{border-color:rgba(232,48,42,0.5);box-shadow:0 0 0 3px rgba(232,48,42,0.1)}
+.inp::placeholder{color:var(--text-muted)}
+.form-group{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.form-group label{font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em}
+
+/* ── Card ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+
+/* ── Toast ── */
+#toast-wrap{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{background:#1e1e1e;border:1px solid var(--border);border-radius:10px;padding:12px 20px;font-size:14px;font-weight:500;color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,0.6);animation:toast-in .25s ease;white-space:nowrap}
+.toast.error{border-color:rgba(232,48,42,0.4);color:#ff6b6b}
+.toast.success{border-color:rgba(34,197,94,0.4);color:#86efac}
+@keyframes toast-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Spinner ── */
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,0.15);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-page{display:flex;align-items:center;justify-content:center;flex:1;min-height:200px}
+
+/* ═══════════════════════════════════════════════
+   AUTH SCREEN
+═══════════════════════════════════════════════ */
+#screen-auth{align-items:center;justify-content:center;padding:24px;flex-direction:column}
+.auth-wrap{width:100%;max-width:420px}
+.auth-logo{text-align:center;margin-bottom:32px}
+.auth-logo-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:0.08em;line-height:1}
+.auth-logo-title span{color:var(--accent)}
+.auth-logo-sub{color:var(--text-muted);font-size:15px;margin-top:6px}
+.auth-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px}
+.tabs{display:flex;gap:0;margin-bottom:28px;background:var(--card2);border-radius:10px;padding:4px}
+.tab{flex:1;padding:10px;border:none;background:transparent;color:var(--text-muted);font-size:14px;font-weight:600;border-radius:8px;transition:.2s;font-family:'Manrope',sans-serif}
+.tab.active{background:var(--accent);color:#fff}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+.auth-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--text-muted)}
+.auth-footer a{color:var(--accent);font-weight:600}
+#auth-error{display:none;background:rgba(232,48,42,0.1);border:1px solid rgba(232,48,42,0.3);border-radius:8px;padding:10px 14px;font-size:14px;color:#ff6b6b;margin-bottom:16px}
+
+/* ═══════════════════════════════════════════════
+   REGISTER SUCCESS SCREEN
+═══════════════════════════════════════════════ */
+#screen-register-success{align-items:center;justify-content:center;padding:24px;flex-direction:column}
+.success-wrap{width:100%;max-width:460px}
+.success-header{text-align:center;margin-bottom:24px}
+.success-icon{font-size:52px;margin-bottom:12px}
+.success-title{font-family:'Bebas Neue',sans-serif;font-size:36px}
+.warning-box{background:rgba(245,158,11,0.08);border:2px solid rgba(245,158,11,0.5);border-radius:16px;padding:28px;margin-bottom:20px}
+.warning-head{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:var(--amber);margin-bottom:20px}
+.warning-head .icon{font-size:22px}
+.code-block{background:#0a0a0a;border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:20px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.code-value{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:0.1em;color:var(--amber);word-break:break-all}
+.code-copy{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:var(--amber);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;white-space:nowrap}
+.code-copy:hover{background:rgba(245,158,11,0.25)}
+.warning-text{font-size:14px;color:rgba(245,158,11,0.85);line-height:1.8}
+.warning-text strong{color:var(--amber)}
+.checkbox-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;cursor:pointer}
+.checkbox-row input[type=checkbox]{width:20px;height:20px;flex-shrink:0;margin-top:2px;accent-color:var(--accent);cursor:pointer}
+.checkbox-row span{font-size:14px;color:var(--text);font-weight:500;line-height:1.5}
+
+/* ═══════════════════════════════════════════════
+   MAIN APP (topbar + content + bottom nav)
+═══════════════════════════════════════════════ */
+#screen-dashboard,#screen-pay,#screen-key,#screen-referral,#screen-promo,#screen-trial{flex-direction:column}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);z-index:50}
+.topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.06em}
+.topbar-logo span{color:var(--accent)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.content{flex:1;padding:20px;overflow-y:auto;padding-bottom:80px}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:30px;margin-bottom:20px}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,8,8,0.96);border-top:1px solid var(--border);display:flex;backdrop-filter:blur(16px);z-index:50}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 8px;border:none;background:transparent;color:var(--text-muted);font-size:11px;font-weight:600;transition:.2s;cursor:pointer;font-family:'Manrope',sans-serif}
+.nav-item .nav-icon{font-size:20px;line-height:1}
+.nav-item.active{color:var(--accent)}
+.nav-item:hover{color:var(--text)}
+
+/* ═══════════════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════════════ */
+.sub-card{border-radius:16px;padding:22px;margin-bottom:16px;position:relative;overflow:hidden}
+.sub-card-active{background:linear-gradient(135deg,#111 0%,#161616 100%);border:1px solid rgba(34,197,94,0.25)}
+.sub-card-inactive{background:var(--card);border:1px solid var(--border)}
+.sub-status{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.status-dot.active{background:var(--green);box-shadow:0 0 6px var(--green)}
+.status-dot.inactive{background:var(--text-muted)}
+.status-label{font-weight:700;font-size:15px}
+.sub-server{font-size:15px;margin-bottom:4px;font-weight:600}
+.sub-expires{font-size:13px;color:var(--text-muted);margin-bottom:14px}
+.progress-bar-wrap{margin-bottom:16px}
+.progress-bar-track{height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--green);border-radius:3px;transition:width .5s ease}
+.progress-days{font-size:12px;color:var(--text-muted);margin-top:6px}
+.sub-actions{display:flex;gap:10px}
+.sub-actions .btn{flex:1;font-size:14px;padding:11px}
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.quick-btn{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text);transition:.2s}
+.quick-btn:hover{border-color:#333;transform:translateY(-2px)}
+.quick-btn .qicon{font-size:26px}
+
+/* ═══════════════════════════════════════════════
+   PAY SCREEN
+═══════════════════════════════════════════════ */
+.plan-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.plan-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:.2s;position:relative}
+.plan-card:hover{border-color:#333}
+.plan-card.selected{border-color:var(--accent);background:rgba(232,48,42,0.06)}
+.plan-badge{position:absolute;top:-10px;right:14px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.06em}
+.plan-name{font-family:'Bebas Neue',sans-serif;font-size:22px;margin-bottom:6px}
+.plan-prices{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.plan-rub{font-size:22px;font-weight:700;color:var(--text)}
+.plan-other{font-size:13px;color:var(--text-muted)}
+.server-section{margin-bottom:20px}
+.server-section-title{font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px}
+.server-grid{display:flex;gap:10px}
+.server-opt{flex:1;background:var(--card);border:2px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;font-size:15px;font-weight:600;transition:.2s}
+.server-opt:hover{border-color:#333}
+.server-opt.selected{border-color:var(--accent);background:rgba(232,48,42,0.06)}
+.pay-pending{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center}
+.pay-pending-title{font-size:18px;font-weight:700;margin-bottom:12px}
+.pay-pending-sub{color:var(--text-muted);font-size:14px;margin-bottom:20px}
+.pay-pending-actions{display:flex;flex-direction:column;gap:10px}
+.pay-status-row{display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;color:var(--text-muted);margin-top:12px}
+
+/* ═══════════════════════════════════════════════
+   KEY SCREEN
+═══════════════════════════════════════════════ */
+.key-box{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.key-url{font-size:13px;color:var(--text-muted);word-break:break-all;flex:1;font-family:monospace;line-height:1.5}
+.key-copy-btn{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.key-copy-btn:hover{background:rgba(255,255,255,0.1)}
+.clients-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.client-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;display:flex;align-items:center;gap:10px}
+.sub-meta{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.sub-meta-item{font-size:13px;color:var(--text-muted)}
+.sub-meta-item strong{color:var(--text);font-weight:600}
+
+/* ═══════════════════════════════════════════════
+   REFERRAL SCREEN
+═══════════════════════════════════════════════ */
+.ref-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.ref-stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center}
+.ref-stat-val{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--accent)}
+.ref-stat-label{font-size:12px;color:var(--text-muted);margin-top:2px}
+.ref-list{display:flex;flex-direction:column;gap:8px}
+.ref-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.ref-item-date{color:var(--text-muted);font-size:12px}
+
+/* ═══════════════════════════════════════════════
+   PROMO SCREEN
+═══════════════════════════════════════════════ */
+.promo-wrap{max-width:440px}
+.promo-result{padding:14px;border-radius:10px;font-size:14px;font-weight:600;margin-top:12px;display:none}
+.promo-result.ok{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#86efac}
+.promo-result.err{background:rgba(232,48,42,0.1);border:1px solid rgba(232,48,42,0.3);color:#ff6b6b}
+
+/* ═══════════════════════════════════════════════
+   TRIAL SCREEN
+═══════════════════════════════════════════════ */
+.trial-card{max-width:440px}
+.trial-highlight{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:12px;padding:16px;margin-bottom:20px;font-size:14px;color:#86efac;font-weight:500}
+
+/* Divider */
+.divider{height:1px;background:var(--border);margin:20px 0}
+
+/* Info rows */
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px}
+.info-row:last-child{border-bottom:none}
+.info-row-label{color:var(--text-muted)}
+.info-row-val{font-weight:600}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ─────────── SCREEN: AUTH ─────────── -->
+  <div id="screen-auth" class="screen">
+    <div class="auth-wrap">
+      <div class="auth-logo">
+        <div class="auth-logo-title">DOMINO <span>VPN</span></div>
+        <div class="auth-logo-sub">Личный кабинет</div>
+      </div>
+      <div class="auth-card">
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('login')">Войти</button>
+          <button class="tab" onclick="switchTab('register')">Создать аккаунт</button>
+        </div>
+        <div id="auth-error"></div>
+
+        <!-- Login -->
+        <div id="tab-login" class="tab-pane active">
+          <div class="form-group">
+            <label>Код аккаунта</label>
+            <input id="login-code" class="inp" type="text" placeholder="DMNO-XXXXXXXX" autocomplete="username" spellcheck="false">
+          </div>
+          <div class="form-group">
+            <label>Пароль</label>
+            <input id="login-pass" class="inp" type="password" placeholder="Ваш пароль" autocomplete="current-password">
+          </div>
+          <button class="btn btn-primary btn-full" id="btn-login" onclick="doLogin()">Войти</button>
+        </div>
+
+        <!-- Register -->
+        <div id="tab-register" class="tab-pane">
+          <div class="form-group">
+            <label>Пароль</label>
+            <input id="reg-pass" class="inp" type="password" placeholder="Придумайте пароль" autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label>Повторите пароль</label>
+            <input id="reg-pass2" class="inp" type="password" placeholder="Повторите пароль" autocomplete="new-password">
+          </div>
+          <button class="btn btn-primary btn-full" id="btn-register" onclick="doRegister()">Создать аккаунт</button>
+        </div>
+      </div>
+      <div class="auth-footer">
+        <a href="/">← На главную</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── SCREEN: REGISTER SUCCESS ─────────── -->
+  <div id="screen-register-success" class="screen">
+    <div class="success-wrap">
+      <div class="success-header">
+        <div class="success-icon">✅</div>
+        <div class="success-title">Аккаунт создан!</div>
+      </div>
+      <div class="warning-box">
+        <div class="warning-head">
+          <span class="icon">⚠️</span>
+          СОХРАНИ КОД АККАУНТА ПРЯМО СЕЙЧАС
+        </div>
+        <div class="code-block">
+          <div class="code-value" id="reg-code-display">DMNO-XXXXXXXX</div>
+          <button class="code-copy" onclick="copyCode()">📋 Копировать</button>
+        </div>
+        <div class="warning-text">
+          Этот код генерируется <strong>ОДИН РАЗ</strong> и не хранится на сервере в открытом виде.<br><br>
+          Без него восстановить доступ к аккаунту <strong>НЕВОЗМОЖНО</strong>.<br><br>
+          Сохрани его в заметках, менеджере паролей или запиши на бумаге.
+        </div>
+      </div>
+      <label class="checkbox-row">
+        <input type="checkbox" id="save-confirm-cb" onchange="updateContinueBtn()">
+        <span>Я сохранил(а) код аккаунта в надёжном месте</span>
+      </label>
+      <button class="btn btn-primary btn-full" id="btn-continue-reg" onclick="continueToDashboard()" disabled>
+        Войти в кабинет →
+      </button>
+    </div>
+  </div>
+
+  <!-- ─────────── SCREEN: DASHBOARD ─────────── -->
+  <div id="screen-dashboard" class="screen">
+    <div class="topbar">
+      <div class="topbar-logo">DOMINO <span>VPN</span></div>
+      <div class="topbar-right">
+        <button class="btn-ghost" onclick="doLogout()">Выйти</button>
+      </div>
+    </div>
+    <div class="content" id="dashboard-content">
+      <div class="spinner-page"><div class="spinner"></div></div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Главная</button>
+      <button class="nav-item" onclick="navigate('pay')"><span class="nav-icon">💳</span>Оплата</button>
+      <button class="nav-item" onclick="navigate('key')"><span class="nav-icon">🔑</span>Ключ</button>
+      <button class="nav-item" onclick="navigate('referral')"><span class="nav-icon">👥</span>Рефералы</button>
+    </nav>
+  </div>
+
+  <!-- ─────────── SCREEN: PAY ─────────── -->
+  <div id="screen-pay" class="screen">
+    <div class="topbar">
+      <div class="topbar-logo">DOMINO <span>VPN</span></div>
+      <div class="topbar-right">
+        <button class="btn-ghost" onclick="doLogout()">Выйти</button>
+      </div>
+    </div>
+    <div class="content" id="pay-content">
+      <div class="page-title">Оплата VPN</div>
+      <div id="pay-form-wrap">
+        <div class="plan-grid" id="plan-grid">
+          <div class="plan-card" data-plan="1month" onclick="selectPlan('1month')">
+            <div class="plan-name">1 месяц</div>
+            <div class="plan-prices">
+              <span class="plan-rub">149 ₽</span>
+              <span class="plan-other">130 ⭐ · 1.69 USDT</span>
+            </div>
+          </div>
+          <div class="plan-card selected" data-plan="3months" onclick="selectPlan('3months')">
+            <div class="plan-badge">ПОПУЛЯРНОЕ</div>
+            <div class="plan-name">3 месяца</div>
+            <div class="plan-prices">
+              <span class="plan-rub">349 ₽</span>
+              <span class="plan-other">270 ⭐ · 3.99 USDT</span>
+            </div>
+          </div>
+          <div class="plan-card" data-plan="6months" onclick="selectPlan('6months')">
+            <div class="plan-name">6 месяцев</div>
+            <div class="plan-prices">
+              <span class="plan-rub">599 ₽</span>
+              <span class="plan-other">420 ⭐ · 6.80 USDT</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="server-section">
+          <div class="server-section-title">Сервер</div>
+          <div class="server-grid">
+            <div class="server-opt selected" data-server="de" onclick="selectServer('de')">🇩🇪 Германия</div>
+            <div class="server-opt" data-server="se" onclick="selectServer('se')">🇸🇪 Швеция</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full" id="btn-pay" onclick="startPayment()">
+          Оплатить через СБП →
+        </button>
+      </div>
+
+      <div id="pay-pending-wrap" style="display:none">
+        <div class="pay-pending">
+          <div class="pay-pending-title">🏦 Оплата СБП</div>
+          <div class="pay-pending-sub">Перейдите к оплате и вернитесь, когда оплатите</div>
+          <div class="pay-pending-actions">
+            <a id="pay-open-link" href="#" target="_blank" class="btn btn-primary btn-full">Открыть страницу оплаты</a>
+            <button class="btn btn-secondary btn-full" onclick="checkPaymentManual()">✅ Я оплатил(а)</button>
+            <button class="btn-ghost" onclick="cancelPayment()">Отменить</button>
+          </div>
+          <div class="pay-status-row" id="pay-status-row">
+            <div class="spinner"></div>
+            <span>Ожидаем оплату...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-item" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Главная</button>
+      <button class="nav-item active" onclick="navigate('pay')"><span class="nav-icon">💳</span>Оплата</button>
+      <button class="nav-item" onclick="navigate('key')"><span class="nav-icon">🔑</span>Ключ</button>
+      <button class="nav-item" onclick="navigate('referral')"><span class="nav-icon">👥</span>Рефералы</button>
+    </nav>
+  </div>
+
+  <!-- ─────────── SCREEN: KEY ─────────── -->
+  <div id="screen-key" class="screen">
+    <div class="topbar">
+      <div class="topbar-logo">DOMINO <span>VPN</span></div>
+      <div class="topbar-right">
+        <button class="btn-ghost" onclick="doLogout()">Выйти</button>
+      </div>
+    </div>
+    <div class="content" id="key-content">
+      <div class="spinner-page"><div class="spinner"></div></div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-item" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Главная</button>
+      <button class="nav-item" onclick="navigate('pay')"><span class="nav-icon">💳</span>Оплата</button>
+      <button class="nav-item active" onclick="navigate('key')"><span class="nav-icon">🔑</span>Ключ</button>
+      <button class="nav-item" onclick="navigate('referral')"><span class="nav-icon">👥</span>Рефералы</button>
+    </nav>
+  </div>
+
+  <!-- ─────────── SCREEN: REFERRAL ─────────── -->
+  <div id="screen-referral" class="screen">
+    <div class="topbar">
+      <div class="topbar-logo">DOMINO <span>VPN</span></div>
+      <div class="topbar-right">
+        <button class="btn-ghost" onclick="doLogout()">Выйти</button>
+      </div>
+    </div>
+    <div class="content" id="referral-content">
+      <div class="spinner-page"><div class="spinner"></div></div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-item" onclick="navigate('dashboard')"><span class="nav-icon">🏠</span>Главная</button>
+      <button class="nav-item" onclick="navigate('pay')"><span class="nav-icon">💳</span>Оплата</button>
+      <button class="nav-item" onclick="navigate('key')"><span class="nav-icon">🔑</span>Ключ</button>
+      <button class="nav-item active" onclick="navigate('referral')"><span class="nav-icon">👥</span>Рефералы</button>
+    </nav>
+  </div>
+
+  <!-- ─────────── SCREEN: PROMO ─────────── -->
+  <div id="screen-promo" class="screen">
+    <div class="topbar">
+      <button class="btn-ghost" onclick="navigate('dashboard')">← Назад</button>
+      <div class="topbar-logo">DOMINO <span>VPN</span></div>
+      <div style="width:60px"></div>
+    </div>
+    <div class="content">
+      <div class="page-title">🎟 Промокод</div>
+      <div class="promo-wrap">
+        <div class="form-group">
+          <label>Введите промокод</label>
+          <input id="promo-input" class="inp" type="text" placeholder="Например: DOM2025" spellcheck="false">
+        </div>
+        <button class="btn btn-primary btn-full" id="btn-promo" onclick="applyPromo()">Применить</button>
+        <div class="promo-result" id="promo-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── SCREEN: TRIAL ─────────── -->
+  <div id="screen-trial" class="screen">
+    <div class="topbar">
+      <button class="btn-ghost" onclick="navigate('dashboard')">← Назад</button>
+      <div class="topbar-logo">DOMINO <span>VPN</span></div>
+      <div style="width:60px"></div>
+    </div>
+    <div class="content">
+      <div class="page-title">🎁 Пробный период</div>
+      <div class="trial-card">
+        <div class="trial-highlight">
+          🎉 3 дня бесплатно — без карты и личных данных
+        </div>
+        <div class="server-section">
+          <div class="server-section-title">Выберите сервер</div>
+          <div class="server-grid">
+            <div class="server-opt selected" data-server="de" id="trial-srv-de" onclick="selectTrialServer('de')">🇩🇪 Германия</div>
+            <div class="server-opt" data-server="se" id="trial-srv-se" onclick="selectTrialServer('se')">🇸🇪 Швеция</div>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-full" id="btn-trial" onclick="activateTrial()">
+          Активировать 3 дня бесплатно
+        </button>
+        <div style="margin-top:14px;font-size:13px;color:var(--text-muted)">
+          После активации вы получите ключ подписки — вставьте его в любой VLESS-клиент.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast container -->
+<div id="toast-wrap"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let currentScreen = 'auth'
+let currentUser = null   // {user_id, account_code, trial_used, sub}
+let selectedPlan = '3months'
+let selectedServer = 'de'
+let selectedTrialServer = 'de'
+let paymentId = null
+let pollTimer = null
+let newAccountCode = null
+let newToken = null
+
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
+const token = () => localStorage.getItem('dmn_token')
+const setToken = (t) => localStorage.setItem('dmn_token', t)
+const clearToken = () => localStorage.removeItem('dmn_token')
+
+function showToast(msg, type = '') {
+  const wrap = document.getElementById('toast-wrap')
+  const el = document.createElement('div')
+  el.className = 'toast' + (type ? ' ' + type : '')
+  el.textContent = msg
+  wrap.appendChild(el)
+  setTimeout(() => el.remove(), 3000)
+}
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text)
+    showToast('Скопировано!', 'success')
+  } catch {
+    showToast('Не удалось скопировать', 'error')
+  }
+}
+
+function formatDate(s) {
+  if (!s) return '—'
+  const d = new Date(s.replace(' ', 'T') + 'Z')
+  return d.toLocaleDateString('ru-RU', {day:'2-digit',month:'2-digit',year:'numeric'})
+}
+
+async function api(method, path, body) {
+  const opts = {
+    method,
+    headers: {'Content-Type': 'application/json'}
+  }
+  if (token()) opts.headers['Authorization'] = 'Bearer ' + token()
+  if (body) opts.body = JSON.stringify(body)
+  const res = await fetch('/api' + path, opts)
+  if (res.status === 401) {
+    clearToken()
+    showScreen('auth')
+    return null
+  }
+  return res.json()
+}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'))
+  const el = document.getElementById('screen-' + name)
+  if (el) {
+    el.classList.add('active')
+    currentScreen = name
+  }
+}
+
+function updateNavActive(name) {
+  document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => btn.classList.remove('active'))
+  const screenEl = document.getElementById('screen-' + name)
+  if (screenEl) {
+    const navBtns = screenEl.querySelectorAll('.nav-item')
+    navBtns.forEach(btn => {
+      if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + name + "'")) {
+        btn.classList.add('active')
+      }
+    })
+  }
+}
+
+async function navigate(screen) {
+  stopPoll()
+  showScreen(screen)
+  updateNavActive(screen)
+  window.location.hash = screen
+
+  if (screen === 'dashboard') await loadDashboard()
+  else if (screen === 'key') await loadKey()
+  else if (screen === 'referral') await loadReferral()
+  else if (screen === 'pay') resetPayScreen()
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+async function init() {
+  const t = token()
+  if (!t) {
+    showScreen('auth')
+    return
+  }
+  const data = await api('GET', '/me')
+  if (!data || data.error) {
+    clearToken()
+    showScreen('auth')
+    return
+  }
+  currentUser = data
+  const hash = (window.location.hash || '').replace('#', '') || 'dashboard'
+  const validScreens = ['dashboard','pay','key','referral','promo','trial']
+  navigate(validScreens.includes(hash) ? hash : 'dashboard')
+}
+
+window.addEventListener('hashchange', () => {
+  const hash = window.location.hash.replace('#', '')
+  const validScreens = ['dashboard','pay','key','referral','promo','trial']
+  if (validScreens.includes(hash) && token()) navigate(hash)
+})
+
+// ═══════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'))
+  document.querySelector(`.tab[onclick="switchTab('${tab}')"]`).classList.add('active')
+  document.getElementById('tab-' + tab).classList.add('active')
+  clearAuthError()
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error')
+  el.textContent = msg
+  el.style.display = 'block'
+}
+function clearAuthError() {
+  const el = document.getElementById('auth-error')
+  el.style.display = 'none'
+  el.textContent = ''
+}
+
+async function doLogin() {
+  clearAuthError()
+  const code = document.getElementById('login-code').value.trim().toUpperCase()
+  const pass = document.getElementById('login-pass').value
+  if (!code || !pass) { showAuthError('Введите код и пароль'); return }
+
+  const btn = document.getElementById('btn-login')
+  btn.disabled = true
+  btn.innerHTML = '<div class="spinner"></div>'
+
+  const data = await fetch('/api/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({account_code: code, password: pass})
+  }).then(r => r.json()).catch(() => null)
+
+  btn.disabled = false
+  btn.textContent = 'Войти'
+
+  if (!data || data.error) {
+    showAuthError(data?.error || 'Ошибка входа')
+    return
+  }
+
+  setToken(data.token)
+  const me = await api('GET', '/me')
+  if (me && !me.error) {
+    currentUser = me
+    navigate('dashboard')
+  }
+}
+
+async function doRegister() {
+  clearAuthError()
+  const pass = document.getElementById('reg-pass').value
+  const pass2 = document.getElementById('reg-pass2').value
+  if (!pass) { showAuthError('Введите пароль'); return }
+  if (pass.length < 6) { showAuthError('Пароль минимум 6 символов'); return }
+  if (pass !== pass2) { showAuthError('Пароли не совпадают'); return }
+
+  const btn = document.getElementById('btn-register')
+  btn.disabled = true
+  btn.innerHTML = '<div class="spinner"></div>'
+
+  const data = await fetch('/api/register', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({password: pass})
+  }).then(r => r.json()).catch(() => null)
+
+  btn.disabled = false
+  btn.textContent = 'Создать аккаунт'
+
+  if (!data || data.error) {
+    showAuthError(data?.error || 'Ошибка регистрации')
+    return
+  }
+
+  newAccountCode = data.account_code
+  newToken = data.token
+  document.getElementById('reg-code-display').textContent = data.account_code
+  document.getElementById('save-confirm-cb').checked = false
+  document.getElementById('btn-continue-reg').disabled = true
+  showScreen('register-success')
+}
+
+function updateContinueBtn() {
+  const checked = document.getElementById('save-confirm-cb').checked
+  document.getElementById('btn-continue-reg').disabled = !checked
+}
+
+async function copyCode() {
+  await copyText(newAccountCode || document.getElementById('reg-code-display').textContent)
+}
+
+async function continueToDashboard() {
+  if (!newToken) { showScreen('auth'); return }
+  setToken(newToken)
+  const me = await api('GET', '/me')
+  if (me && !me.error) {
+    currentUser = me
+    navigate('dashboard')
+  }
+}
+
+function doLogout() {
+  clearToken()
+  currentUser = null
+  stopPoll()
+  showScreen('auth')
+  window.location.hash = ''
+}
+
+// ═══════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════
+async function loadDashboard() {
+  const el = document.getElementById('dashboard-content')
+  el.innerHTML = '<div class="spinner-page"><div class="spinner"></div></div>'
+
+  const data = await api('GET', '/me')
+  if (!data) return
+  currentUser = data
+
+  const sub = data.sub
+  let html = ''
+
+  if (sub) {
+    const exp = new Date(sub.expires_at.replace(' ', 'T') + 'Z')
+    const now = new Date()
+    const total = 30 * 24 * 3600 * 1000 // approx
+    const remaining = Math.max(0, exp - now)
+    const pct = Math.min(100, Math.round(remaining / total * 100))
+
+    html += `
+    <div class="sub-card sub-card-active">
+      <div class="sub-status">
+        <div class="status-dot active"></div>
+        <div class="status-label">Подписка активна</div>
+      </div>
+      <div class="sub-server">${sub.server_name}</div>
+      <div class="sub-expires">До: ${formatDate(sub.expires_at)} UTC</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="progress-days">${sub.days_left} дней осталось</div>
+      </div>
+      <div class="sub-actions">
+        <button class="btn btn-secondary" onclick="navigate('key')">🔑 Ключ</button>
+        <button class="btn btn-primary" onclick="navigate('pay')">🔄 Продлить</button>
+      </div>
+    </div>`
+  } else {
+    html += `
+    <div class="sub-card sub-card-inactive">
+      <div class="sub-status">
+        <div class="status-dot inactive"></div>
+        <div class="status-label">Нет активной подписки</div>
+      </div>
+      ${!data.trial_used ? `<button class="btn btn-secondary btn-full" style="margin-bottom:10px" onclick="navigate('trial')">🆓 Попробовать 3 дня бесплатно</button>` : ''}
+      <button class="btn btn-primary btn-full" onclick="navigate('pay')">💳 Купить VPN</button>
+    </div>`
+  }
+
+  html += `<div class="quick-actions">
+    <button class="quick-btn" onclick="navigate('key')"><span class="qicon">🔑</span>Мой ключ</button>
+    <button class="quick-btn" onclick="navigate('referral')"><span class="qicon">👥</span>Рефералы</button>
+    <button class="quick-btn" onclick="navigate('promo')"><span class="qicon">🎟</span>Промокод</button>
+    <button class="quick-btn" onclick="navigate('pay')"><span class="qicon">💳</span>Купить / Продлить</button>
+  </div>`
+
+  el.innerHTML = html
+}
+
+// ═══════════════════════════════════════════════
+// KEY SCREEN
+// ═══════════════════════════════════════════════
+async function loadKey() {
+  const el = document.getElementById('key-content')
+  el.innerHTML = '<div class="spinner-page"><div class="spinner"></div></div>'
+
+  const data = await api('GET', '/key')
+  if (!data) return
+
+  if (data.error) {
+    el.innerHTML = `
+      <div class="page-title">🔑 VPN Ключ</div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:42px;margin-bottom:12px">🔐</div>
+        <div style="font-weight:600;margin-bottom:8px">У вас нет активной подписки</div>
+        <div style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Активируйте пробный период или купите подписку</div>
+        <button class="btn btn-primary btn-full" onclick="navigate('pay')">💳 Купить VPN</button>
+        ${currentUser && !currentUser.trial_used ? `<button class="btn btn-secondary btn-full" style="margin-top:10px" onclick="navigate('trial')">🆓 3 дня бесплатно</button>` : ''}
+      </div>`
+    return
+  }
+
+  el.innerHTML = `
+    <div class="page-title">🔑 VPN Ключ</div>
+    <div class="sub-meta">
+      <div class="sub-meta-item">Сервер: <strong>${data.server_name}</strong></div>
+      <div class="sub-meta-item">До: <strong>${formatDate(data.expires_at)} UTC</strong></div>
+    </div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em">Subscription ссылка</div>
+    <div class="key-box">
+      <div class="key-url">${data.sub_url}</div>
+      <button class="key-copy-btn" onclick="copyText('${data.sub_url.replace(/'/g,"\\'")}')">📋</button>
+    </div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px">Вставьте ссылку в VPN-клиент:</div>
+    <div class="clients-list">
+      <div class="client-item">🤖 <strong>Android</strong> — v2rayNG / Hiddify</div>
+      <div class="client-item">🍎 <strong>iOS / macOS</strong> — Hiddify / Streisand</div>
+      <div class="client-item">🖥 <strong>Windows</strong> — Hiddify / v2rayN</div>
+      <div class="client-item">💻 <strong>macOS</strong> — FoXray / Hiddify</div>
+    </div>
+    <div style="margin-top:20px">
+      <button class="btn btn-secondary btn-full" onclick="navigate('pay')">🔄 Продлить подписку</button>
+    </div>`
+}
+
+// ═══════════════════════════════════════════════
+// REFERRAL SCREEN
+// ═══════════════════════════════════════════════
+async function loadReferral() {
+  const el = document.getElementById('referral-content')
+  el.innerHTML = '<div class="spinner-page"><div class="spinner"></div></div>'
+
+  const data = await api('GET', '/referral')
+  if (!data) return
+
+  if (data.error) {
+    el.innerHTML = `<div class="page-title">👥 Рефералы</div><div class="card">${data.error}</div>`
+    return
+  }
+
+  const bonusDays = (data.count || 0) * 3
+  let refListHtml = ''
+  if (data.referrals && data.referrals.length > 0) {
+    data.referrals.forEach(r => {
+      const d = r.created_at ? r.created_at.slice(0, 10) : ''
+      refListHtml += `<div class="ref-item"><span>${r.name}</span><span class="ref-item-date">${d}</span></div>`
+    })
+  } else {
+    refListHtml = '<div style="color:var(--text-muted);font-size:14px;text-align:center;padding:20px 0">Пока нет приглашённых друзей</div>'
+  }
+
+  el.innerHTML = `
+    <div class="page-title">👥 Рефералы</div>
+    <div class="ref-stats">
+      <div class="ref-stat"><div class="ref-stat-val">${data.count || 0}</div><div class="ref-stat-label">Приглашено</div></div>
+      <div class="ref-stat"><div class="ref-stat-val">+${bonusDays}</div><div class="ref-stat-label">Бонус дней</div></div>
+    </div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em">Ваша реферальная ссылка</div>
+    <div class="key-box" style="margin-bottom:16px">
+      <div class="key-url">${data.link}</div>
+      <button class="key-copy-btn" onclick="copyText('${data.link.replace(/'/g,"\\'")}')">📋</button>
+    </div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;font-weight:600">
+      +3 дня к подписке за каждого приглашённого!
+    </div>
+    <div class="ref-list">${refListHtml}</div>`
+}
+
+// ═══════════════════════════════════════════════
+// PAY SCREEN
+// ═══════════════════════════════════════════════
+function selectPlan(plan) {
+  selectedPlan = plan
+  document.querySelectorAll('#plan-grid .plan-card').forEach(c => c.classList.remove('selected'))
+  const card = document.querySelector(`#plan-grid .plan-card[data-plan="${plan}"]`)
+  if (card) card.classList.add('selected')
+}
+
+function selectServer(srv) {
+  selectedServer = srv
+  document.querySelectorAll('#pay-form-wrap .server-opt').forEach(o => o.classList.remove('selected'))
+  const found = document.querySelector(`#pay-form-wrap .server-opt[data-server="${srv}"]`)
+  if (found) found.classList.add('selected')
+}
+
+function resetPayScreen() {
+  stopPoll()
+  paymentId = null
+  document.getElementById('pay-form-wrap').style.display = 'block'
+  document.getElementById('pay-pending-wrap').style.display = 'none'
+  document.getElementById('pay-status-row').innerHTML = '<div class="spinner"></div><span>Ожидаем оплату...</span>'
+}
+
+async function startPayment() {
+  const btn = document.getElementById('btn-pay')
+  btn.disabled = true
+  btn.innerHTML = '<div class="spinner"></div> Создаём платёж...'
+
+  const data = await api('POST', '/pay', {plan_key: selectedPlan, server: selectedServer})
+
+  btn.disabled = false
+  btn.textContent = 'Оплатить через СБП →'
+
+  if (!data || data.error) {
+    showToast(data?.error || 'Ошибка создания платежа', 'error')
+    return
+  }
+
+  paymentId = data.payment_id
+  document.getElementById('pay-open-link').href = data.pay_url
+
+  document.getElementById('pay-form-wrap').style.display = 'none'
+  document.getElementById('pay-pending-wrap').style.display = 'block'
+
+  startPoll()
+}
+
+function startPoll() {
+  stopPoll()
+  pollTimer = setInterval(pollPayment, 3000)
+}
+function stopPoll() {
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null }
+}
+
+async function pollPayment() {
+  if (!paymentId) return
+  const data = await api('GET', '/pay-check?id=' + paymentId)
+  if (!data) return
+
+  if (data.status === 'succeeded' && data.activated) {
+    stopPoll()
+    paymentId = null
+    document.getElementById('pay-status-row').innerHTML = '<span style="color:#86efac">✅ Оплата прошла!</span>'
+    showToast('✅ Оплата прошла! Подписка активирована.', 'success')
+    setTimeout(() => navigate('key'), 1500)
+  } else if (data.status === 'canceled') {
+    stopPoll()
+    document.getElementById('pay-status-row').innerHTML = '<span style="color:#ff6b6b">❌ Платёж отменён</span>'
+    showToast('Платёж был отменён', 'error')
+    setTimeout(() => resetPayScreen(), 2000)
+  }
+}
+
+async function checkPaymentManual() {
+  if (!paymentId) return
+  const data = await api('GET', '/pay-check?id=' + paymentId)
+  if (!data) return
+
+  if (data.status === 'succeeded' && data.activated) {
+    stopPoll()
+    showToast('✅ Оплата подтверждена!', 'success')
+    navigate('key')
+  } else {
+    showToast('Оплата ещё не поступила, подождите', 'error')
+  }
+}
+
+function cancelPayment() {
+  stopPoll()
+  paymentId = null
+  resetPayScreen()
+}
+
+// ═══════════════════════════════════════════════
+// PROMO
+// ═══════════════════════════════════════════════
+async function applyPromo() {
+  const code = document.getElementById('promo-input').value.trim()
+  if (!code) { showToast('Введите промокод', 'error'); return }
+
+  const btn = document.getElementById('btn-promo')
+  const result = document.getElementById('promo-result')
+  result.style.display = 'none'
+  btn.disabled = true
+  btn.innerHTML = '<div class="spinner"></div>'
+
+  const data = await api('POST', '/promo', {code})
+
+  btn.disabled = false
+  btn.textContent = 'Применить'
+
+  if (!data) return
+
+  result.style.display = 'block'
+  if (data.success) {
+    result.className = 'promo-result ok'
+    result.textContent = `✅ +${data.days} дней добавлено к подписке!`
+    document.getElementById('promo-input').value = ''
+  } else {
+    result.className = 'promo-result err'
+    result.textContent = '❌ ' + (data.error || 'Промокод недействителен')
+  }
+}
+
+// ═══════════════════════════════════════════════
+// TRIAL
+// ═══════════════════════════════════════════════
+function selectTrialServer(srv) {
+  selectedTrialServer = srv
+  document.querySelectorAll('#screen-trial .server-opt').forEach(o => o.classList.remove('selected'))
+  const found = document.querySelector(`#screen-trial .server-opt[data-server="${srv}"]`)
+  if (found) found.classList.add('selected')
+}
+
+async function activateTrial() {
+  const btn = document.getElementById('btn-trial')
+  btn.disabled = true
+  btn.innerHTML = '<div class="spinner"></div> Активируем...'
+
+  const data = await api('POST', '/trial', {server: selectedTrialServer})
+
+  btn.disabled = false
+  btn.textContent = 'Активировать 3 дня бесплатно'
+
+  if (!data) return
+
+  if (data.error) {
+    showToast(data.error === 'Trial already used' ? 'Пробный период уже использован' : data.error, 'error')
+    return
+  }
+
+  if (data.success) {
+    showToast('🎉 Пробный период активирован!', 'success')
+    const me = await api('GET', '/me')
+    if (me) currentUser = me
+    navigate('key')
+  }
+}
+
+// ═══════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (currentScreen === 'auth') {
+      const loginActive = document.getElementById('tab-login').classList.contains('active')
+      if (loginActive) doLogin()
+      else doRegister()
+    }
+  }
+})
+
+init()
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "rewrites": [
+    { "source": "/api/register",   "destination": "/api/register.js" },
+    { "source": "/api/login",      "destination": "/api/login.js" },
+    { "source": "/api/me",         "destination": "/api/me.js" },
+    { "source": "/api/pay",        "destination": "/api/pay.js" },
+    { "source": "/api/pay-check",  "destination": "/api/pay-check.js" },
+    { "source": "/api/trial",      "destination": "/api/trial.js" },
+    { "source": "/api/promo",      "destination": "/api/promo.js" },
+    { "source": "/api/key",        "destination": "/api/key.js" },
+    { "source": "/api/referral",   "destination": "/api/referral.js" }
+  ]
+}
