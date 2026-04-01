@@ -1,7 +1,7 @@
 import { SignJWT } from 'jose'
 import { vpsCall } from './_vps.js'
 
-const JWT_SECRET = "domino-jwt-y8h3s1f4d7a2e5g0n9m6k3w1"
+const JWT_SECRET = process.env.JWT_SECRET || "domino-jwt-y8h3s1f4d7a2e5g0n9m6k3w1"
 const secret = new TextEncoder().encode(JWT_SECRET)
 
 function setCorsHeaders(res) {
