@@ -211,6 +211,38 @@ input{font-family:'Manrope',sans-serif}
 .info-row:last-child{border-bottom:none}
 .info-row-label{color:var(--text-muted)}
 .info-row-val{font-weight:600}
+
+/* ── Skeleton loading ── */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:400px 100%;animation:shimmer 1.4s infinite;border-radius:8px}
+.skel-line{height:14px;margin-bottom:10px}
+.skel-line.wide{width:100%}
+.skel-line.mid{width:65%}
+.skel-line.short{width:40%}
+.skel-card{height:120px;border-radius:16px;margin-bottom:16px}
+
+/* ── Screen transitions ── */
+.screen.active{animation:fadeIn .18s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Settings screen ── */
+.settings-section{margin-bottom:24px}
+.settings-section-title{font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px}
+.settings-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:.2s;margin-bottom:8px}
+.settings-item:hover{border-color:#333;transform:translateX(2px)}
+.settings-item-left{display:flex;align-items:center;gap:12px}
+.settings-item-icon{font-size:20px;width:32px;text-align:center}
+.settings-item-text{font-size:14px;font-weight:600}
+.settings-item-sub{font-size:12px;color:var(--text-muted);margin-top:2px}
+.settings-item-arrow{color:var(--text-muted);font-size:18px}
+
+/* ── Telegram link badge ── */
+.tg-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:#86efac}
+.tg-badge-unlinked{background:rgba(255,255,255,0.05);border-color:var(--border);color:var(--text-muted)}
+
+/* ── Code input (6-char) ── */
+.code-inp{width:100%;background:var(--card2);border:2px solid var(--border);color:var(--text);border-radius:12px;padding:16px;font-size:28px;font-family:'Bebas Neue',sans-serif;letter-spacing:0.2em;text-align:center;outline:none;transition:.2s;text-transform:uppercase}
+.code-inp:focus{border-color:rgba(232,48,42,0.5);box-shadow:0 0 0 3px rgba(232,48,42,0.1)}
 </style>
 </head>
 <body>
@@ -299,6 +331,7 @@ input{font-family:'Manrope',sans-serif}
     <div class="topbar">
       <div class="topbar-logo">DOMINO <span>VPN</span></div>
       <div class="topbar-right">
+        <button class="btn-ghost" onclick="navigate('settings')" title="Настройки">⚙️</button>
         <button class="btn-ghost" onclick="doLogout()">Выйти</button>
       </div>
     </div>
@@ -444,6 +477,121 @@ input{font-family:'Manrope',sans-serif}
     </div>
   </div>
 
+  <!-- ─────────── SCREEN: SETTINGS ─────────── -->
+  <div id="screen-settings" class="screen">
+    <div class="topbar">
+      <button class="btn-ghost" onclick="navigate('dashboard')">← Назад</button>
+      <div class="topbar-logo">DOMINO <span>VPN</span></div>
+      <div style="width:60px"></div>
+    </div>
+    <div class="content">
+      <div class="page-title">⚙️ Настройки</div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Аккаунт</div>
+        <div class="settings-item" onclick="navigate('change-password')">
+          <div class="settings-item-left">
+            <span class="settings-item-icon">🔒</span>
+            <div>
+              <div class="settings-item-text">Сменить пароль</div>
+              <div class="settings-item-sub">Изменить пароль кабинета</div>
+            </div>
+          </div>
+          <span class="settings-item-arrow">›</span>
+        </div>
+        <div class="settings-item" onclick="navigate('link-telegram')">
+          <div class="settings-item-left">
+            <span class="settings-item-icon">✈️</span>
+            <div>
+              <div class="settings-item-text">Привязать Telegram</div>
+              <div class="settings-item-sub" id="tg-link-status">Не привязан</div>
+            </div>
+          </div>
+          <span class="settings-item-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Информация</div>
+        <div class="card" style="font-size:13px">
+          <div class="info-row"><span class="info-row-label">Код аккаунта</span><span class="info-row-val" id="settings-code" style="font-size:12px;letter-spacing:0.05em">—</span></div>
+          <div class="info-row"><span class="info-row-label">Аккаунт создан</span><span class="info-row-val" id="settings-date">—</span></div>
+          <div class="info-row"><span class="info-row-label">Telegram</span><span id="settings-tg-badge">—</span></div>
+        </div>
+      </div>
+
+      <button class="btn btn-secondary btn-full" style="margin-top:8px;color:#ff6b6b;border-color:rgba(232,48,42,0.3)" onclick="doLogout()">
+        Выйти из аккаунта
+      </button>
+    </div>
+  </div>
+
+  <!-- ─────────── SCREEN: CHANGE PASSWORD ─────────── -->
+  <div id="screen-change-password" class="screen">
+    <div class="topbar">
+      <button class="btn-ghost" onclick="navigate('settings')">← Назад</button>
+      <div class="topbar-logo">DOMINO <span>VPN</span></div>
+      <div style="width:60px"></div>
+    </div>
+    <div class="content">
+      <div class="page-title">🔒 Смена пароля</div>
+      <div style="max-width:440px">
+        <div class="form-group">
+          <label>Текущий пароль</label>
+          <input id="cp-old" class="inp" type="password" placeholder="Введите текущий пароль">
+        </div>
+        <div class="form-group">
+          <label>Новый пароль</label>
+          <input id="cp-new" class="inp" type="password" placeholder="Минимум 6 символов">
+        </div>
+        <div class="form-group">
+          <label>Повторите новый пароль</label>
+          <input id="cp-new2" class="inp" type="password" placeholder="Повторите новый пароль">
+        </div>
+        <div class="promo-result" id="cp-result"></div>
+        <button class="btn btn-primary btn-full" style="margin-top:4px" id="btn-cp" onclick="changePassword()">
+          Сохранить пароль
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── SCREEN: LINK TELEGRAM ─────────── -->
+  <div id="screen-link-telegram" class="screen">
+    <div class="topbar">
+      <button class="btn-ghost" onclick="navigate('settings')">← Назад</button>
+      <div class="topbar-logo">DOMINO <span>VPN</span></div>
+      <div style="width:60px"></div>
+    </div>
+    <div class="content">
+      <div class="page-title">✈️ Привязать Telegram</div>
+      <div style="max-width:440px">
+        <div class="trial-highlight" style="margin-bottom:20px">
+          Привяжи Telegram — и твоя VPN-подписка из бота будет видна в кабинете.
+        </div>
+
+        <div class="card" style="margin-bottom:20px">
+          <div style="font-weight:700;margin-bottom:10px">Как получить код:</div>
+          <div style="font-size:14px;color:var(--text-muted);line-height:1.8">
+            1. Открой бот <a href="https://t.me/DominoVPN_bot" target="_blank" style="color:var(--accent)">@DominoVPN_bot</a><br>
+            2. Отправь команду <code style="background:var(--card2);padding:2px 6px;border-radius:4px">/weblogin</code><br>
+            3. Скопируй 6-значный код<br>
+            4. Введи его ниже
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Код из бота</label>
+          <input id="tg-code-inp" class="code-inp" type="text" placeholder="A1B2C3" maxlength="6" spellcheck="false" oninput="this.value=this.value.toUpperCase()">
+        </div>
+        <div class="promo-result" id="tg-link-result"></div>
+        <button class="btn btn-primary btn-full" style="margin-top:4px" id="btn-tg-link" onclick="linkTelegram()">
+          Привязать аккаунт
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ─────────── SCREEN: TRIAL ─────────── -->
   <div id="screen-trial" class="screen">
     <div class="topbar">
@@ -575,6 +723,9 @@ async function navigate(screen) {
   else if (screen === 'key') await loadKey()
   else if (screen === 'referral') await loadReferral()
   else if (screen === 'pay') resetPayScreen()
+  else if (screen === 'settings') loadSettings()
+  else if (screen === 'change-password') resetChangePassword()
+  else if (screen === 'link-telegram') resetLinkTelegram()
 }
 
 // ═══════════════════════════════════════════════
@@ -594,13 +745,13 @@ async function init() {
   }
   currentUser = data
   const hash = (window.location.hash || '').replace('#', '') || 'dashboard'
-  const validScreens = ['dashboard','pay','key','referral','promo','trial']
+  const validScreens = ['dashboard','pay','key','referral','promo','trial','settings','change-password','link-telegram']
   navigate(validScreens.includes(hash) ? hash : 'dashboard')
 }
 
 window.addEventListener('hashchange', () => {
   const hash = window.location.hash.replace('#', '')
-  const validScreens = ['dashboard','pay','key','referral','promo','trial']
+  const validScreens = ['dashboard','pay','key','referral','promo','trial','settings','change-password','link-telegram']
   if (validScreens.includes(hash) && token()) navigate(hash)
 })
 
@@ -724,7 +875,14 @@ function doLogout() {
 // ═══════════════════════════════════════════════
 async function loadDashboard() {
   const el = document.getElementById('dashboard-content')
-  el.innerHTML = '<div class="spinner-page"><div class="spinner"></div></div>'
+  el.innerHTML = `
+    <div class="skeleton skel-card"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="skeleton skel-card" style="height:90px"></div>
+      <div class="skeleton skel-card" style="height:90px"></div>
+      <div class="skeleton skel-card" style="height:90px"></div>
+      <div class="skeleton skel-card" style="height:90px"></div>
+    </div>`
 
   const data = await api('GET', '/me')
   if (!data) return
@@ -786,7 +944,7 @@ async function loadDashboard() {
 // ═══════════════════════════════════════════════
 async function loadKey() {
   const el = document.getElementById('key-content')
-  el.innerHTML = '<div class="spinner-page"><div class="spinner"></div></div>'
+  el.innerHTML = `<div class="skeleton skel-line wide"></div><div class="skeleton skel-card"></div><div class="skeleton skel-line mid"></div><div class="skeleton skel-line short"></div>`
 
   const data = await api('GET', '/key')
   if (!data) return
@@ -1029,6 +1187,107 @@ async function activateTrial() {
     const me = await api('GET', '/me')
     if (me) currentUser = me
     navigate('key')
+  }
+}
+
+// ═══════════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════════
+function loadSettings() {
+  if (!currentUser) return
+  document.getElementById('settings-code').textContent = currentUser.account_code || '—'
+  document.getElementById('settings-date').textContent = currentUser.created_at
+    ? currentUser.created_at.slice(0, 10) : '—'
+
+  const tgBadge = document.getElementById('settings-tg-badge')
+  const tgSub = document.getElementById('tg-link-status')
+  if (currentUser.telegram_linked) {
+    tgBadge.innerHTML = '<span class="tg-badge">✅ Привязан</span>'
+    if (tgSub) tgSub.textContent = 'Аккаунт привязан'
+  } else {
+    tgBadge.innerHTML = '<span class="tg-badge tg-badge-unlinked">Не привязан</span>'
+    if (tgSub) tgSub.textContent = 'Нажмите чтобы привязать'
+  }
+}
+
+// ═══════════════════════════════════════════════
+// CHANGE PASSWORD
+// ═══════════════════════════════════════════════
+function resetChangePassword() {
+  document.getElementById('cp-old').value = ''
+  document.getElementById('cp-new').value = ''
+  document.getElementById('cp-new2').value = ''
+  const r = document.getElementById('cp-result')
+  r.style.display = 'none'
+  r.textContent = ''
+}
+
+async function changePassword() {
+  const oldPw = document.getElementById('cp-old').value
+  const newPw = document.getElementById('cp-new').value
+  const newPw2 = document.getElementById('cp-new2').value
+  const result = document.getElementById('cp-result')
+
+  result.style.display = 'none'
+  if (!oldPw || !newPw) { showToast('Заполните все поля', 'error'); return }
+  if (newPw.length < 6) { showToast('Новый пароль минимум 6 символов', 'error'); return }
+  if (newPw !== newPw2) { showToast('Пароли не совпадают', 'error'); return }
+
+  const btn = document.getElementById('btn-cp')
+  btn.disabled = true
+  btn.innerHTML = '<div class="spinner"></div>'
+
+  const data = await api('POST', '/change-password', { old_password: oldPw, new_password: newPw })
+
+  btn.disabled = false
+  btn.textContent = 'Сохранить пароль'
+
+  result.style.display = 'block'
+  if (data && data.success) {
+    result.className = 'promo-result ok'
+    result.textContent = '✅ Пароль успешно изменён!'
+    setTimeout(() => navigate('settings'), 1500)
+  } else {
+    result.className = 'promo-result err'
+    result.textContent = '❌ ' + (data?.error || 'Ошибка смены пароля')
+  }
+}
+
+// ═══════════════════════════════════════════════
+// LINK TELEGRAM
+// ═══════════════════════════════════════════════
+function resetLinkTelegram() {
+  document.getElementById('tg-code-inp').value = ''
+  const r = document.getElementById('tg-link-result')
+  r.style.display = 'none'
+  r.textContent = ''
+}
+
+async function linkTelegram() {
+  const code = document.getElementById('tg-code-inp').value.trim().toUpperCase()
+  const result = document.getElementById('tg-link-result')
+  result.style.display = 'none'
+
+  if (code.length !== 6) { showToast('Введите 6-значный код', 'error'); return }
+
+  const btn = document.getElementById('btn-tg-link')
+  btn.disabled = true
+  btn.innerHTML = '<div class="spinner"></div>'
+
+  const data = await api('POST', '/link-telegram', { code })
+
+  btn.disabled = false
+  btn.textContent = 'Привязать аккаунт'
+
+  result.style.display = 'block'
+  if (data && data.success) {
+    result.className = 'promo-result ok'
+    result.textContent = '✅ Telegram успешно привязан!'
+    currentUser = data
+    setTimeout(() => navigate('dashboard'), 1500)
+  } else {
+    result.className = 'promo-result err'
+    result.textContent = '❌ ' + (data?.error || 'Неверный или истёкший код')
   }
 }
 

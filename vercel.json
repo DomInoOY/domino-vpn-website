@@ -8,6 +8,8 @@
     { "source": "/api/trial",      "destination": "/api/trial.js" },
     { "source": "/api/promo",      "destination": "/api/promo.js" },
     { "source": "/api/key",        "destination": "/api/key.js" },
-    { "source": "/api/referral",   "destination": "/api/referral.js" }
+    { "source": "/api/referral",         "destination": "/api/referral.js" },
+    { "source": "/api/change-password",  "destination": "/api/change-password.js" },
+    { "source": "/api/link-telegram",    "destination": "/api/link-telegram.js" }
   ]
 }
