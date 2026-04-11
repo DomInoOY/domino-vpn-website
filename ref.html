@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domino VPN — Присоединяйся</title>
+<meta name="theme-color" content="#080808">
+<meta property="og:title" content="Domino VPN — Тебя пригласили!">
+<meta property="og:description" content="Быстрый VPN с 3 днями бесплатно. Сервера в Германии и Швеции.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--card:#111111;--card2:#161616;--accent:#E8302A;--text:#F0EDE8;
+  --text-muted:#999;--border:rgba(255,255,255,0.08);--green:#22c55e;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4}
+.wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:32px 20px 48px;max-width:480px;margin:0 auto}
+.logo{text-align:center;margin-bottom:32px}
+.logo-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:0.08em;line-height:1}
+.logo-title span{color:var(--accent)}
+.logo-sub{color:var(--text-muted);font-size:15px;margin-top:6px}
+
+/* Invite banner */
+.invite-banner{width:100%;background:linear-gradient(135deg,rgba(232,48,42,0.12),rgba(232,48,42,0.06));border:1px solid rgba(232,48,42,0.3);border-radius:20px;padding:28px 24px;text-align:center;margin-bottom:28px}
+.invite-icon{font-size:48px;margin-bottom:12px}
+.invite-title{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:0.04em;margin-bottom:8px}
+.invite-desc{font-size:14px;color:var(--text-muted);line-height:1.6}
+.invite-badge{display:inline-block;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:700;color:#86efac;margin-top:12px}
+
+/* Features */
+.features{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.feat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 14px;text-align:center}
+.feat-icon{font-size:28px;margin-bottom:8px}
+.feat-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.feat-desc{font-size:12px;color:var(--text-muted);line-height:1.4}
+
+/* Trial highlight */
+.trial-box{width:100%;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:14px;padding:18px 20px;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+.trial-icon{font-size:32px;flex-shrink:0}
+.trial-text{font-size:14px;color:#86efac;line-height:1.5;font-weight:500}
+
+/* CTA */
+.cta-btn{display:block;width:100%;background:var(--accent);color:#fff;font-family:'Manrope',sans-serif;font-weight:700;font-size:17px;padding:16px 24px;border-radius:14px;text-decoration:none;text-align:center;border:none;cursor:pointer;transition:.2s;box-shadow:0 0 32px rgba(232,48,42,0.35);margin-bottom:14px}
+.cta-btn:hover{box-shadow:0 0 48px rgba(232,48,42,0.55);transform:translateY(-2px)}
+.cta-note{font-size:12px;color:var(--text-muted);text-align:center;line-height:1.5}
+
+/* Social proof */
+.social{width:100%;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin:20px 0;display:flex;align-items:center;gap:16px}
+.social-avatars{display:flex;flex-direction:row}
+.social-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-left:-8px}
+.social-avatar:first-child{margin-left:0}
+.social-text{font-size:13px;color:var(--text-muted);line-height:1.5}
+.social-text strong{color:var(--text)}
+
+/* Servers */
+.servers{width:100%;display:flex;gap:10px;margin-bottom:24px}
+.server{flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.server-flag{font-size:28px;margin-bottom:6px}
+.server-name{font-size:13px;font-weight:700}
+.server-ping{font-size:11px;color:var(--green);margin-top:2px}
+
+/* Footer */
+.footer{margin-top:auto;padding-top:32px;text-align:center;font-size:12px;color:var(--text-muted)}
+.footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <div class="logo-title">DOMINO <span>VPN</span></div>
+    <div class="logo-sub">Быстрый и надёжный VPN</div>
+  </div>
+
+  <div class="invite-banner">
+    <div class="invite-icon">🎁</div>
+    <div class="invite-title">Тебя пригласили!</div>
+    <div class="invite-desc">Твой друг уже использует Domino VPN и хочет поделиться с тобой</div>
+    <div class="invite-badge">🎉 Скидка 15% на первую покупку</div>
+  </div>
+
+  <div class="features">
+    <div class="feat"><div class="feat-icon">🔒</div><div class="feat-title">Без цензуры</div><div class="feat-desc">Доступ к любым заблокированным сайтам</div></div>
+    <div class="feat"><div class="feat-icon">⚡</div><div class="feat-title">Быстро</div><div class="feat-desc">Сервера DE и SE с низким пингом</div></div>
+    <div class="feat"><div class="feat-icon">📱</div><div class="feat-title">Все устройства</div><div class="feat-desc">iOS, Android, Windows, macOS</div></div>
+    <div class="feat"><div class="feat-icon">🛡</div><div class="feat-title">Надёжно</div><div class="feat-desc">Протокол VLESS — новейший и быстрый</div></div>
+  </div>
+
+  <div class="trial-box">
+    <div class="trial-icon">🆓</div>
+    <div class="trial-text"><strong>3 дня бесплатно</strong> — без карты и личных данных. Попробуй прямо сейчас!</div>
+  </div>
+
+  <div class="servers">
+    <div class="server"><div class="server-flag">🇩🇪</div><div class="server-name">Германия</div><div class="server-ping">● Онлайн</div></div>
+    <div class="server"><div class="server-flag">🇸🇪</div><div class="server-name">Швеция</div><div class="server-ping">● Онлайн</div></div>
+  </div>
+
+  <div class="social">
+    <div class="social-avatars">
+      <div class="social-avatar" style="background:#2a5298">А</div>
+      <div class="social-avatar" style="background:#1a7a4a">М</div>
+      <div class="social-avatar" style="background:#7a1a1a">К</div>
+      <div class="social-avatar" style="background:#5a2a7a">Д</div>
+    </div>
+    <div class="social-text"><strong>Уже 1000+ пользователей</strong> доверяют Domino VPN для безопасного интернета</div>
+  </div>
+
+  <a href="/cabinet.html" class="cta-btn" id="cta-btn">Попробовать бесплатно →</a>
+  <div class="cta-note">Регистрация за 30 секунд · Без карты · Отмена в любое время</div>
+
+  <div class="footer">
+    <p>© 2025 Domino VPN · <a href="https://t.me/DominoVPN_bot" target="_blank">@DominoVPN_bot</a></p>
+    <p style="margin-top:6px"><a href="/cabinet.html">Уже есть аккаунт? Войти →</a></p>
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search)
+const refCode = params.get('ref') || ''
+const ctaBtn = document.getElementById('cta-btn')
+if (refCode) {
+  ctaBtn.href = '/cabinet.html?ref=' + encodeURIComponent(refCode)
+  localStorage.setItem('dmn_ref', refCode)
+}
+</script>
+</body>
+</html>

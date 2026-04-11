@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Domino VPN</title>
+<meta name="theme-color" content="#080808">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--card:#111111;--card2:#161616;--accent:#E8302A;--text:#F0EDE8;
+  --text-muted:#999;--border:rgba(255,255,255,0.08);--green:#22c55e;--amber:#f59e0b;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;overflow:hidden;-webkit-tap-highlight-color:transparent}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4}
+h1,h2,h3,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:0.03em}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:'Manrope',sans-serif}
+input{font-family:'Manrope',sans-serif}
+
+/* ── App shell ── */
+#app{position:relative;z-index:1;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Screens ── */
+.screen{display:none;flex-direction:column;height:100%;overflow:hidden}
+.screen.active{display:flex;animation:fadeSlideIn .22s ease}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 24px;border-radius:12px;font-weight:700;font-size:15px;border:none;transition:.2s;white-space:nowrap;letter-spacing:0.01em}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{box-shadow:0 0 28px rgba(232,48,42,0.5);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0);box-shadow:none}
+.btn-primary:disabled{opacity:0.45;pointer-events:none}
+.btn-outline{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.btn-outline:hover{background:rgba(232,48,42,0.08)}
+.btn-outline:active{background:rgba(232,48,42,0.15)}
+.btn-ghost{background:transparent;color:var(--text-muted);border:none;font-size:14px;font-weight:500;padding:6px 12px}
+.btn-ghost:hover{color:var(--text)}
+.btn-full{width:100%}
+
+/* ── Inputs ── */
+.inp{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:14px 16px;font-size:15px;outline:none;transition:.2s}
+.inp:focus{border-color:rgba(232,48,42,0.5);box-shadow:0 0 0 3px rgba(232,48,42,0.1)}
+.inp::placeholder{color:var(--text-muted)}
+.form-group{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.form-group label{font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.09em}
+
+/* ── Toast ── */
+#toast-wrap{position:fixed;bottom:calc(80px + var(--safe-bottom));left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{background:#1e1e1e;border:1px solid var(--border);border-radius:12px;padding:12px 22px;font-size:14px;font-weight:600;color:var(--text);box-shadow:0 4px 24px rgba(0,0,0,0.7);animation:toastIn .25s ease;white-space:nowrap}
+.toast.error{border-color:rgba(232,48,42,0.4);color:#ff6b6b}
+.toast.success{border-color:rgba(34,197,94,0.4);color:#86efac}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(10px)}}
+.toast.out{animation:toastOut .25s ease forwards}
+
+/* ── Spinner ── */
+.spinner{width:20px;height:20px;border:2.5px solid rgba(255,255,255,0.15);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;display:inline-block}
+.spinner-sm{width:16px;height:16px;border-width:2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-page{display:flex;align-items:center;justify-content:center;flex:1;min-height:200px}
+
+/* ── Skeleton ── */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:400px 100%;animation:shimmer 1.4s infinite;border-radius:8px}
+.skel-line{height:14px;margin-bottom:10px}
+.skel-line.wide{width:100%}
+.skel-line.mid{width:65%}
+.skel-line.short{width:40%}
+.skel-card{height:140px;border-radius:16px;margin-bottom:16px}
+
+/* ═══════════════════════════════════════════════
+   AUTH SCREEN
+═══════════════════════════════════════════════ */
+#screen-auth{align-items:center;justify-content:center;padding:24px;padding-top:calc(24px + var(--safe-top))}
+.auth-wrap{width:100%;max-width:400px}
+.auth-logo{text-align:center;margin-bottom:36px}
+.auth-shield{font-size:52px;margin-bottom:8px;display:block;filter:drop-shadow(0 0 20px rgba(232,48,42,0.4))}
+.auth-title{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:0.08em;line-height:1}
+.auth-title span{color:var(--accent)}
+.auth-sub{color:var(--text-muted);font-size:14px;margin-top:8px}
+.auth-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px}
+#auth-error{display:none;background:rgba(232,48,42,0.08);border:1px solid rgba(232,48,42,0.3);border-radius:10px;padding:11px 14px;font-size:14px;color:#ff6b6b;margin-bottom:16px;font-weight:500}
+.auth-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--text-muted)}
+.auth-footer a{color:var(--accent);font-weight:700}
+
+/* ── Telegram auth loading ── */
+#screen-tg-loading{align-items:center;justify-content:center;gap:16px;padding:40px}
+.tg-loading-icon{font-size:48px;animation:pulse 1.4s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.tg-loading-text{font-size:16px;color:var(--text-muted);text-align:center}
+
+/* ═══════════════════════════════════════════════
+   MAIN APP SHELL
+═══════════════════════════════════════════════ */
+#screen-main{padding-top:calc(var(--safe-top))}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);background:rgba(8,8,8,0.94);backdrop-filter:blur(20px);flex-shrink:0}
+.topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.07em;display:flex;align-items:center;gap:8px}
+.topbar-logo .logo-shield{font-size:18px;filter:drop-shadow(0 0 8px rgba(232,48,42,0.6))}
+.topbar-logo span{color:var(--accent)}
+.topbar-user{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-muted)}
+.topbar-avatar{width:30px;height:30px;border-radius:50%;background:var(--card2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;overflow:hidden}
+.topbar-avatar img{width:100%;height:100%;object-fit:cover}
+
+/* ── Panels ── */
+.panels{flex:1;overflow:hidden;position:relative}
+.panel{position:absolute;inset:0;overflow-y:auto;padding:20px;padding-bottom:calc(88px + var(--safe-bottom));-webkit-overflow-scrolling:touch;display:none}
+.panel.active{display:block;animation:fadeSlideIn .2s ease}
+
+/* ── Bottom nav ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,8,8,0.97);border-top:1px solid var(--border);display:flex;backdrop-filter:blur(20px);z-index:50;padding-bottom:var(--safe-bottom)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 10px;border:none;background:transparent;color:var(--text-muted);font-size:10px;font-weight:700;transition:.2s;cursor:pointer;font-family:'Manrope',sans-serif;letter-spacing:0.04em;text-transform:uppercase}
+.nav-item .nav-icon{font-size:22px;line-height:1;transition:transform .2s}
+.nav-item.active{color:var(--accent)}
+.nav-item.active .nav-icon{transform:scale(1.12)}
+
+/* ═══════════════════════════════════════════════
+   HOME PANEL
+═══════════════════════════════════════════════ */
+.panel-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.04em;margin-bottom:20px;color:var(--text)}
+
+/* Status card */
+.status-card{border-radius:18px;padding:22px;margin-bottom:14px;position:relative;overflow:hidden}
+.status-card-active{background:linear-gradient(135deg,#111 0%,#161a12 100%);border:1px solid rgba(34,197,94,0.2)}
+.status-card-expired{background:var(--card);border:1px solid rgba(232,48,42,0.2)}
+.status-card-none{background:var(--card);border:1px solid var(--border)}
+.status-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.status-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.status-dot.active{background:var(--green);box-shadow:0 0 8px var(--green)}
+.status-dot.expired{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.status-dot.none{background:var(--text-muted)}
+.status-label{font-weight:700;font-size:15px;letter-spacing:0.02em}
+.status-server{font-size:16px;font-weight:700;margin-bottom:4px}
+.status-expires{font-size:13px;color:var(--text-muted);margin-bottom:16px}
+
+/* Progress */
+.progress-wrap{margin-bottom:6px}
+.progress-track{height:5px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.progress-fill.green{background:linear-gradient(90deg,#16a34a,var(--green))}
+.progress-fill.amber{background:linear-gradient(90deg,#d97706,var(--amber))}
+.progress-fill.red{background:linear-gradient(90deg,#b91c1c,var(--accent))}
+.progress-label{font-size:12px;color:var(--text-muted);margin-top:6px;display:flex;justify-content:space-between}
+
+/* Key card */
+.key-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;margin-bottom:14px}
+.key-card-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px}
+.key-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px}
+.key-url{font-size:12px;color:var(--text-muted);flex:1;font-family:'Manrope',monospace;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.key-copy-btn{background:rgba(232,48,42,0.12);border:1px solid rgba(232,48,42,0.25);color:var(--accent);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;white-space:nowrap;flex-shrink:0;transition:.2s}
+.key-copy-btn:hover{background:rgba(232,48,42,0.2);border-color:rgba(232,48,42,0.4)}
+.key-copy-btn:active{transform:scale(0.96)}
+
+/* App buttons */
+.app-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.app-btn{background:transparent;border:1.5px solid rgba(232,48,42,0.4);border-radius:12px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--accent);font-size:12px;font-weight:700;transition:.2s;cursor:pointer;letter-spacing:0.02em}
+.app-btn:hover{border-color:var(--accent);background:rgba(232,48,42,0.06)}
+.app-btn:active{transform:scale(0.97)}
+.app-btn-icon{font-size:22px}
+
+/* Empty state */
+.empty-state{display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 24px}
+.empty-icon{font-size:64px;margin-bottom:20px;opacity:0.4;filter:grayscale(0.3)}
+.empty-title{font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:10px;letter-spacing:0.04em}
+.empty-sub{font-size:15px;color:var(--text-muted);margin-bottom:32px;line-height:1.6}
+
+/* Renew btn */
+.renew-btn-wrap{margin-top:8px}
+
+/* ═══════════════════════════════════════════════
+   INSTRUCTIONS PANEL
+═══════════════════════════════════════════════ */
+.os-tabs{display:flex;gap:0;background:var(--card2);border-radius:12px;padding:4px;margin-bottom:20px;overflow-x:auto;scrollbar-width:none}
+.os-tabs::-webkit-scrollbar{display:none}
+.os-tab{flex:none;padding:9px 16px;border:none;background:transparent;color:var(--text-muted);font-size:13px;font-weight:700;border-radius:9px;transition:.2s;font-family:'Manrope',sans-serif;white-space:nowrap;cursor:pointer;letter-spacing:0.02em}
+.os-tab.active{background:var(--accent);color:#fff}
+.os-content{display:none}
+.os-content.active{display:block;animation:fadeSlideIn .18s ease}
+.instr-app-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.instr-app-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.instr-app-icon{font-size:36px;width:52px;height:52px;background:var(--card2);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.instr-app-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.04em}
+.instr-app-sub{font-size:12px;color:var(--text-muted);margin-top:2px}
+.instr-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+.instr-step{display:flex;align-items:flex-start;gap:12px}
+.step-num{width:26px;height:26px;border-radius:50%;background:rgba(232,48,42,0.15);border:1.5px solid rgba(232,48,42,0.4);color:var(--accent);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text{font-size:14px;line-height:1.6;padding-top:2px}
+.step-text a{color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.instr-store-btn{display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:14px;font-weight:700;color:var(--text);transition:.2s}
+.instr-store-btn:hover{border-color:#333;background:var(--card)}
+.instr-store-btn .store-icon{font-size:20px;flex-shrink:0}
+
+/* ═══════════════════════════════════════════════
+   SUPPORT PANEL
+═══════════════════════════════════════════════ */
+.support-hero{text-align:center;padding:32px 20px 28px;margin-bottom:8px}
+.support-icon{font-size:56px;margin-bottom:16px;display:block}
+.support-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:0.04em;margin-bottom:10px}
+.support-sub{font-size:15px;color:var(--text-muted);line-height:1.7;margin-bottom:0}
+.support-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.support-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;display:flex;align-items:center;gap:16px;transition:.2s;cursor:pointer}
+.support-card:hover{border-color:#333;transform:translateX(2px)}
+.support-card-icon{font-size:26px;width:44px;height:44px;background:var(--card2);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.support-card-title{font-size:15px;font-weight:700;margin-bottom:2px}
+.support-card-sub{font-size:13px;color:var(--text-muted)}
+.support-card-arrow{color:var(--text-muted);font-size:18px;margin-left:auto;flex-shrink:0}
+
+/* ── Responsive ── */
+@media(min-width:600px){
+  #screen-auth{background:none}
+  .auth-wrap{max-width:420px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Toast container -->
+  <div id="toast-wrap"></div>
+
+  <!-- ═══ SCREEN: Telegram Loading ═══ -->
+  <div class="screen active" id="screen-tg-loading">
+    <div class="tg-loading-icon">🛡️</div>
+    <div class="tg-loading-text">Авторизация через Telegram…</div>
+  </div>
+
+  <!-- ═══ SCREEN: Auth (browser fallback) ═══ -->
+  <div class="screen" id="screen-auth">
+    <div class="auth-wrap">
+      <div class="auth-logo">
+        <span class="auth-shield">🛡️</span>
+        <div class="auth-title">DOMINO <span>VPN</span></div>
+        <div class="auth-sub">Войдите в личный кабинет</div>
+      </div>
+      <div class="auth-card">
+        <div id="auth-error"></div>
+        <div class="form-group">
+          <label for="auth-email">Email</label>
+          <input class="inp" id="auth-email" type="email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="auth-pass">Пароль</label>
+          <input class="inp" id="auth-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button class="btn btn-primary btn-full" id="auth-submit" onclick="doLogin()">
+          Войти
+        </button>
+      </div>
+      <div class="auth-footer">
+        Нет аккаунта? <a href="https://t.me/DominoVPN_bot" target="_blank">Купить VPN</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN: Main App ═══ -->
+  <div class="screen" id="screen-main">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="topbar-logo">
+        <span class="logo-shield">🛡️</span>
+        DOMINO <span>VPN</span>
+      </div>
+      <div class="topbar-user">
+        <div class="topbar-avatar" id="topbar-avatar">👤</div>
+        <span id="topbar-name"></span>
+      </div>
+    </div>
+
+    <!-- Panels -->
+    <div class="panels">
+
+      <!-- ── HOME panel ── -->
+      <div class="panel active" id="panel-home">
+
+        <!-- Loading skeleton -->
+        <div id="home-skeleton">
+          <div class="skeleton skel-card"></div>
+          <div class="skeleton skel-card"></div>
+          <div style="display:flex;gap:10px">
+            <div class="skeleton" style="height:80px;border-radius:12px;flex:1"></div>
+            <div class="skeleton" style="height:80px;border-radius:12px;flex:1"></div>
+          </div>
+        </div>
+
+        <!-- Content (hidden while loading) -->
+        <div id="home-content" style="display:none">
+
+          <!-- Active subscription -->
+          <div id="sub-active-block" style="display:none">
+            <!-- Status card -->
+            <div class="status-card" id="sub-status-card">
+              <div class="status-row">
+                <div class="status-dot" id="sub-dot"></div>
+                <div class="status-label" id="sub-status-label"></div>
+              </div>
+              <div class="status-server" id="sub-server"></div>
+              <div class="status-expires" id="sub-expires"></div>
+              <div class="progress-wrap">
+                <div class="progress-track">
+                  <div class="progress-fill" id="sub-progress" style="width:0%"></div>
+                </div>
+                <div class="progress-label">
+                  <span id="sub-days-left"></span>
+                  <span id="sub-expires-date"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Key card -->
+            <div class="key-card">
+              <div class="key-card-label">Ключ подписки</div>
+              <div class="key-box">
+                <div class="key-url" id="key-url-display"></div>
+                <button class="key-copy-btn" id="key-copy-btn" onclick="copyKey()">📋 Копировать</button>
+              </div>
+            </div>
+
+            <!-- App buttons -->
+            <div class="app-btns">
+              <button class="app-btn" id="btn-happ" onclick="openHapp()">
+                <span class="app-btn-icon">📲</span>
+                Открыть в Happ
+              </button>
+              <button class="app-btn" id="btn-hiddify" onclick="openHiddify()">
+                <span class="app-btn-icon">📱</span>
+                Hiddify
+              </button>
+            </div>
+
+            <!-- Renew -->
+            <div class="renew-btn-wrap">
+              <a href="https://t.me/DominoVPN_bot" target="_blank" class="btn btn-primary btn-full" style="font-size:16px">
+                💎 Продлить подписку
+              </a>
+            </div>
+          </div>
+
+          <!-- No subscription -->
+          <div id="sub-empty-block" style="display:none">
+            <div class="empty-state">
+              <div class="empty-icon">🛡️</div>
+              <div class="empty-title">Нет подписки</div>
+              <div class="empty-sub">У вас нет активной подписки.<br>Защитите своё соединение прямо сейчас.</div>
+              <a href="https://t.me/DominoVPN_bot" target="_blank" class="btn btn-primary btn-full" style="font-size:16px;max-width:300px">
+                🚀 Купить VPN
+              </a>
+            </div>
+          </div>
+
+        </div><!-- /home-content -->
+      </div><!-- /panel-home -->
+
+      <!-- ── INSTRUCTIONS panel ── -->
+      <div class="panel" id="panel-instructions">
+        <div class="panel-title">Инструкция</div>
+
+        <div class="os-tabs" role="tablist">
+          <button class="os-tab active" onclick="switchOs('android',this)">🤖 Android</button>
+          <button class="os-tab" onclick="switchOs('ios',this)">🍎 iOS</button>
+          <button class="os-tab" onclick="switchOs('windows',this)">🪟 Windows</button>
+          <button class="os-tab" onclick="switchOs('macos',this)">💻 macOS</button>
+        </div>
+
+        <!-- Android -->
+        <div class="os-content active" id="os-android">
+          <div class="instr-app-card">
+            <div class="instr-app-header">
+              <div class="instr-app-icon">📲</div>
+              <div>
+                <div class="instr-app-name">Happ</div>
+                <div class="instr-app-sub">Рекомендуемый клиент для Android</div>
+              </div>
+            </div>
+            <div class="instr-steps">
+              <div class="instr-step">
+                <div class="step-num">1</div>
+                <div class="step-text">Скачайте приложение <a href="https://play.google.com/store/apps/details?id=org.happ.vpn" target="_blank">Happ из Google Play</a></div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">2</div>
+                <div class="step-text">Вернитесь на вкладку <strong>Главная</strong> и нажмите <strong>"Открыть в Happ"</strong></div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">3</div>
+                <div class="step-text">В приложении Happ нажмите <strong>Подключить</strong></div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">4</div>
+                <div class="step-text">Готово! Вы защищены 🎉</div>
+              </div>
+            </div>
+            <a href="https://play.google.com/store/apps/details?id=org.happ.vpn" target="_blank" class="instr-store-btn">
+              <span class="store-icon">▶️</span>
+              Google Play — Happ
+            </a>
+          </div>
+        </div>
+
+        <!-- iOS -->
+        <div class="os-content" id="os-ios">
+          <div class="instr-app-card">
+            <div class="instr-app-header">
+              <div class="instr-app-icon">📲</div>
+              <div>
+                <div class="instr-app-name">Happ</div>
+                <div class="instr-app-sub">Рекомендуемый клиент для iPhone</div>
+              </div>
+            </div>
+            <div class="instr-steps">
+              <div class="instr-step">
+                <div class="step-num">1</div>
+                <div class="step-text">Скачайте приложение <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287215" target="_blank">Happ из App Store</a></div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">2</div>
+                <div class="step-text">Вернитесь на вкладку <strong>Главная</strong> и нажмите <strong>"Открыть в Happ"</strong></div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">3</div>
+                <div class="step-text">Разрешите добавление VPN-конфигурации</div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">4</div>
+                <div class="step-text">Нажмите <strong>Connect</strong> — готово! 🎉</div>
+              </div>
+            </div>
+            <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287215" target="_blank" class="instr-store-btn">
+              <span class="store-icon">🍎</span>
+              App Store — Happ
+            </a>
+          </div>
+        </div>
+
+        <!-- Windows -->
+        <div class="os-content" id="os-windows">
+          <div class="instr-app-card">
+            <div class="instr-app-header">
+              <div class="instr-app-icon">🖥️</div>
+              <div>
+                <div class="instr-app-name">Hiddify</div>
+                <div class="instr-app-sub">Клиент для Windows</div>
+              </div>
+            </div>
+            <div class="instr-steps">
+              <div class="instr-step">
+                <div class="step-num">1</div>
+                <div class="step-text">Скачайте <a href="https://github.com/hiddify/hiddify-app/releases/latest" target="_blank">Hiddify с GitHub Releases</a> (файл .exe)</div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">2</div>
+                <div class="step-text">Установите и откройте Hiddify</div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">3</div>
+                <div class="step-text">Вернитесь на вкладку <strong>Главная</strong> и нажмите <strong>"Hiddify"</strong></div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">4</div>
+                <div class="step-text">В Hiddify нажмите <strong>Connect</strong> — готово! 🎉</div>
+              </div>
+            </div>
+            <a href="https://github.com/hiddify/hiddify-app/releases/latest" target="_blank" class="instr-store-btn">
+              <span class="store-icon">⬇️</span>
+              Скачать Hiddify (GitHub)
+            </a>
+          </div>
+        </div>
+
+        <!-- macOS -->
+        <div class="os-content" id="os-macos">
+          <div class="instr-app-card">
+            <div class="instr-app-header">
+              <div class="instr-app-icon">📲</div>
+              <div>
+                <div class="instr-app-name">Happ</div>
+                <div class="instr-app-sub">Клиент для macOS</div>
+              </div>
+            </div>
+            <div class="instr-steps">
+              <div class="instr-step">
+                <div class="step-num">1</div>
+                <div class="step-text">Скачайте <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287215" target="_blank">Happ из Mac App Store</a></div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">2</div>
+                <div class="step-text">Откройте Happ на Mac</div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">3</div>
+                <div class="step-text">Вернитесь на вкладку <strong>Главная</strong> и нажмите <strong>"Открыть в Happ"</strong></div>
+              </div>
+              <div class="instr-step">
+                <div class="step-num">4</div>
+                <div class="step-text">Готово! VPN подключён 🎉</div>
+              </div>
+            </div>
+            <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287215" target="_blank" class="instr-store-btn">
+              <span class="store-icon">🍎</span>
+              Mac App Store — Happ
+            </a>
+          </div>
+        </div>
+
+      </div><!-- /panel-instructions -->
+
+      <!-- ── SUPPORT panel ── -->
+      <div class="panel" id="panel-support">
+        <div class="support-hero">
+          <span class="support-icon">💬</span>
+          <div class="support-title">Поддержка</div>
+          <div class="support-sub">Мы всегда готовы помочь.<br>Напишите нам — ответим быстро.</div>
+        </div>
+
+        <div class="support-cards">
+          <a href="https://t.me/dominovpn_support" target="_blank" class="support-card">
+            <div class="support-card-icon">✈️</div>
+            <div>
+              <div class="support-card-title">Telegram поддержка</div>
+              <div class="support-card-sub">@dominovpn_support</div>
+            </div>
+            <div class="support-card-arrow">›</div>
+          </a>
+          <a href="https://t.me/DominoVPN_bot" target="_blank" class="support-card">
+            <div class="support-card-icon">🤖</div>
+            <div>
+              <div class="support-card-title">Бот Domino VPN</div>
+              <div class="support-card-sub">Управление подпиской</div>
+            </div>
+            <div class="support-card-arrow">›</div>
+          </a>
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="window.open('https://t.me/dominovpn_support','_blank')" style="font-size:16px">
+          💬 Написать в поддержку
+        </button>
+      </div><!-- /panel-support -->
+
+    </div><!-- /panels -->
+
+    <!-- Bottom nav -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" id="nav-home" onclick="switchPanel('home',this)">
+        <span class="nav-icon">🏠</span>
+        Главная
+      </button>
+      <button class="nav-item" id="nav-instructions" onclick="switchPanel('instructions',this)">
+        <span class="nav-icon">📖</span>
+        Инструкция
+      </button>
+      <button class="nav-item" id="nav-support" onclick="switchPanel('support',this)">
+        <span class="nav-icon">💬</span>
+        Поддержка
+      </button>
+    </nav>
+
+  </div><!-- /screen-main -->
+
+</div><!-- /app -->
+
+<script>
+// ═══════════════════════════════════════════════
+//  Globals
+// ═══════════════════════════════════════════════
+const TOKEN_KEY = 'domino_token';
+let currentSubUrl = '';
+let currentPanel = 'home';
+const TG = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+
+// ═══════════════════════════════════════════════
+//  Boot
+// ═══════════════════════════════════════════════
+(async function boot() {
+  if (TG) {
+    TG.ready();
+    TG.expand();
+    // Override Telegram theme with our colors
+    document.documentElement.style.setProperty('--tg-theme-bg-color', '#080808');
+    document.documentElement.style.setProperty('--tg-theme-button-color', '#E8302A');
+    document.documentElement.style.setProperty('--tg-theme-text-color', '#F0EDE8');
+  }
+
+  // Check existing token
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (token) {
+    showScreen('screen-tg-loading');
+    const ok = await loadUserData(token);
+    if (ok) {
+      showMain();
+      return;
+    } else {
+      localStorage.removeItem(TOKEN_KEY);
+    }
+  }
+
+  // Try Telegram init data
+  if (TG && TG.initData && TG.initData.length > 0) {
+    showScreen('screen-tg-loading');
+    const ok = await loginViaTelegram(TG.initData);
+    if (ok) {
+      showMain();
+      return;
+    }
+  }
+
+  // Fallback: show login form
+  showScreen('screen-auth');
+})();
+
+// ═══════════════════════════════════════════════
+//  Screen management
+// ═══════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+  });
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+
+function showMain() {
+  showScreen('screen-main');
+  // Setup Telegram back button
+  if (TG && TG.BackButton) {
+    TG.BackButton.onClick(() => {
+      if (currentPanel !== 'home') {
+        switchPanel('home', document.getElementById('nav-home'));
+      }
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  Panel switching
+// ═══════════════════════════════════════════════
+function switchPanel(name, navBtn) {
+  // Deactivate all panels + nav items
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.add('active');
+  if (navBtn) navBtn.classList.add('active');
+
+  currentPanel = name;
+
+  // Telegram BackButton visibility
+  if (TG && TG.BackButton) {
+    if (name !== 'home') {
+      TG.BackButton.show();
+    } else {
+      TG.BackButton.hide();
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  OS Tabs (instructions)
+// ═══════════════════════════════════════════════
+function switchOs(os, btn) {
+  document.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.os-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  const content = document.getElementById('os-' + os);
+  if (content) content.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+//  Auth — Telegram
+// ═══════════════════════════════════════════════
+async function loginViaTelegram(initData) {
+  try {
+    const res = await fetch('/api/weblogin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'telegram', init_data: initData })
+    });
+    const data = await res.json();
+    if (res.ok && data.token) {
+      localStorage.setItem(TOKEN_KEY, data.token);
+      await loadUserData(data.token);
+      return true;
+    }
+    return false;
+  } catch (e) {
+    console.error('TG login error:', e);
+    return false;
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  Auth — Email/Password
+// ═══════════════════════════════════════════════
+async function doLogin() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass = document.getElementById('auth-pass').value;
+  const btn = document.getElementById('auth-submit');
+  const errBox = document.getElementById('auth-error');
+
+  errBox.style.display = 'none';
+
+  if (!email || !pass) {
+    showAuthError('Введите email и пароль');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner spinner-sm"></span> Входим…';
+
+  try {
+    const res = await fetch('/api/weblogin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'login', email, password: pass })
+    });
+    const data = await res.json();
+    if (res.ok && data.token) {
+      localStorage.setItem(TOKEN_KEY, data.token);
+      await loadUserData(data.token);
+      showMain();
+    } else {
+      showAuthError(data.error || data.message || 'Неверный email или пароль');
+    }
+  } catch (e) {
+    showAuthError('Ошибка соединения. Попробуйте снова.');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = 'Войти';
+}
+
+function showAuthError(msg) {
+  const errBox = document.getElementById('auth-error');
+  errBox.textContent = msg;
+  errBox.style.display = 'block';
+}
+
+// Allow Enter key in auth form
+document.getElementById('auth-email').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('auth-pass').focus(); });
+document.getElementById('auth-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ═══════════════════════════════════════════════
+//  Load user data
+// ═══════════════════════════════════════════════
+async function loadUserData(token) {
+  try {
+    const [meRes, keyRes] = await Promise.all([
+      fetch('/api/me', { headers: { 'Authorization': 'Bearer ' + token } }),
+      fetch('/api/key', { headers: { 'Authorization': 'Bearer ' + token } })
+    ]);
+
+    if (meRes.status === 401) return false;
+
+    const me = meRes.ok ? await meRes.json() : null;
+    const keyData = keyRes.ok ? await keyRes.json() : null;
+
+    renderHome(me, keyData);
+    return true;
+  } catch (e) {
+    console.error('loadUserData error:', e);
+    return false;
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  Render home panel
+// ═══════════════════════════════════════════════
+function renderHome(me, keyData) {
+  document.getElementById('home-skeleton').style.display = 'none';
+  document.getElementById('home-content').style.display = 'block';
+
+  // User info in topbar
+  if (me) {
+    const name = me.first_name || me.username || me.email || '';
+    document.getElementById('topbar-name').textContent = name;
+    if (me.photo_url) {
+      document.getElementById('topbar-avatar').innerHTML = '<img src="' + escHtml(me.photo_url) + '" alt="">';
+    }
+  }
+
+  if (!keyData || !keyData.sub_url) {
+    // No subscription
+    document.getElementById('sub-active-block').style.display = 'none';
+    document.getElementById('sub-empty-block').style.display = 'block';
+    // Telegram main button
+    if (TG && TG.MainButton) {
+      TG.MainButton.setText('🚀 Купить VPN');
+      TG.MainButton.color = '#E8302A';
+      TG.MainButton.show();
+      TG.MainButton.onClick(() => {
+        TG.openTelegramLink('https://t.me/DominoVPN_bot');
+      });
+    }
+    return;
+  }
+
+  // Has subscription
+  document.getElementById('sub-active-block').style.display = 'block';
+  document.getElementById('sub-empty-block').style.display = 'none';
+
+  currentSubUrl = keyData.sub_url || '';
+
+  // Status
+  const expiresAt = keyData.expires_at ? new Date(keyData.expires_at) : null;
+  const now = new Date();
+  const isActive = expiresAt ? expiresAt > now : true;
+
+  const dot = document.getElementById('sub-dot');
+  const label = document.getElementById('sub-status-label');
+  const card = document.getElementById('sub-status-card');
+
+  if (isActive) {
+    dot.className = 'status-dot active';
+    label.textContent = 'АКТИВНА';
+    card.className = 'status-card status-card-active';
+  } else {
+    dot.className = 'status-dot expired';
+    label.textContent = 'ИСТЕКЛА';
+    card.className = 'status-card status-card-expired';
+  }
+
+  // Server
+  const server = keyData.server_name || '';
+  let serverDisplay = server;
+  if (server.toLowerCase().includes('german') || server.toLowerCase().includes('de') || server === 'Германия') {
+    serverDisplay = '🇩🇪 Германия';
+  } else if (server.toLowerCase().includes('sweden') || server.toLowerCase().includes('se') || server === 'Швеция') {
+    serverDisplay = '🇸🇪 Швеция';
+  } else if (server.toLowerCase().includes('nl') || server.toLowerCase().includes('nether')) {
+    serverDisplay = '🇳🇱 Нидерланды';
+  } else if (server.toLowerCase().includes('fi') || server.toLowerCase().includes('finland')) {
+    serverDisplay = '🇫🇮 Финляндия';
+  } else if (server) {
+    serverDisplay = '🌍 ' + server;
+  }
+  document.getElementById('sub-server').textContent = serverDisplay;
+
+  // Days left + progress
+  if (expiresAt) {
+    const diffMs = expiresAt - now;
+    const daysLeft = Math.max(0, Math.ceil(diffMs / 86400000));
+
+    document.getElementById('sub-expires').textContent =
+      isActive ? 'Осталось ' + daysLeft + ' ' + plural(daysLeft, 'день', 'дня', 'дней') : 'Подписка истекла';
+
+    document.getElementById('sub-days-left').textContent =
+      'Осталось: ' + daysLeft + ' ' + plural(daysLeft, 'день', 'дня', 'дней');
+
+    document.getElementById('sub-expires-date').textContent =
+      'до ' + formatDate(expiresAt);
+
+    // Progress: assume 30-day cycles, cap at 100
+    const totalDays = 30;
+    const pct = Math.min(100, Math.round((daysLeft / totalDays) * 100));
+    const fill = document.getElementById('sub-progress');
+    // Delay so CSS transition plays
+    setTimeout(() => { fill.style.width = pct + '%'; }, 50);
+
+    if (daysLeft > 10) {
+      fill.className = 'progress-fill green';
+    } else if (daysLeft > 3) {
+      fill.className = 'progress-fill amber';
+    } else {
+      fill.className = 'progress-fill red';
+    }
+  } else {
+    document.getElementById('sub-expires').textContent = '';
+    document.getElementById('sub-days-left').textContent = '';
+    document.getElementById('sub-expires-date').textContent = '';
+    document.getElementById('sub-progress').style.width = '100%';
+  }
+
+  // Key URL display (truncated)
+  const urlEl = document.getElementById('key-url-display');
+  urlEl.textContent = currentSubUrl;
+  urlEl.title = currentSubUrl;
+
+  // Telegram MainButton
+  if (TG && TG.MainButton) {
+    TG.MainButton.setText('💎 Продлить подписку');
+    TG.MainButton.color = '#E8302A';
+    TG.MainButton.show();
+    TG.MainButton.onClick(() => {
+      TG.openTelegramLink('https://t.me/DominoVPN_bot');
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  Key actions
+// ═══════════════════════════════════════════════
+async function copyKey() {
+  if (!currentSubUrl) return;
+  try {
+    await navigator.clipboard.writeText(currentSubUrl);
+    showToast('Скопировано!', 'success');
+    const btn = document.getElementById('key-copy-btn');
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '✅ Скопировано';
+      setTimeout(() => { btn.innerHTML = orig; }, 1800);
+    }
+  } catch (e) {
+    // Fallback for environments without clipboard API
+    const ta = document.createElement('textarea');
+    ta.value = currentSubUrl;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      showToast('Скопировано!', 'success');
+    } catch (e2) {
+      showToast('Не удалось скопировать', 'error');
+    }
+    document.body.removeChild(ta);
+  }
+}
+
+function openHapp() {
+  if (!currentSubUrl) { showToast('Нет ключа', 'error'); return; }
+  const deepLink = 'sub://' + encodeURIComponent(currentSubUrl);
+  try {
+    window.open(deepLink, '_blank');
+  } catch(e) {
+    showToast('Откройте Happ вручную', 'error');
+  }
+}
+
+function openHiddify() {
+  if (!currentSubUrl) { showToast('Нет ключа', 'error'); return; }
+  const deepLink = 'hiddify://import?url=' + encodeURIComponent(currentSubUrl);
+  try {
+    window.open(deepLink, '_blank');
+  } catch(e) {
+    showToast('Откройте Hiddify вручную', 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  Toast
+// ═══════════════════════════════════════════════
+function showToast(msg, type) {
+  const wrap = document.getElementById('toast-wrap');
+  const t = document.createElement('div');
+  t.className = 'toast' + (type ? ' ' + type : '');
+  t.textContent = msg;
+  wrap.appendChild(t);
+  setTimeout(() => {
+    t.classList.add('out');
+    setTimeout(() => { if (t.parentNode) t.parentNode.removeChild(t); }, 280);
+  }, 2200);
+}
+
+// ═══════════════════════════════════════════════
+//  Helpers
+// ═══════════════════════════════════════════════
+function plural(n, one, few, many) {
+  const abs = Math.abs(n) % 100;
+  const last = abs % 10;
+  if (abs >= 11 && abs <= 19) return many;
+  if (last === 1) return one;
+  if (last >= 2 && last <= 4) return few;
+  return many;
+}
+
+function formatDate(d) {
+  const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+  return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

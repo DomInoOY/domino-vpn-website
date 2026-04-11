@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 
-  const { server } = req.body || {}
+  const { server, device_id } = req.body || {}
 
   if (!server) {
     return res.status(400).json({ error: 'server is required' })
@@ -34,8 +34,15 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: `server must be one of: ${validServers.join(', ')}` })
   }
 
+  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || ''
+
   try {
-    const data = await vpsCall('POST', '/internal/trial/activate', { user_id: userId, server })
+    const data = await vpsCall('POST', '/internal/trial/activate', {
+      user_id: userId,
+      server,
+      device_id: device_id || '',
+      ip_address: ip,
+    })
 
     if (data.error) {
       return res.status(400).json({ error: data.error })

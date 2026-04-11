@@ -11,5 +11,10 @@ export async function vpsCall(method, path, body = null) {
   }
   if (body) opts.body = JSON.stringify(body)
   const res = await fetch(`${VPS_URL}${path}`, opts)
+  if (!res.ok) {
+    let errBody = {}
+    try { errBody = await res.json() } catch {}
+    return { error: errBody.error || `VPS error ${res.status}` }
+  }
   return res.json()
 }
